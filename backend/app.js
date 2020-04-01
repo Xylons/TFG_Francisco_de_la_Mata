@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 
@@ -25,6 +26,9 @@ mongoose
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Permiso para la carpeta de imagenes
+// si fuese una subcarpeta habría que hacer join e.j: app.use("/images", express.static(path.join("backend/images")));
+app.use("/images", express.static("images"));
 //Cabeceras para permitir acesso a nuestra API
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
