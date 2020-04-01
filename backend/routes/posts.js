@@ -74,11 +74,29 @@ router.post("",multer({storage: storage}).single("image"), (req, res, next) => {
   });
   
   router.get("", (req, res, next) => {
-    Post.find().then(documents => {
-      res.status(200).json({
-        message: "All fine",
-        posts: documents
-      });
+    //req.query muestra los datos que hay anadidos despues de ? y separados por &
+    // + es la forma rapida de convertir en numero
+    console.log(req.query);
+    const pageSize= +req.query.pagesize;
+    const currentPage= +req.query.page;
+    const postQuery= Post.find();
+    let fechedPosts;
+    if(pageSize && currentPage){
+      postQuery
+      .skip(pageSize * (currentPage - 1))
+      .limit(pageSize);
+    }
+    postQuery
+    .then(documents => {
+      fechedPosts= documents;
+      return Post.count();
+      })
+      .then(count => {
+        res.status(200).json({
+          message: "All fine",
+          posts: fechedPosts,
+          maxPosts: count
+        });
     });
   });
   
