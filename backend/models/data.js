@@ -1,6 +1,6 @@
 const mongoose =require('mongoose');
 
-const postSchema = mongoose.Schema({
+const datachema = mongoose.Schema({
     insoleID: {type: String, require: true},
     files: {
             name: { type: String, lowercase: true},
@@ -8,4 +8,4 @@ const postSchema = mongoose.Schema({
           }
 });
 
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model('Data', dataSchema);

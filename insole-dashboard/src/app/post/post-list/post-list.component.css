@@ -14,8 +14,9 @@ mat-spinner{
 mat-paginator{
   margin-top: 1rem;
 }
+/* estaba a 100%*/
 .post-image {
-  width: 100%
+  width: 12rem;
 }
 
 
