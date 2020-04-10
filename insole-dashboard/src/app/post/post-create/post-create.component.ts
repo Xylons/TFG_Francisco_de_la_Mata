@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
@@ -8,6 +8,8 @@ import { Post } from '../post.model';
 
 //Validator personalizado
 import {mimeType} from './mime-type.validator';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 
 
@@ -20,7 +22,7 @@ import {mimeType} from './mime-type.validator';
   templateUrl: './post-create.component.html',
   styleUrls: ['./post-create.component.css']
 })
-export class PostCreateComponent implements OnInit {
+export class PostCreateComponent implements OnInit, OnDestroy {
 
   enteredTitle = '';
   enteredContent = '';
@@ -30,14 +32,24 @@ export class PostCreateComponent implements OnInit {
   imagePreview: string;
   private mode = 'create';
   private postId: string;
+  //Suscripcion para control de errores
+  private authStatusSub: Subscription;
 
-  constructor(public postsService: PostsService, public route: ActivatedRoute) { }
+  constructor(
+    public postsService: PostsService,
+    public route: ActivatedRoute,
+    private authService: AuthService
+     ) { }
 
   //route contiene información sobre nuestras rutas
   //En este tipo de observable no hace falta desuscribirse
   //La función de dentro de subscribe se ejecutará cuando cambie la ruta
 
   ngOnInit() {
+    //Me suscribo para detectar si hay cambios en el estado de autenticacion
+   this.authStatusSub= this.authService.getAuthStatusListener().subscribe(authStatus =>{
+     this.isLoading =false;
+   });
     this.form = new FormGroup({
       /// Se puede añadir updateOn para ver cuando se valida
       //null es el valor inicial
@@ -113,4 +125,7 @@ export class PostCreateComponent implements OnInit {
     this.form.reset();
   }
 
+  ngOnDestroy(){
+    this.authStatusSub.unsubscribe();
+  }
 }
