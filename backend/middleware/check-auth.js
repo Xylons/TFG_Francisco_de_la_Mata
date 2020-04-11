@@ -6,7 +6,7 @@ module.exports =(req,res, next)=>{
      
         const token= req.headers.authorization.split(" ")[1];
         //Verifico el token, lo decodifico y lo anado en request como userData
-        const decodedToken= jwt.verify(token, "InclUir_luEgo_cLav3_s3cr3ta_más_l@rg@" );
+        const decodedToken= jwt.verify(token,  process.env.JWT_KEY );
         req.userData ={email: decodedToken.email, userId: decodedToken.userId};
         next();
     } catch( error){

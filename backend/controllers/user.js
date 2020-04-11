@@ -50,7 +50,7 @@ exports.createUser = (req, res, next) => {
         //Creo un nuevo token usando jsonwebtoken para verificar el usuario en las peticiones y se lo mando
         const token = jwt.sign(
           { email: fechedUser.email, userId: fechedUser._id },
-          "InclUir_luEgo_cLav3_s3cr3ta_más_l@rg@",
+          process.env.JWT_KEY,
           { expiresIn: "1h" }
         );
         res.status(200).json({

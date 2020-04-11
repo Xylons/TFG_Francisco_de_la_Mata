@@ -4,6 +4,11 @@ import { AuthData } from './auth-data.model';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 
+// Uso variables de entorno para obtener la direccion API
+import{ environment } from '../../environments/environment';
+
+const BACKEND_URL = environment.apiURL + "/user/"
+
 @Injectable({
   providedIn: "root"
 })
@@ -42,9 +47,9 @@ export class AuthService {
       password: password
     };
     // aqui retorno el objeto observable y lo recibe en sigunpcomponent
-    return this.http.post("http://localhost:3000/api/user/signup", authData)
+    return this.http.post(BACKEND_URL+"signup", authData)
     .subscribe(() =>{
-      this.router.navigate(["/"]);
+      this.router.navigate(["auth/login"]);
     }, error=> {
       this.authStatusListener.next(false);
     });
@@ -56,7 +61,7 @@ export class AuthService {
       email: email,
       password: password
     };
-    this.http.post<{ token: string, expiresIn: number, userId: string}>("http://localhost:3000/api/user/login", authData)
+    this.http.post<{ token: string, expiresIn: number, userId: string}>(BACKEND_URL+"login", authData)
       .subscribe(response => {
         const token = response.token;
         this.token = token;
@@ -104,7 +109,7 @@ export class AuthService {
     this.userId= null;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
-    this.router.navigate(["/login"]);
+    this.router.navigate(["/auth/login"]);
   }
 
   private setAuthTimer(duration: number){
