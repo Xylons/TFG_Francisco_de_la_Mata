@@ -16,7 +16,17 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content class="dashboard-card-content">
-          <div>Card Content Here</div>
+          <div>Card Content Here
+            <div class="chart" style="position: relative; min-height: unset">
+              <canvas baseChart
+                 [datasets]="barChartData"
+                 [labels]="barChartLabels"
+                 [options]="barChartOptions"
+                 [legend]="barChartLegend"
+                 [chartType]="barChartType">
+              </canvas>
+              </div>
+          </div>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>
