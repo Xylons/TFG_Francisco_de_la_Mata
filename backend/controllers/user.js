@@ -9,7 +9,9 @@ exports.createUser = (req, res, next) => {
       const user = new User({
         email: req.body.email,
         password: hash,
+        rol: undefined
       });
+      console.log(user);
       user
         .save()
         .then((result) => {
@@ -17,6 +19,7 @@ exports.createUser = (req, res, next) => {
             message: "User created!",
             result: result,
           });
+          console.log(result);
         })
         .catch((err) => {
           res.status(500).json({
@@ -49,15 +52,16 @@ exports.createUser = (req, res, next) => {
         }
         //Creo un nuevo token usando jsonwebtoken para verificar el usuario en las peticiones y se lo mando
         const token = jwt.sign(
-          { email: fechedUser.email, userId: fechedUser._id },
+          { email: fechedUser.email, userId: fechedUser._id, rol: fechedUser.rol },
           process.env.JWT_KEY,
           { expiresIn: "1h" }
         );
+
         res.status(200).json({
           token: token,
           expiresIn: 3600,
-          userId: fechedUser._id
-          
+          userId: fechedUser._id,
+          rol: fechedUser.rol
         });
        
       })

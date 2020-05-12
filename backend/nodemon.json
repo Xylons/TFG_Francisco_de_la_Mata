@@ -1,6 +1,10 @@
 
 {
     "env":{
-        "JWT_KEY": "InclUir_luEgo_cLav3_s3cr3ta_más_l@rg@"
+        "JWT_KEY": "InclUir_luEgo_cLav3_s3cr3ta_más_l@rg@",
+        "patient": "patient",
+        "responsible": "responsible",
+        "admin": "admin"
     }
+    
 }

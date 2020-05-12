@@ -9,13 +9,13 @@
             <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
               <mat-icon>more_vert</mat-icon>
             </button>
-            <mat-menu #menu="matMenu" xPosition="before">
+            <mat-menu #menu="matMenu" xPosition="before" >
               <button mat-menu-item>Expand</button>
               <button mat-menu-item>Remove</button>
             </mat-menu>
           </mat-card-title>
         </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
+        <mat-card-content class="dashboard-card-content" *ngIf="card.title.toLowerCase()!=='insole'.toLowerCase(); else insole"  >
           <div>Card Content Here
             <div class="chart" style="position: relative; min-height: unset">
               <canvas baseChart
@@ -27,8 +27,15 @@
               </canvas>
               </div>
           </div>
+
         </mat-card-content>
+        <ng-template #insole >
+        <mat-card-content   class="dashboard-card-content">
+          <app-insole></app-insole>
+        </mat-card-content>
+      </ng-template>
       </mat-card>
     </mat-grid-tile>
+
   </mat-grid-list>
 </div>

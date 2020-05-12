@@ -28,6 +28,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { ChartsModule } from "ng2-charts";
+import { InsoleComponent } from './insole/insole.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { ChartsModule } from "ng2-charts";
     HeaderComponent,
     ErrorComponent,
     MainNavComponent,
-    DashboardComponent
+    DashboardComponent,
+    InsoleComponent
   ],
   imports: [
     BrowserModule,

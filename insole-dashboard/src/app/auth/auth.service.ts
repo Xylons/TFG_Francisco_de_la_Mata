@@ -22,6 +22,8 @@ export class AuthService {
   //Aqui se crearia un objeto user con mas atributos definidos en un user.model.ts
   // El tipo se cambia si hay mas usuarios
   private authStatusListener = new Subject<boolean>();
+  //Variable para almacenar el rol autenticado
+  private rolLogged: string;
   constructor(private http: HttpClient, private router: Router) { }
 
   getToken() {
@@ -30,6 +32,11 @@ export class AuthService {
 
   getIsAuth() {
     return this.isAuthenticated;
+  }
+
+
+  getRolLogged() {
+    return this.rolLogged;
   }
 
   getUserId() {
@@ -56,17 +63,19 @@ export class AuthService {
 
   }
 
-  login(email: string, password: string) {
+  login(email: string, password: string, ) {
     const authData: AuthData = {
       email: email,
-      password: password
+      password: password,
+
     };
-    this.http.post<{ token: string, expiresIn: number, userId: string}>(BACKEND_URL+"login", authData)
+    this.http.post<{ token: string, expiresIn: number, userId: string, rol: string}>(BACKEND_URL+"login", authData)
       .subscribe(response => {
         const token = response.token;
         this.token = token;
         if (token) {
           const expiresInDuration = response.expiresIn;
+          this.rolLogged = response.rol;
           this.setAuthTimer(expiresInDuration);
           this.userId= response.userId;
           this.isAuthenticated = true;
@@ -74,7 +83,8 @@ export class AuthService {
           const now = new Date();
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           console.log(expirationDate);
-          this.saveAuthData(token, expirationDate, this.userId);
+          this.saveAuthData(token, expirationDate, this.userId, this.rolLogged);
+          console.log(response);
           this.router.navigate(["/"]);
         }
 
@@ -96,6 +106,7 @@ export class AuthService {
       this.token= authInformation.token;
       this.isAuthenticated= true;
       this.userId= authInformation.userId;
+      this.rolLogged= authInformation.rolLogged;
       // Divido ya que get.time() devuelve en milisegundos
       this.setAuthTimer(expiresIn/1000);
       this.authStatusListener.next(true);
@@ -107,6 +118,7 @@ export class AuthService {
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
     this.userId= null;
+    this.rolLogged= null;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(["/auth/login"]);
@@ -119,22 +131,25 @@ export class AuthService {
     }, duration * 1000);
   }
 
-  private saveAuthData(token: string, expirationDate: Date, userId: string) {
+  private saveAuthData(token: string, expirationDate: Date, userId: string, rol: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
+    localStorage.setItem('rol', rol);
   }
 
   private clearAuthData() {
     localStorage.removeItem('token');
     localStorage.removeItem('expiration');
     localStorage.removeItem('userId');
+    localStorage.removeItem('rol');
   }
 
   private getAuthData() {
     const token = localStorage.getItem("token");
     const expirationDate = localStorage.getItem("expiration");
     const userId= localStorage.getItem("userId");
+    const rol = localStorage.getItem("rol");
     if (!token || !expirationDate) {
       return;
     }
@@ -142,7 +157,8 @@ export class AuthService {
     return {
       token: token,
       expirationDate: new Date(expirationDate),
-      userId: userId
+      userId: userId,
+      rolLogged: rol
     }
   }
 }

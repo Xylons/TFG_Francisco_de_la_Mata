@@ -3,10 +3,11 @@ import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 //import * as Chart from 'chart.js'
 import { Chart } from "chart.js";
+import { InsoleService } from '../insole/insole.service';
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html', 
+  templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
@@ -17,7 +18,7 @@ export class DashboardComponent {
         return [
           { title: 'Card 1', cols: 1, rows: 1 },
           { title: 'Card 2', cols: 1, rows: 1 },
-          { title: 'Card 3', cols: 1, rows: 1 },
+          { title: 'Insole', cols: 1, rows: 1 },
           { title: 'Card 4', cols: 1, rows: 1 }
         ];
       }
@@ -25,15 +26,15 @@ export class DashboardComponent {
       return [
         { title: 'Card 1', cols: 2, rows: 1 },
         { title: 'Card 2', cols: 1, rows: 1 },
-        { title: 'Card 3', cols: 1, rows: 2 },
+        { title: 'Insole', cols: 1, rows: 2 },
         { title: 'Card 4', cols: 1, rows: 1 }
       ];
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
-    
-  
+  constructor(private breakpointObserver: BreakpointObserver, private insoleService: InsoleService) {}
+
+
   /// BarChart
   public barChartOptions = {
     scaleShowVerticalLines: false,

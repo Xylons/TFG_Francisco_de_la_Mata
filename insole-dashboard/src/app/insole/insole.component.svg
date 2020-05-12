@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 701.8 828.6" style="enable-background:new 0 0 701.8 828.6;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#008484;fill-opacity:0;stroke:#008484;stroke-linecap:round;stroke-linejoin:round;}
-	.st1{fill:#C2C200;fill-opacity:0;stroke:#C2C200;stroke-linecap:round;stroke-linejoin:round;}
+	.st0{stroke:#008484;stroke-linecap:round;stroke-linejoin:round;}
+	.st1{stroke:#C2C200;stroke-linecap:round;stroke-linejoin:round;}
 </style>
 <g id="Left_Insole">
 	<title>SVG Picture created as Insole_PCB-brd.svg date 2020/04/20 12:20:02</title>
@@ -14,38 +13,38 @@
 
 
 	<g>
-		<circle id="LS0" class="st0" cx="278.9" cy="300.5" r="29.7"/>
-		<circle id="LS1" class="st0" cx="298.9" cy="239.4" r="29.7"/>
-		<circle id="LS2" class="st0" cx="307.3" cy="178" r="29.7"/>
-		<circle id="LS3" class="st0" cx="300.9" cy="118.3" r="29.7"/>
-		<circle id="LS4" class="st0" cx="273.3" cy="64.7" r="29.7"/>
-		<circle id="LS5" class="st0" cx="240.5" cy="118.4" r="29.7"/>
-		<circle id="LS6" class="st0" cx="246.4" cy="179.4" r="29.7"/>
-		<circle id="LS7" class="st0" cx="220" cy="235.9" r="29.7"/>
-		<circle id="LS8" class="st0" cx="211.2" cy="65.9" r="29.7"/>
-		<circle id="LS9" class="st0" cx="160.1" cy="101.7" r="29.7"/>
-		<circle id="LS10" class="st0" cx="192" cy="153.7" r="29.7"/>
-		<circle id="LS11" class="st0" cx="119.1" cy="148.6" r="29.7"/>
-		<circle id="LS12" class="st0" cx="159.7" cy="204.3" r="29.7"/>
-		<circle id="LS13" class="st0" cx="85.4" cy="204.3" r="29.7"/>
-		<circle id="LS14" class="st0" cx="208.5" cy="300" r="29.7"/>
-		<circle id="LS15" class="st0" cx="141" cy="261.1" r="29.7"/>
-		<circle id="LS16" class="st0" cx="79.5" cy="266.6" r="29.7"/>
-		<circle id="LS17" class="st0" cx="82.2" cy="331.5" r="29.7"/>
-		<circle id="LS18" class="st0" cx="146.8" cy="321" r="29.7"/>
-		<circle id="LS19" class="st0" cx="154.6" cy="382" r="29.7"/>
-		<circle id="LS20" class="st0" cx="96" cy="394.9" r="29.7"/>
-		<circle id="LS21" class="st0" cx="116.5" cy="461.3" r="29.7"/>
-		<circle id="LS22" class="st0" cx="125" cy="529.8" r="29.7"/>
-		<circle id="LS23" class="st0" cx="130.1" cy="595.2" r="29.7"/>
-		<circle id="LS24" class="st0" cx="247.2" cy="654.3" r="29.7"/>
-		<circle id="LS25" class="st0" cx="256.3" cy="713.8" r="29.7"/>
-		<circle id="LS26" class="st0" cx="225.9" cy="765.7" r="29.7"/>
-		<circle id="LS27" class="st0" cx="163" cy="766.2" r="29.7"/>
-		<circle id="LS28" class="st0" cx="129.4" cy="716.4" r="29.7"/>
-		<circle id="LS29" class="st0" cx="192.1" cy="704.4" r="29.7"/>
-		<circle id="LS30" class="st0" cx="131.4" cy="656" r="29.7"/>
-		<circle id="LS31" class="st0" cx="189.3" cy="639.6" r="29.7"/>
+		<circle id="LS0" class="st0" [ngStyle]="{'fill': Lsensor0}" cx="278.9" cy="300.5" r="29.7"/>
+		<circle id="LS1" class="st0" [ngStyle]="{'fill': Lsensor1}" cx="298.9" cy="239.4" r="29.7"/>
+		<circle id="LS2" class="st0" [ngStyle]="{'fill': Lsensor2}" cx="307.3" cy="178" r="29.7"/>
+		<circle id="LS3" class="st0" [ngStyle]="{'fill': Lsensor3}" cx="300.9" cy="118.3" r="29.7"/>
+		<circle id="LS4" class="st0" [ngStyle]="{'fill': Lsensor4}" cx="273.3" cy="64.7" r="29.7"/>
+		<circle id="LS5" class="st0" [ngStyle]="{'fill': Lsensor5}" cx="240.5" cy="118.4" r="29.7"/>
+		<circle id="LS6" class="st0" [ngStyle]="{'fill': Lsensor6}" cx="246.4" cy="179.4" r="29.7"/>
+		<circle id="LS7" class="st0" [ngStyle]="{'fill': Lsensor7}" cx="220" cy="235.9" r="29.7"/>
+		<circle id="LS8" class="st0" [ngStyle]="{'fill': Lsensor8}" cx="211.2" cy="65.9" r="29.7"/>
+		<circle id="LS9" class="st0" [ngStyle]="{'fill': Lsensor9}" cx="160.1" cy="101.7" r="29.7"/>
+		<circle id="LS10" class="st0" [ngStyle]="{'fill': Lsensor10}" cx="192" cy="153.7" r="29.7"/>
+		<circle id="LS11" class="st0" [ngStyle]="{'fill': Lsensor11}" cx="119.1" cy="148.6" r="29.7"/>
+		<circle id="LS12" class="st0" [ngStyle]="{'fill': Lsensor12}" cx="159.7" cy="204.3" r="29.7"/>
+		<circle id="LS13" class="st0" [ngStyle]="{'fill': Lsensor13}" cx="85.4" cy="204.3" r="29.7"/>
+		<circle id="LS14" class="st0" [ngStyle]="{'fill': Lsensor14}" cx="208.5" cy="300" r="29.7"/>
+		<circle id="LS15" class="st0" [ngStyle]="{'fill': Lsensor15}" cx="141" cy="261.1" r="29.7"/>
+		<circle id="LS16" class="st0" [ngStyle]="{'fill': Lsensor16}" cx="79.5" cy="266.6" r="29.7"/>
+		<circle id="LS17" class="st0" [ngStyle]="{'fill': Lsensor17}" cx="82.2" cy="331.5" r="29.7"/>
+		<circle id="LS18" class="st0" [ngStyle]="{'fill': Lsensor18}" cx="146.8" cy="321" r="29.7"/>
+		<circle id="LS19" class="st0" [ngStyle]="{'fill': Lsensor19}" cx="154.6" cy="382" r="29.7"/>
+		<circle id="LS20" class="st0" [ngStyle]="{'fill': Lsensor20}" cx="96" cy="394.9" r="29.7"/>
+		<circle id="LS21" class="st0" [ngStyle]="{'fill': Lsensor21}" cx="116.5" cy="461.3" r="29.7"/>
+		<circle id="LS22" class="st0" [ngStyle]="{'fill': Lsensor22}" cx="125" cy="529.8" r="29.7"/>
+		<circle id="LS23" class="st0" [ngStyle]="{'fill': Lsensor23}" cx="130.1" cy="595.2" r="29.7"/>
+		<circle id="LS24" class="st0" [ngStyle]="{'fill': Lsensor24}" cx="247.2" cy="654.3" r="29.7"/>
+		<circle id="LS25" class="st0" [ngStyle]="{'fill': Lsensor25}" cx="256.3" cy="713.8" r="29.7"/>
+		<circle id="LS26" class="st0" [ngStyle]="{'fill': Lsensor26}" cx="225.9" cy="765.7" r="29.7"/>
+		<circle id="LS27" class="st0" [ngStyle]="{'fill': Lsensor27}" cx="163" cy="766.2" r="29.7"/>
+		<circle id="LS28" class="st0" [ngStyle]="{'fill': Lsensor28}" cx="129.4" cy="716.4" r="29.7"/>
+		<circle id="LS29" class="st0" [ngStyle]="{'fill': Lsensor29}" cx="192.1" cy="704.4" r="29.7"/>
+		<circle id="LS30" class="st0" [ngStyle]="{'fill': Lsensor30}" cx="131.4" cy="656" r="29.7"/>
+		<circle id="LS31" class="st0" [ngStyle]="{'fill': Lsensor31}" cx="189.3" cy="639.6" r="29.7"/>
 	</g>
 	<g>
 		<path class="st0" d="M272.2,95.5l0.5-0.2h0.8l0.3,0.2l0.2,0.2l0.2,0.3v0.3l-0.2,0.3l-0.2,0.2l-0.3,0.2l-0.7,0.2l-0.3,0.2l-0.2,0.2
