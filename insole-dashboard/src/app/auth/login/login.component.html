@@ -27,7 +27,9 @@
      color="primary"
      type="submit"
      *ngIf="!isLoading">Login </button>
-
+     <div *ngIf="!isLoading">
+      <a mat-raised-button color="accent"  routerLink="../recover" routerLinkActive="mat-accent"> Forgot password?</a>
+     </div>
   </form>
 
 </mat-card>

@@ -2,9 +2,11 @@
 {
     "env":{
         "JWT_KEY": "InclUir_luEgo_cLav3_s3cr3ta_más_l@rg@",
+        "JWT_KEY_RESET": "InclUir_luEgo_cLav3_s3cr3ta_más_l@rg@_D15TinT@",
         "patient": "patient",
         "responsible": "responsible",
-        "admin": "admin"
+        "admin": "admin",
+        "IP_FRONT": "http://localhost:4200"
     }
     
 }

@@ -7,6 +7,8 @@ import { InsoleService } from './insole.service';
   styleUrls: ['./insole.component.css']
 })
 export class InsoleComponent implements OnInit {
+  Lsesnsors:string[] ;
+  Rsensors: string[] ;
   Lsensor0: string;Lsensor1: string;Lsensor2: string;Lsensor3: string;
   Lsensor4: string;Lsensor5: string;Lsensor6: string;Lsensor7: string;
   Lsensor8: string;Lsensor9: string;Lsensor10: string;Lsensor11: string;
@@ -28,6 +30,7 @@ export class InsoleComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // Metodo para cambiar valores despues de cambiar el filtro
   onChangedDate(){
 
   }

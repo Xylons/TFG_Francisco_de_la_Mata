@@ -21,6 +21,7 @@ export class SignupComponent implements OnInit, OnDestroy{
     .subscribe(authStatus => {
       this.isLoading= false;
     });
+
   }
 
   onSignup(form: NgForm) {

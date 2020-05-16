@@ -8,4 +8,8 @@ router.post("/signup", UserController.createUser);
 
 router.post("/login", UserController.userLogin);
 
+router.post("/recover", UserController.sendRecoveryToken);
+
+router.post("/reset", UserController.resetPassword);
+
 module.exports = router;

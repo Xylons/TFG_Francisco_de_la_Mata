@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 
 // Uso variables de entorno para obtener la direccion API
-import{ environment } from '../../environments/environment';
+import { environment } from '../../environments/environment';
 
 const BACKEND_URL = environment.apiURL + "/user/"
 
@@ -16,6 +16,7 @@ const BACKEND_URL = environment.apiURL + "/user/"
 export class AuthService {
   private isAuthenticated = false;
   private token: string;
+
   //se puede cambiar por any y luego usar window.setTimeout()
   private tokenTimer: any;
   private userId: string;
@@ -48,28 +49,28 @@ export class AuthService {
   }
 
   createUser(email: string, password: string) {
-    console.log(email, password);
+
     const authData: AuthData = {
       email: email,
       password: password
     };
     // aqui retorno el objeto observable y lo recibe en sigunpcomponent
-    return this.http.post(BACKEND_URL+"signup", authData)
-    .subscribe(() =>{
-      this.router.navigate(["auth/login"]);
-    }, error=> {
-      this.authStatusListener.next(false);
-    });
+    return this.http.post(BACKEND_URL + "signup", authData)
+      .subscribe(() => {
+        this.router.navigate(["auth/login"]);
+      }, error => {
+        this.authStatusListener.next(false);
+      });
 
   }
 
-  login(email: string, password: string, ) {
+  login(email: string, password: string) {
     const authData: AuthData = {
       email: email,
       password: password,
 
     };
-    this.http.post<{ token: string, expiresIn: number, userId: string, rol: string}>(BACKEND_URL+"login", authData)
+    this.http.post<{ token: string, expiresIn: number, userId: string, rol: string }>(BACKEND_URL + "login", authData)
       .subscribe(response => {
         const token = response.token;
         this.token = token;
@@ -77,7 +78,7 @@ export class AuthService {
           const expiresInDuration = response.expiresIn;
           this.rolLogged = response.rol;
           this.setAuthTimer(expiresInDuration);
-          this.userId= response.userId;
+          this.userId = response.userId;
           this.isAuthenticated = true;
           this.authStatusListener.next(true);
           const now = new Date();
@@ -95,20 +96,20 @@ export class AuthService {
 
   //Metodo para comprobar si existe un token
   autoAuthUser() {
-    const authInformation= this.getAuthData();
-    if(!authInformation){
+    const authInformation = this.getAuthData();
+    if (!authInformation) {
       return;
     }
     const now = new Date();
-    const expiresIn =authInformation.expirationDate.getTime() - now.getTime();
+    const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
     //Si el valor es negativo esta caducado
-    if(expiresIn >0){
-      this.token= authInformation.token;
-      this.isAuthenticated= true;
-      this.userId= authInformation.userId;
-      this.rolLogged= authInformation.rolLogged;
+    if (expiresIn > 0) {
+      this.token = authInformation.token;
+      this.isAuthenticated = true;
+      this.userId = authInformation.userId;
+      this.rolLogged = authInformation.rolLogged;
       // Divido ya que get.time() devuelve en milisegundos
-      this.setAuthTimer(expiresIn/1000);
+      this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
     }
   }
@@ -117,14 +118,14 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
-    this.userId= null;
-    this.rolLogged= null;
+    this.userId = null;
+    this.rolLogged = null;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
     this.router.navigate(["/auth/login"]);
   }
 
-  private setAuthTimer(duration: number){
+  private setAuthTimer(duration: number) {
     console.log("setting timeer in " + duration);
     this.tokenTimer = setTimeout(() => {
       this.logout();
@@ -148,7 +149,7 @@ export class AuthService {
   private getAuthData() {
     const token = localStorage.getItem("token");
     const expirationDate = localStorage.getItem("expiration");
-    const userId= localStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
     const rol = localStorage.getItem("rol");
     if (!token || !expirationDate) {
       return;
@@ -160,5 +161,53 @@ export class AuthService {
       userId: userId,
       rolLogged: rol
     }
+  }
+
+  reset(password: string, password2: string, token: string) {
+    console.log(token);
+    const resetData= {
+      password: password,
+      token: token,
+    };
+
+    // aqui retorno el objeto observable y lo recibe en sigunpcomponent
+    return this.http.post<{token: string, expiresIn: number, userId: string, rol: string }>(BACKEND_URL + "reset", resetData)
+    .subscribe(response => {
+      const token = response.token;
+      this.token = token;
+      if (token) {
+        const expiresInDuration = response.expiresIn;
+        this.rolLogged = response.rol;
+        this.setAuthTimer(expiresInDuration);
+        this.userId = response.userId;
+        this.isAuthenticated = true;
+        this.authStatusListener.next(true);
+        const now = new Date();
+        const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
+        console.log(expirationDate);
+        this.saveAuthData(token, expirationDate, this.userId, this.rolLogged);
+        console.log(response);
+        this.router.navigate(["/"]);
+      }
+
+    }, error => {
+      this.authStatusListener.next(false);
+    });
+
+  }
+  recover(email: string) {
+    const emailData= {
+      email: email,
+
+    };
+
+    // aqui retorno el objeto observable y lo recibe en sigunpcomponent
+    return this.http.post<{ token: string}>(BACKEND_URL + "recover", emailData)
+      .subscribe(() => {
+        this.router.navigate(["auth/login"]);
+      }, error => {
+        return false;
+      });
+
   }
 }
