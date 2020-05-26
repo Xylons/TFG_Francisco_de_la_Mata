@@ -25,6 +25,8 @@ export class AuthService {
   private authStatusListener = new Subject<boolean>();
   //Variable para almacenar el rol autenticado
   private rolLogged: string;
+  // Clase para verificar si se ha enviado el mensaje
+  private sendedStatusListener= new Subject<boolean>();
   constructor(private http: HttpClient, private router: Router) { }
 
   getToken() {
@@ -44,16 +46,22 @@ export class AuthService {
     return this.userId;
   }
 
+
+
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
   }
+  getSendedtatusListener() {
+    return this.sendedStatusListener.asObservable();
+  }
+
 
   createUser(email: string, password: string) {
-
     const authData: AuthData = {
       email: email,
       password: password
     };
+
     // aqui retorno el objeto observable y lo recibe en sigunpcomponent
     return this.http.post(BACKEND_URL + "signup", authData)
       .subscribe(() => {
@@ -170,7 +178,7 @@ export class AuthService {
       token: token,
     };
 
-    // aqui retorno el objeto observable y lo recibe en sigunpcomponent
+    // aqui retorno el objeto observable y lo recibe en resetcomponent
     return this.http.post<{token: string, expiresIn: number, userId: string, rol: string }>(BACKEND_URL + "reset", resetData)
     .subscribe(response => {
       const token = response.token;
@@ -198,15 +206,14 @@ export class AuthService {
   recover(email: string) {
     const emailData= {
       email: email,
-
     };
-
-    // aqui retorno el objeto observable y lo recibe en sigunpcomponent
-    return this.http.post<{ token: string}>(BACKEND_URL + "recover", emailData)
-      .subscribe(() => {
-        this.router.navigate(["auth/login"]);
+    // aqui retorno el objeto observable y lo recibe en recovercomponent
+    this.http.post<{ sended: boolean}>(BACKEND_URL + "recover", emailData)
+      .subscribe((response) => {
+        console.log(response.sended);
+        this.sendedStatusListener.next(response.sended);
       }, error => {
-        return false;
+        this.sendedStatusListener.next(false);
       });
 
   }

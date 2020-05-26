@@ -80,7 +80,6 @@ exports.sendRecoveryToken = (req, res, next) => {
   User.findOne({ email: req.body.email.toLowerCase() })
     .then((user) => {
       fechedUser = user;
-      console.log(user);
       //Creo un nuevo token usando jsonwebtoken para verificar el usuario en las peticiones y se lo mando
       const token = jwt.sign(
         {
@@ -90,14 +89,27 @@ exports.sendRecoveryToken = (req, res, next) => {
         { expiresIn: "1h" }
       );
       console.log(token);
-      sendMail(fechedUser.email, token);
-      res.status(200).json({
-        token: token,
-        expiresIn: 3600,
-      });
+      sendMail(
+        fechedUser.email,
+        token,
+        /*callback*/ function (error, info) {
+          if (error) {
+            res.status(500).json({
+              sended: false,
+              message: "A problem ocurred while sending the email",
+            });
+          }
+          console.log("Email sent: " + info.response);
+          res.status(200).json({
+            sended: true,
+            message: "Email sended sucessfully"
+          });
+        }
+      );
     })
     .catch((err) => {
       res.status(500).json({
+        sended: false,
         message: "The e-mail have doesn't have an account",
       });
     });
@@ -165,7 +177,7 @@ exports.resetPassword = (req, res, next) => {
     });
 };
 
-function sendMail(email, token) {
+function sendMail(email, token, callback) {
   var transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
@@ -188,13 +200,7 @@ function sendMail(email, token) {
       token,
   };
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
+  transporter.sendMail(mailOptions, callback);
 }
 
 function decodeResetToken(token) {

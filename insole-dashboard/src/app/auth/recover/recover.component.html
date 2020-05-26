@@ -1,6 +1,6 @@
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <form (submit)="onLogin(loginForm)" #loginForm="ngForm" *ngIf="!isLoading">
+  <form (submit)="onRecovery(RecoveryForm)" #RecoveryForm="ngForm" *ngIf="!isLoading">
     <mat-form-field>
       <input
       matInput
@@ -19,8 +19,10 @@
      mat-raised-button
      color="primary"
      type="submit"
-     *ngIf="!isLoading">Login </button>
+     *ngIf="!isLoading">Recover Password</button>
+
 
   </form>
+
 
 </mat-card>
