@@ -6,6 +6,7 @@
         "patient": "patient",
         "responsible": "responsible",
         "admin": "admin",
+        "notdefined": "notdefined",
         "IP_FRONT": "http://localhost:4200"
     }
     
