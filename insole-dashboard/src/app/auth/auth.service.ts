@@ -56,10 +56,30 @@ export class AuthService {
   }
 
 
-  createUser(email: string, password: string) {
-    const authData: AuthData = {
+  createUser(email: string, password: string, name: string, surname: string) {
+    const initialAuthData=  {
       email: email,
-      password: password
+      password: password,
+      name: name,
+      surname:surname
+    };
+
+    // aqui retorno el objeto observable y lo recibe en sigunpcomponent
+    return this.http.post(BACKEND_URL + "signup", initialAuthData)
+      .subscribe(() => {
+        this.router.navigate(["auth/login"]);
+      }, error => {
+        this.authStatusListener.next(false);
+      });
+
+  }
+
+  createProfile(email: string, password: string, name: string, surname: string) {
+    const authData = {
+      email: email,
+      password: password,
+      name:name,
+      surname:surname
     };
 
     // aqui retorno el objeto observable y lo recibe en sigunpcomponent
@@ -171,7 +191,7 @@ export class AuthService {
     }
   }
 
-  reset(password: string, password2: string, token: string) {
+  reset(password: string, token: string) {
     console.log(token);
     const resetData= {
       password: password,

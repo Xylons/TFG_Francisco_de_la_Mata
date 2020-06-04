@@ -14,6 +14,12 @@ exports.createPost = (req, res, next) => {
     .then((createdPost) => {
       /// con ...createdPost hago una copia de el objeto creadedPost y añado el id luego
       // igual hay que poner al final _doc
+      console.log(createdPost);
+      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      console.log({
+        ...createdPost,
+        id: createdPost._id,
+      });
       res.status(201).json({
         message: "Post Added",
         post: {

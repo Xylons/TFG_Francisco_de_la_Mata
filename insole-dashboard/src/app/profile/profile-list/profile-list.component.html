@@ -1,0 +1,41 @@
+<!--<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion multi="true" *ngIf="profiles.length > 0 && !isLoading" >
+  <mat-expansion-panel *ngFor="let profile of profiles" >
+    <mat-expansion-panel-header >
+      <p>{{ profile.name}}</p>
+    </mat-expansion-panel-header>
+    <div class="profile-image">
+      <img [src]="profile.userImagePath" [alt]="profile.name">
+    </div>
+    <p>{{ profile.surname}}</p>
+    <mat-action-row *ngIf="userIsAuthenticated && userId === profile.userId">
+      <a mat-button color="accent" [routerLink]="['/edit/',profile.userId]">EDIT</a>
+     <!-- <button mat-button color="warn" (click)="onDelete(profile.id)">DELETE</button>-->
+    <!--</mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-paginator [length]= "totalProfiles" [pageSize]="profilesPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangePage($event)" *ngIf="profiles.length > 0"></mat-paginator>
+<p class="info-text mat-body-2" *ngIf="profiles.length <= 0  && !isLoading">
+  No existen profiles
+</p>
+-->
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion multi="true" *ngIf="profiles.length > 0 && !isLoading" >
+  <mat-expansion-panel *ngFor="let profile of profiles" >
+    <mat-expansion-panel-header >
+      <p>{{ profile.name}} {{ profile.surname}}</p>
+    </mat-expansion-panel-header>
+    <div class="profile-image">
+      <img [src]="profile.userImagePath" [alt]="profile.name">
+    </div>
+    <p>{{ profile.surname}}</p>
+    <mat-action-row *ngIf="userIsAuthenticated && userId === profile.userId">
+      <a mat-button color="accent" [routerLink]="['/edit/',profile.userId]">EDIT</a>
+     <!-- <button mat-button color="warn" (click)="onDelete(profile.id)">DELETE</button>-->
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-paginator [length]= "totalProfiles" [pageSize]="profilesPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangePage($event)" *ngIf="profiles.length > 0"></mat-paginator>
+<p class="info-text mat-body-2" *ngIf="profiles.length <= 0  && !isLoading">
+  No existen profiles
+</p>

@@ -8,4 +8,4 @@ const profileAdminSchema = profile.discriminator(
   })
 );
 
-module.exports = mongoose.model("ProfileAdmin", profileAdminSchema);
+module.exports = mongoose.model("ProfileAdmin");

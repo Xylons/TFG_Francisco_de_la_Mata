@@ -30,7 +30,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
       // revisa si existe el parametro postId definidio en app-routing
       if (paramMap.has('token')) {
         this.token = paramMap.get('token')
-
       } else {
         this.token = null;
       }
@@ -39,15 +38,14 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   onReset(form: NgForm) {
-    this.passwordsMatch= form.value.password === form.value.password2;
 
-    if (form.invalid || !this.passwordsMatch) {
+    if (form.invalid) {
       form.reset();
       return;
     }
     console.log(this.token);
     this.isLoading = true;
-    this.authService.reset(form.value.password, form.value.password2, this.token);
+    this.authService.reset(form.value.password,  this.token);
   }
 
   ngOnDestroy() {

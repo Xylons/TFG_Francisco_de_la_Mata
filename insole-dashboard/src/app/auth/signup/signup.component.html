@@ -1,6 +1,32 @@
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
+  <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading" appPasswordsMatches>
+    <mat-form-field>
+      <input
+      matInput
+      name="name"
+      ngModel
+      type="name"
+      placeholder="Name"
+      #nameInput="ngModel"
+      required
+      >
+      <mat-error *ngIf="nameInput.invalid"> Please enter a name </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+      matInput
+      name="surname"
+      ngModel
+      type="surname"
+      placeholder="Surname"
+      #surnameInput="ngModel"
+      required
+
+      >
+      <mat-error *ngIf="surnameInput.invalid"> Please enter a surname </mat-error>
+    </mat-form-field>
+
     <mat-form-field>
       <input
       matInput
@@ -22,11 +48,24 @@
        required>
       <mat-error *ngIf="passwordInput.invalid"> Please enter a valid password </mat-error>
     </mat-form-field>
+
+    <mat-form-field>
+      <input
+      type="password" name="passwordConfirm"
+      ngModel matInput placeholder="Confirm the password"
+      #passwordConfirmInput="ngModel"
+      required
+      autocomplete="new-password">
+      <mat-error *ngIf="passwordConfirmInput.errors?.incorrect && (passwordConfirmInput.dirty || passwordConfirmInput.touched)"> The passwords are not the same </mat-error>
+
+
+    </mat-form-field>
+
     <button
      mat-raised-button
      color="primary"
-     type="submit"  *ngIf="!isLoading">Signup </button>
-
+     type="submit"  *ngIf="!isLoading"
+     >Signup </button>
   </form>
 
 </mat-card>

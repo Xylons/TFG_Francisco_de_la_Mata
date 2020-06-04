@@ -9,4 +9,4 @@ const profileResponsibleSchema = profile.discriminator(
   })
 );
 
-module.exports = mongoose.model("ProfileResponsible", profileResponsibleSchema);
+module.exports = mongoose.model("ProfileResponsible");

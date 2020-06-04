@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PostModule } from './post/post.module';
+import { ProfileModule } from './profile/profile.module';
 
 //Interceptors
 import { AuthInterceptor } from './auth/auth-interceptor';
@@ -29,6 +30,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { ChartsModule } from "ng2-charts";
 import { InsoleComponent } from './insole/insole.component';
+import { SharedModule } from './shared/shared.module';
+
+//Added validators in sharedModule
 
 @NgModule({
   declarations: [
@@ -37,7 +41,8 @@ import { InsoleComponent } from './insole/insole.component';
     ErrorComponent,
     MainNavComponent,
     DashboardComponent,
-    InsoleComponent
+    InsoleComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -46,6 +51,7 @@ import { InsoleComponent } from './insole/insole.component';
     HttpClientModule,
     AngularMaterialModule,
     PostModule,
+    ProfileModule,
     LayoutModule,
     MatToolbarModule,
     MatButtonModule,
@@ -55,7 +61,9 @@ import { InsoleComponent } from './insole/insole.component';
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
-    ChartsModule
+    ChartsModule,
+    SharedModule,
+
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

@@ -8,6 +8,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthRoutingModule } from './auth-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -23,8 +24,8 @@ import { AuthRoutingModule } from './auth-routing.module';
     AngularMaterialModule,
     FormsModule,
     AuthRoutingModule,
-    MatSnackBarModule
-
+    MatSnackBarModule,
+    SharedModule
   ]
 })
 export class AuthModule{}

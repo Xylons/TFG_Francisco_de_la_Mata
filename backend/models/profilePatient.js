@@ -13,4 +13,4 @@ const profilePatientSchema = profile.discriminator(
   })
 );
 
-module.exports = mongoose.model("ProfilePatient", profilePatientSchema);
+module.exports = mongoose.model("ProfilePatient");

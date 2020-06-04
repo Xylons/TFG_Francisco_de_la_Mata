@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 var nodemailer = require("nodemailer");
 
 const User = require("../models/user");
+const ProfileController = require("./profile");
+
 
 exports.createUser = (req, res, next) => {
   // este metodo anade genera salt aleatorio de 10 caracteres
@@ -16,6 +18,8 @@ exports.createUser = (req, res, next) => {
     user
       .save()
       .then((result) => {
+        result._id
+        ProfileController.createProfile(req.body.name, req.body.surname, result._id);
         res.status(201).json({
           message: "User created!",
           result: result,

@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const postsRoutes = require("./routes/posts")
+const profilesRoutes = require("./routes/profiles")
 const userRoutes = require("./routes/user")
 
 
@@ -48,5 +49,6 @@ app.use((req, res, next) => {
 
 app.use("/api/posts", postsRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/profile", profilesRoutes);
 
 module.exports = app;
