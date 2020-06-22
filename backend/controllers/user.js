@@ -5,21 +5,23 @@ var nodemailer = require("nodemailer");
 const User = require("../models/user");
 const ProfileController = require("./profile");
 
-
 exports.createUser = (req, res, next) => {
   // este metodo anade genera salt aleatorio de 10 caracteres
   bcrypt.hash(req.body.password, 10).then((hash) => {
     const user = new User({
       email: req.body.email.toLowerCase(),
       password: hash,
-      rol: undefined,
     });
     console.log(user);
     user
       .save()
       .then((result) => {
-        result._id
-        ProfileController.createProfile(req.body.name, req.body.surname, result._id);
+        result._id;
+        ProfileController.createProfile(
+          req.body.name,
+          req.body.surname,
+          result._id
+        );
         res.status(201).json({
           message: "User created!",
           result: result,
@@ -53,27 +55,36 @@ exports.userLogin = (req, res, next) => {
           message: "Invalid Authentication Credentials!",
         });
       }
-      //Creo un nuevo token usando jsonwebtoken para verificar el usuario en las peticiones y se lo mando
+      //Hago llamada para recoger los datos del perfil
+      //let profileInfo=ProfileController.getBasicInfo(fechedUser._id);
+      ProfileController.getBasicInfo(fechedUser._id).then((profileInfo)=> {
+        //Creo un nuevo token usando jsonwebtoken para verificar el usuario en las peticiones y se lo mando
+      console.log(profileInfo);
       const token = jwt.sign(
         {
           email: fechedUser.email,
           userId: fechedUser._id,
-          rol: fechedUser.rol,
+          rol: profileInfo.__t,
         },
         process.env.JWT_KEY,
         { expiresIn: "1h" }
       );
-
+      
       res.status(200).json({
         token: token,
         expiresIn: 3600,
         userId: fechedUser._id,
-        rol: fechedUser.rol,
+        name: profileInfo.name,
+        surname: profileInfo.userImagePath,
+        image: profileInfo.surname,
+        rol: profileInfo.__t,
       });
+      });
+      
     })
     .catch((err) => {
       return res.status(401).json({
-        message: "Auth failed",
+        message: "Auth failed " + error,
       });
     });
 };
@@ -106,7 +117,7 @@ exports.sendRecoveryToken = (req, res, next) => {
           console.log("Email sent: " + info.response);
           res.status(200).json({
             sended: true,
-            message: "Email sended sucessfully"
+            message: "Email sended sucessfully",
           });
         }
       );
@@ -135,7 +146,6 @@ exports.resetPassword = (req, res, next) => {
           _id: fechedUser.id,
           email: fechedUser.email,
           password: hash,
-          rol: fechedUser.rol,
         });
 
         User.updateOne({ _id: fechedUser.id }, userWithNewPassword)
@@ -143,12 +153,15 @@ exports.resetPassword = (req, res, next) => {
             console.log(result);
             // Si modifica algun usuario
             if (result.n > 0) {
+              //Hago llamada para recoger los datos del perfil
+              let profileInfo = ProfileController.getBasicInfo(fechedUser._id);
+
               //Creo un nuevo token usando jsonwebtoken para verificar el usuario en las peticiones y se lo mando
               const token = jwt.sign(
                 {
                   email: fechedUser.email,
                   userId: fechedUser._id,
-                  rol: fechedUser.rol,
+                  rol: profileInfo.__t,
                 },
                 process.env.JWT_KEY,
                 { expiresIn: "1h" }
@@ -158,7 +171,10 @@ exports.resetPassword = (req, res, next) => {
                 token: token,
                 expiresIn: 3600,
                 userId: fechedUser._id,
-                rol: fechedUser.rol,
+                name: profileInfo.name,
+                surname: profileInfo.userImagePath,
+                image: profileInfo.surname,
+                rol: profileInfo.__t,
                 message: "User Updated Sucessfully",
               });
             } else {

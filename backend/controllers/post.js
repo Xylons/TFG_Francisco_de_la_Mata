@@ -15,11 +15,6 @@ exports.createPost = (req, res, next) => {
       /// con ...createdPost hago una copia de el objeto creadedPost y añado el id luego
       // igual hay que poner al final _doc
       console.log(createdPost);
-      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-      console.log({
-        ...createdPost,
-        id: createdPost._id,
-      });
       res.status(201).json({
         message: "Post Added",
         post: {
@@ -83,7 +78,7 @@ exports.getPostsByPage = (req, res, next) => {
   postQuery
     .then((documents) => {
       fechedPosts = documents;
-      return Post.count();
+      return Post.countDocuments();
     })
     .then((count) => {
       res.status(200).json({

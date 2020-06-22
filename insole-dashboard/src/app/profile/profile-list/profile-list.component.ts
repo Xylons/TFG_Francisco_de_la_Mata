@@ -21,12 +21,12 @@ export class ProfileListComponent implements OnInit, OnDestroy {
   isLoading = false;
   //controladores de paginator
   totalProfiles = 0;
-  profilesPerPage = 2;
+  profilesPerPage = 4;
   currentPage = 1;
-  pageSizeOptions = [1, 2, 5, 10];
+  pageSizeOptions = [4, 6, 8, 12];
   userIsAuthenticated = false;
   userId: string;
-
+  rol: string;
   private profilesSub: Subscription;
   //Aqui se usara para que solo pueda crear un gestor
   private authStatusSub: Subscription;
@@ -45,11 +45,17 @@ export class ProfileListComponent implements OnInit, OnDestroy {
       });
     // Ahora mismo no hace nada pero servira para controlar cuando existan roles
     this.userIsAuthenticated = this.authService.getIsAuth();
+
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
       this.userIsAuthenticated = isAuthenticated;
     });
+    this.rol = this.authService.getRolLogged();
+
   }
 
+  onChangeUserRol(userId: string, newRol: string){
+    this.profilesService.changeUserRol(userId, newRol);
+  }
   onChangePage(pageData: PageEvent) {
     this.isLoading = true;
     this.currentPage = pageData.pageIndex + 1;
@@ -61,15 +67,16 @@ export class ProfileListComponent implements OnInit, OnDestroy {
     this.profilesSub.unsubscribe();
     this.authStatusSub.unsubscribe();
   }
-  /*onDelete(userId: string) {
+  onDelete(userId: string) {
+    //falta anadir modal para confirmar
     this.isLoading = true;
     // Cada vez que se elimina se actualiza
     this.profilesService.deleteProfile(userId).subscribe(() => {
-      this.profilesService.getProfile(this.profilesPerPage, this.currentPage);
+      this.profilesService.getProfiles(this.profilesPerPage, this.currentPage);
     },()=>{
       // si falla se quita el spinner
       this.isLoading=false;
     });
 
-  }*/
+  }
 }

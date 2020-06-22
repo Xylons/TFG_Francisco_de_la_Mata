@@ -23,15 +23,26 @@
 <mat-accordion multi="true" *ngIf="profiles.length > 0 && !isLoading" >
   <mat-expansion-panel *ngFor="let profile of profiles" >
     <mat-expansion-panel-header >
-      <p>{{ profile.name}} {{ profile.surname}}</p>
+      <p>{{ profile.name}} {{ profile.surname}} {{ profile.rol}}</p>
     </mat-expansion-panel-header>
     <div class="profile-image">
       <img [src]="profile.userImagePath" [alt]="profile.name">
     </div>
     <p>{{ profile.surname}}</p>
-    <mat-action-row *ngIf="userIsAuthenticated && userId === profile.userId">
-      <a mat-button color="accent" [routerLink]="['/edit/',profile.userId]">EDIT</a>
-     <!-- <button mat-button color="warn" (click)="onDelete(profile.id)">DELETE</button>-->
+
+    <mat-action-row *ngIf="(userIsAuthenticated && userId === profile.userId) || userIsAuthenticated && rol === 'admin'">
+
+      <mat-form-field *ngIf="userIsAuthenticated && rol === 'admin' && profile.rol === 'undefined'">
+        <mat-label>Edit Role</mat-label>
+        <mat-select [(value)]= "profile.rol" (selectionChange)="onChangeUserRol(profile.userId, $event.value)">
+          <mat-option value="undefined">Undefined</mat-option>
+          <mat-option value="patient">Patient</mat-option>
+          <mat-option value="responsible">Responsible</mat-option>
+          <mat-option value="admin">Admin</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-button color="accent" [routerLink]="['/profile/',profile.userId]">EDIT</button>
+     <button mat-button color="warn" (click)="onDelete(profile.userId)">DELETE</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>

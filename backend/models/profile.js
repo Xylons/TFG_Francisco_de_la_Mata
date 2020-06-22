@@ -5,8 +5,10 @@ const profileSchema = mongoose.Schema({
     name: {type: String, require: true, index: true },
     surname: {type: String, require: true},
     phone: {type: String, require: false},
-    userImagePath:{type: String, require: false},
-    linkedAccount:{type: mongoose.Schema.Types.ObjectId, ref: "User", require:true, unique: true}
+    //tengo que cambiar por direccion dinamica
+    userImagePath:{type: String, require: false, default: "http://localhost:3000/images/user.png"},
+    linkedAccount:{type: mongoose.Schema.Types.ObjectId, ref: "User", require:true, unique: true},
+    __t: { type: String,  default: process.env.notdefined },
 });
 
 // Apply the uniqueValidator plugin to profileSchema.

@@ -13,17 +13,19 @@ const extractFile = require("../middleware/file");
 //Publicacion de un profile con una foto
 router.post("", checkAuth, extractFile, ProfileController.createProfile);
 
-// Editar un post
+// Editar un perfil
 //Este se puede cambiar por app.patch
 router.put("/:id", checkAuth, extractFile, ProfileController.updateProfile);
 
-// obtener todos los post segun pagina
+// Editar un rol de usuario
+router.post("/changeRol", checkAuth, ProfileController.updateRol);
+// obtener todos los perfiles segun pagina
 router.get("", checkAuth, ProfileController.getProfilesByPage);
 
-// Obtener un solo post
+// Obtener un solo perfil
 router.get("/:id", checkAuth, ProfileController.getProfile);
 
-// Borrar un post
-//router.delete("/:id", checkAuth, ProfileController.deleteProfile);
+// Borrar un perfil
+router.delete("/:id", checkAuth, ProfileController.deleteProfile);
 
 module.exports = router;

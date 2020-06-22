@@ -28,6 +28,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
+
 import { ChartsModule } from "ng2-charts";
 import { InsoleComponent } from './insole/insole.component';
 import { SharedModule } from './shared/shared.module';
@@ -61,6 +62,7 @@ import { SharedModule } from './shared/shared.module';
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
+
     ChartsModule,
     SharedModule,
 

@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const profile = require("./profile");
 
 const profilePatientSchema = profile.discriminator(
-  "ProfilePatient",
+  "patient",
   new mongoose.Schema({
-    bornDate: { type: Date },
+    bornDate: { type: Number },
     patologies: [{ type: String }],
     comments: { type: String },
     responsibles: [{ type: String }],
@@ -13,4 +13,4 @@ const profilePatientSchema = profile.discriminator(
   })
 );
 
-module.exports = mongoose.model("ProfilePatient");
+module.exports = mongoose.model("patient");

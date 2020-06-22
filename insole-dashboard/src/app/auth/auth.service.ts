@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 // Uso variables de entorno para obtener la direccion API
 import { environment } from '../../environments/environment';
+import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 
 const BACKEND_URL = environment.apiURL + "/user/"
 
@@ -25,8 +26,12 @@ export class AuthService {
   private authStatusListener = new Subject<boolean>();
   //Variable para almacenar el rol autenticado
   private rolLogged: string;
+  // Datos extraidos del perfil
+  private name: string;
+  private surname: string;
+  private image: string;
   // Clase para verificar si se ha enviado el mensaje
-  private sendedStatusListener= new Subject<boolean>();
+  private sendedStatusListener = new Subject<boolean>();
   constructor(private http: HttpClient, private router: Router) { }
 
   getToken() {
@@ -46,22 +51,32 @@ export class AuthService {
     return this.userId;
   }
 
-
-
   getAuthStatusListener() {
     return this.authStatusListener.asObservable();
   }
   getSendedtatusListener() {
     return this.sendedStatusListener.asObservable();
   }
+  getName() {
+    return this.name;
+  }
+  getSurname() {
+    return this.surname;
+  }
+  getImage() {
+    return this.image;
+  }
+  setImage(newImage: string) {
+    this.image = newImage;
+  }
 
 
   createUser(email: string, password: string, name: string, surname: string) {
-    const initialAuthData=  {
+    const initialAuthData = {
       email: email,
       password: password,
       name: name,
-      surname:surname
+      surname: surname
     };
 
     // aqui retorno el objeto observable y lo recibe en sigunpcomponent
@@ -74,7 +89,7 @@ export class AuthService {
 
   }
 
-  createProfile(email: string, password: string, name: string, surname: string) {
+  /*createProfile(email: string, password: string, name: string, surname: string) {
     const authData = {
       email: email,
       password: password,
@@ -90,21 +105,24 @@ export class AuthService {
         this.authStatusListener.next(false);
       });
 
-  }
+  }*/
+
 
   login(email: string, password: string) {
     const authData: AuthData = {
       email: email,
       password: password,
-
     };
-    this.http.post<{ token: string, expiresIn: number, userId: string, rol: string }>(BACKEND_URL + "login", authData)
+    this.http.post<{ token: string, expiresIn: number, userId: string, rol: string, name: string, surname: string, image: string }>(BACKEND_URL + "login", authData)
       .subscribe(response => {
         const token = response.token;
         this.token = token;
         if (token) {
           const expiresInDuration = response.expiresIn;
           this.rolLogged = response.rol;
+          this.name = response.name;
+          this.surname = response.surname;
+          this.image = response.image;
           this.setAuthTimer(expiresInDuration);
           this.userId = response.userId;
           this.isAuthenticated = true;
@@ -193,42 +211,45 @@ export class AuthService {
 
   reset(password: string, token: string) {
     console.log(token);
-    const resetData= {
+    const resetData = {
       password: password,
       token: token,
     };
 
     // aqui retorno el objeto observable y lo recibe en resetcomponent
-    return this.http.post<{token: string, expiresIn: number, userId: string, rol: string }>(BACKEND_URL + "reset", resetData)
-    .subscribe(response => {
-      const token = response.token;
-      this.token = token;
-      if (token) {
-        const expiresInDuration = response.expiresIn;
-        this.rolLogged = response.rol;
-        this.setAuthTimer(expiresInDuration);
-        this.userId = response.userId;
-        this.isAuthenticated = true;
-        this.authStatusListener.next(true);
-        const now = new Date();
-        const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-        console.log(expirationDate);
-        this.saveAuthData(token, expirationDate, this.userId, this.rolLogged);
-        console.log(response);
-        this.router.navigate(["/"]);
-      }
+    return this.http.post<{ token: string, expiresIn: number, userId: string, rol: string, name: string, surname: string, image: string }>(BACKEND_URL + "reset", resetData)
+      .subscribe(response => {
+        const token = response.token;
+        this.token = token;
+        if (token) {
+          const expiresInDuration = response.expiresIn;
+          this.name = response.name;
+          this.surname = response.surname;
+          this.image = response.image;
+          this.rolLogged = response.rol;
+          this.setAuthTimer(expiresInDuration);
+          this.userId = response.userId;
+          this.isAuthenticated = true;
+          this.authStatusListener.next(true);
+          const now = new Date();
+          const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
+          console.log(expirationDate);
+          this.saveAuthData(token, expirationDate, this.userId, this.rolLogged);
+          console.log(response);
+          this.router.navigate(["/"]);
+        }
 
-    }, error => {
-      this.authStatusListener.next(false);
-    });
+      }, error => {
+        this.authStatusListener.next(false);
+      });
 
   }
   recover(email: string) {
-    const emailData= {
+    const emailData = {
       email: email,
     };
     // aqui retorno el objeto observable y lo recibe en recovercomponent
-    this.http.post<{ sended: boolean}>(BACKEND_URL + "recover", emailData)
+    this.http.post<{ sended: boolean }>(BACKEND_URL + "recover", emailData)
       .subscribe((response) => {
         console.log(response.sended);
         this.sendedStatusListener.next(response.sended);

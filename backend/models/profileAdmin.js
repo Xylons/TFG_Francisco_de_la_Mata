@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const profile = require("./profile");
 
 const profileAdminSchema = profile.discriminator(
-  "ProfileAdmin",
+  "admin",
   new mongoose.Schema({
     authorizedUsers: [{ type: String }],
   })
 );
 
-module.exports = mongoose.model("ProfileAdmin");
+module.exports = mongoose.model("admin");
