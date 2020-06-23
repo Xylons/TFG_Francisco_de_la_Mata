@@ -32,6 +32,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ChartsModule } from "ng2-charts";
 import { InsoleComponent } from './insole/insole.component';
 import { SharedModule } from './shared/shared.module';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 //Added validators in sharedModule
 
@@ -62,16 +63,19 @@ import { SharedModule } from './shared/shared.module';
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
-
     ChartsModule,
     SharedModule,
 
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
-  entryComponents:[ErrorComponent]
+
+  entryComponents: [
+    ErrorComponent,
+    ConfirmDialogComponent
+  ]
 })
 export class AppModule { }

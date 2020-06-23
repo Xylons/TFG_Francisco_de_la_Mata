@@ -10,6 +10,12 @@ import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
 // Map se usa para transformar arrays en otros nuevos
 import { map } from 'rxjs/operators'
+// SnackBar
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+// Dialog
+
 
 const BACKEND_URL = environment.apiURL + "/profile/"
 
@@ -21,14 +27,14 @@ export class ProfilesService {
   private profilesUpdated = new Subject<{ profiles: Profile[], profileCount: number }>();
 
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private _snackBar: MatSnackBar,
+    public dialog: MatDialog) { }
   getProfiles(profilesPerPage: number, currentPage: number) {
     /// `` sirve añadir valores a un string dinamicamente
     const queryParams = `?pagesize=${profilesPerPage}&page=${currentPage}`
     // En este no hace falta unscribe ya que se desuscribe solo
     this.http.get<{ message: string, profiles: any, maxProfiles: number }>(BACKEND_URL + queryParams)
       .pipe(map((profilesData) => {
-        console.log(profilesData);
         return {
           profiles: profilesData.profiles.map(profile => {
             return {
@@ -43,7 +49,7 @@ export class ProfilesService {
 
       }))
       .subscribe((transformedProfileData) => {
-        console.log(transformedProfileData);
+        //console.log(transformedProfileData);
         this.profiles = transformedProfileData.profiles;
         this.profilesUpdated.next({ profiles: [...this.profiles], profileCount: transformedProfileData.maxProfiles });
       });
@@ -52,7 +58,6 @@ export class ProfilesService {
     return this.profilesUpdated.asObservable();
   }
   getProfile(id: string) {
-    console.log(BACKEND_URL + id);
     return this.http.get<{
       //AQUI FALTA METER LOS CAMPOS POSIBLES
       __t: string,
@@ -113,23 +118,55 @@ export class ProfilesService {
       }
 
     }
-    console.log(profileData);
     this.http.put(BACKEND_URL + id, profileData)
-      .subscribe(response => {
+      .subscribe((response: any) => {
+        console.log(response);
         this.router.navigate(["/"]);
+        this.openSnackBar(response.message, "Ok");
       });
   }
 
   deleteProfile(userId: string) {
-    return this.http.delete(BACKEND_URL + userId);
+     return this.http.delete(BACKEND_URL + userId);
   }
   changeUserRol(userId: string, newRol: string) {
-    console.log(BACKEND_URL+ "changeRol");
+    this.dialog
+      .open(ConfirmDialogComponent, {
+        data: 'Change this user to ' + newRol + '?'
+      })
+      .afterClosed()
+      .subscribe((confirmed: Boolean) => {
+        if (confirmed) {
+          this.http.post(BACKEND_URL + "changeRol", { newRol: newRol, userId: userId })
+            .subscribe(response => {
+              this.router.navigate(["/"]);
+            });
+        } else {
+          return confirmed;
+        }
 
-    this.http.post(BACKEND_URL + "changeRol", {newRol: newRol, userId: userId})
-    .subscribe(response => {
-      this.router.navigate(["/"]);
-    });
+      });
+    /*
+    */
   }
 
+
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+  /*
+    showDialog() {
+      this.dialog
+        .open(ConfirmDialogComponent, {
+          data: `¿Te gusta programar en TypeScript?`
+        })
+        .afterClosed()
+        .subscribe((confirmed: Boolean) => {
+
+         return confirmed;
+        });
+    }*/
 }

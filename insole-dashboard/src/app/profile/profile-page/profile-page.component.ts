@@ -160,7 +160,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     reader.readAsDataURL(file);
   }
 
-
   onSaveProfile() {
     if (this.form.invalid) {
       return;

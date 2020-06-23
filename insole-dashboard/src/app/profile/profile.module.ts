@@ -11,6 +11,12 @@ import { RouterModule } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+// Ventana de dialogos
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatButtonModule } from '@angular/material/button';
+
 //Formatos de fecha-- no usados de momento
 //import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 //import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
@@ -28,7 +34,13 @@ import {MatSelectModule} from '@angular/material/select';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-    RouterModule]
+    MatDialogModule,
+    MatSnackBarModule,
+    MatButtonModule,
+    RouterModule],
+    entryComponents: [
+      ConfirmDialogComponent
+    ]
 })
 export class ProfileModule { }
 

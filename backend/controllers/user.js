@@ -232,3 +232,18 @@ function decodeResetToken(token) {
     return null;
   }
 }
+
+exports.deleteProfile = (id) => {
+    Profile.deleteOne({ _id: id })
+      .then((result) => {
+        // Si elimina algun profile
+        if (result.n > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((error) => {
+        return false;
+      });
+};

@@ -7,6 +7,7 @@ import { Profile } from '../profile.model';
 import { ProfilesService } from '../profiles.service';
 import { PageEvent } from '@angular/material/paginator';
 import { AuthService } from 'src/app/auth/auth.service';
+import { ConfirmDialogComponent } from 'src/app/confirm-dialog/confirm-dialog.component';
 
 
 @Component({
@@ -71,12 +72,27 @@ export class ProfileListComponent implements OnInit, OnDestroy {
     //falta anadir modal para confirmar
     this.isLoading = true;
     // Cada vez que se elimina se actualiza
-    this.profilesService.deleteProfile(userId).subscribe(() => {
-      this.profilesService.getProfiles(this.profilesPerPage, this.currentPage);
-    },()=>{
-      // si falla se quita el spinner
-      this.isLoading=false;
-    });
+
+    this.profilesService.dialog
+      .open(ConfirmDialogComponent, {
+        data: 'Do you want to remove this user?'
+      })
+      .afterClosed()
+      .subscribe((confirmed: Boolean) => {
+        if (confirmed) {
+          this.profilesService.deleteProfile(userId).subscribe(() => {
+            this.profilesService.openSnackBar("User removed", "Ok");
+            this.profilesService.getProfiles(this.profilesPerPage, this.currentPage);
+          },()=>{
+            // si falla se quita el spinner
+            this.isLoading=false;
+          });
+
+        }else{
+          this.isLoading=false;
+        }
+      });
+
 
   }
 }

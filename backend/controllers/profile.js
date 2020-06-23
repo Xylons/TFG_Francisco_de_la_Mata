@@ -2,6 +2,7 @@ const Profile = require("../models/profile");
 const AdminProfile = require("../models/profileAdmin");
 const ResponsibleProfile = require("../models/profileResponsible");
 const PatientProfile = require("../models/profilePatient");
+//const UserController = require("./user");
 //const async = require('async');
 
 const UNDEFINED = process.env.notdefined;
@@ -265,10 +266,12 @@ exports.deleteProfile = (req, res, next) => {
   if (req.userData.rol !== ADMIN) {
     res.status(401).json({ message: "No authorized to delete this profile" });
   } else {
-    Profile.deleteOne({ linkedAccount: req.body.id })
+    Profile.deleteOne({ linkedAccount: req.params.id })
       .then((result) => {
         // Si elimina algun profile
         if (result.n > 0) {
+          //Elimino el usuario del documento de usuarios
+          UserController.deleteProfile(req.params.id);
           res.status(200).json({ message: "Profile deleted!" });
         } else {
           res

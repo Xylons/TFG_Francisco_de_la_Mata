@@ -42,7 +42,7 @@
         </mat-select>
       </mat-form-field>
       <button mat-button color="accent" [routerLink]="['/profile/',profile.userId]">EDIT</button>
-     <button mat-button color="warn" (click)="onDelete(profile.userId)">DELETE</button>
+     <button *ngIf="userIsAuthenticated && rol === 'admin'"  mat-button color="warn" (click)="onDelete(profile.userId)">DELETE</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
@@ -50,3 +50,5 @@
 <p class="info-text mat-body-2" *ngIf="profiles.length <= 0  && !isLoading">
   No existen profiles
 </p>
+
+
