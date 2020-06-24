@@ -19,6 +19,12 @@
   No existen profiles
 </p>
 -->
+<h1 fxHide fxShow.xs>XS</h1>
+<h1 fxHide fxShow.sm>SM</h1>
+<h1 fxHide fxShow.md>MD</h1>
+<h1 fxHide fxShow.lg>LG</h1>
+<h1 fxHide fxShow.xl>XL</h1>
+
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 <mat-accordion multi="true" *ngIf="profiles.length > 0 && !isLoading" >
   <mat-expansion-panel *ngFor="let profile of profiles" >

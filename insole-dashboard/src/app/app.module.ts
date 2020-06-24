@@ -34,6 +34,7 @@ import { InsoleComponent } from './insole/insole.component';
 import { SharedModule } from './shared/shared.module';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
+import {FlexLayoutModule} from '@angular/flex-layout';
 //Added validators in sharedModule
 
 @NgModule({
@@ -65,7 +66,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
     MatMenuModule,
     ChartsModule,
     SharedModule,
-
+    FlexLayoutModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

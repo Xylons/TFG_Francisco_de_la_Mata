@@ -17,6 +17,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
 
+import {FlexLayoutModule} from '@angular/flex-layout';
 //Formatos de fecha-- no usados de momento
 //import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 //import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
@@ -37,7 +38,13 @@ import { MatButtonModule } from '@angular/material/button';
     MatDialogModule,
     MatSnackBarModule,
     MatButtonModule,
-    RouterModule],
+    RouterModule,
+    FlexLayoutModule
+    /*BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    HttpClientModule,*/
+    ],
     entryComponents: [
       ConfirmDialogComponent
     ]
