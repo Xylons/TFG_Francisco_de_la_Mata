@@ -6,3 +6,19 @@ mat-form-field{
 mat-spinner{
   margin:auto;
 }
+
+.mat-card-actions {
+  text-align: right;
+}
+
+.mat-card {
+  margin: auto;
+  width: 60% ;
+}
+
+
+.mat-form-field {
+  text-align: center;
+  margin: 5px;
+  /*width: 80%;*/
+}

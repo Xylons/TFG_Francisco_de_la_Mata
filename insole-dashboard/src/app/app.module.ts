@@ -17,24 +17,21 @@ import { ErrorComponent } from './error/error.component';
 
 //AngularMaterial
 import { AngularMaterialModule } from './angular-material.module';
+
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatCardModule } from '@angular/material/card';
-import { MatMenuModule } from '@angular/material/menu';
-
 import { ChartsModule } from "ng2-charts";
 import { InsoleComponent } from './insole/insole.component';
 import { SharedModule } from './shared/shared.module';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
+//Flexlayout
 import {FlexLayoutModule} from '@angular/flex-layout';
+
+// FontAwesome
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { DialogModule } from './confirm-dialog/dialog.module';
 //Added validators in sharedModule
 
 @NgModule({
@@ -45,7 +42,6 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     MainNavComponent,
     DashboardComponent,
     InsoleComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -56,17 +52,11 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     PostModule,
     ProfileModule,
     LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
     ChartsModule,
     SharedModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    FontAwesomeModule,
+    DialogModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
@@ -76,7 +66,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 
   entryComponents: [
     ErrorComponent,
-    ConfirmDialogComponent
+    DialogModule
   ]
 })
 export class AppModule { }

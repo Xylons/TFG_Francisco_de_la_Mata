@@ -14,13 +14,13 @@
       >
       <mat-error *ngIf="emailInput.invalid"> Please enter a valid email </mat-error>
     </mat-form-field>
-
+    <mat-card-actions>
     <button
      mat-raised-button
      color="primary"
      type="submit"
      *ngIf="!isLoading">Recover Password</button>
-
+    </mat-card-actions>
 
   </form>
 

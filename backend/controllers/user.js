@@ -59,7 +59,7 @@ exports.userLogin = (req, res, next) => {
       //let profileInfo=ProfileController.getBasicInfo(fechedUser._id);
       ProfileController.getBasicInfo(fechedUser._id).then((profileInfo)=> {
         //Creo un nuevo token usando jsonwebtoken para verificar el usuario en las peticiones y se lo mando
-      console.log(profileInfo);
+     
       const token = jwt.sign(
         {
           email: fechedUser.email,

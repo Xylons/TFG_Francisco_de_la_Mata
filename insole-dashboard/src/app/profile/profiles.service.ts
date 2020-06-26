@@ -137,11 +137,13 @@ export class ProfilesService {
       .afterClosed()
       .subscribe((confirmed: Boolean) => {
         if (confirmed) {
+          console.log(confirmed);
           this.http.post(BACKEND_URL + "changeRol", { newRol: newRol, userId: userId })
             .subscribe(response => {
               this.router.navigate(["/"]);
             });
         } else {
+          this.router.navigate(["/"]);
           return confirmed;
         }
 

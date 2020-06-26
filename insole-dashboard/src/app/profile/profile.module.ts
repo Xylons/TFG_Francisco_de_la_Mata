@@ -11,13 +11,16 @@ import { RouterModule } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
-import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-// Ventana de dialogos
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { MatButtonModule } from '@angular/material/button';
+import {MatDividerModule} from '@angular/material/divider';
 
+import { MatButtonModule } from '@angular/material/button';
+//FlexLayout
 import {FlexLayoutModule} from '@angular/flex-layout';
+
+// FontAwesome
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 //Formatos de fecha-- no usados de momento
 //import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
 //import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
@@ -26,7 +29,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 @NgModule({
   declarations: [
     ProfilePageComponent,
-    ProfileListComponent
+    ProfileListComponent,
   ],
   imports: [
     CommonModule,
@@ -35,19 +38,14 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-    MatDialogModule,
     MatSnackBarModule,
     MatButtonModule,
     RouterModule,
-    FlexLayoutModule
-    /*BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    HttpClientModule,*/
+    FlexLayoutModule,
+    MatDividerModule,
+    FontAwesomeModule
     ],
-    entryComponents: [
-      ConfirmDialogComponent
-    ]
+
 })
 export class ProfileModule { }
 

@@ -9,6 +9,18 @@ import { PageEvent } from '@angular/material/paginator';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ConfirmDialogComponent } from 'src/app/confirm-dialog/confirm-dialog.component';
 
+//Patient Icon
+import { faWalking } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+//Responsible Icon
+import { faUserMd } from '@fortawesome/free-solid-svg-icons';
+//Undefined Icon
+import { faQuestion } from '@fortawesome/free-solid-svg-icons';
+//Admin Icon
+import { faUserCog } from '@fortawesome/free-solid-svg-icons';
+
+
+
 
 @Component({
   selector: 'app-profile-list',
@@ -17,6 +29,15 @@ import { ConfirmDialogComponent } from 'src/app/confirm-dialog/confirm-dialog.co
 })
 export class ProfileListComponent implements OnInit, OnDestroy {
 
+  //Patient Icon
+  faWalking = faWalking;
+  faUser = faUser;
+  //Responsible Icon
+  faUserMd = faUserMd;
+  //Undefined Icon
+  faQuestion = faQuestion;
+  //Admin Icon
+  faUserCog = faUserCog;
 
   profiles: Profile[] = [];
   isLoading = false;
@@ -35,7 +56,7 @@ export class ProfileListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = true;
     this.profilesService.getProfiles(this.profilesPerPage, this.currentPage);
-    this.userId= this.authService.getUserId();
+    this.userId = this.authService.getUserId();
     // Subscribes to the observable
     // subscribe (funcion, error, funcion complete)
     this.profilesSub = this.profilesService.getProfileUpdatedListener()
@@ -54,7 +75,7 @@ export class ProfileListComponent implements OnInit, OnDestroy {
 
   }
 
-  onChangeUserRol(userId: string, newRol: string){
+  onChangeUserRol(userId: string, newRol: string) {
     this.profilesService.changeUserRol(userId, newRol);
   }
   onChangePage(pageData: PageEvent) {
@@ -83,13 +104,13 @@ export class ProfileListComponent implements OnInit, OnDestroy {
           this.profilesService.deleteProfile(userId).subscribe(() => {
             this.profilesService.openSnackBar("User removed", "Ok");
             this.profilesService.getProfiles(this.profilesPerPage, this.currentPage);
-          },()=>{
+          }, () => {
             // si falla se quita el spinner
-            this.isLoading=false;
+            this.isLoading = false;
           });
 
-        }else{
-          this.isLoading=false;
+        } else {
+          this.isLoading = false;
         }
       });
 

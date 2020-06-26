@@ -11,7 +11,7 @@
     <mat-action-row *ngIf="userIsAuthenticated && userId === profile.userId">
       <a mat-button color="accent" [routerLink]="['/edit/',profile.userId]">EDIT</a>
      <!-- <button mat-button color="warn" (click)="onDelete(profile.id)">DELETE</button>-->
-    <!--</mat-action-row>
+<!--</mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
 <mat-paginator [length]= "totalProfiles" [pageSize]="profilesPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangePage($event)" *ngIf="profiles.length > 0"></mat-paginator>
@@ -26,35 +26,102 @@
 <h1 fxHide fxShow.xl>XL</h1>
 
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<mat-accordion multi="true" *ngIf="profiles.length > 0 && !isLoading" >
-  <mat-expansion-panel *ngFor="let profile of profiles" >
-    <mat-expansion-panel-header >
-      <p>{{ profile.name}} {{ profile.surname}} {{ profile.rol}}</p>
-    </mat-expansion-panel-header>
-    <div class="profile-image">
-      <img [src]="profile.userImagePath" [alt]="profile.name">
-    </div>
-    <p>{{ profile.surname}}</p>
 
-    <mat-action-row *ngIf="(userIsAuthenticated && userId === profile.userId) || userIsAuthenticated && rol === 'admin'">
+<div
+  fxLayout.xs="column"
+  fxLayout="row wrap"
+  fxLayoutGap="10px"
+  ngClass.gt-xs="ml-10"
+  *ngIf="profiles.length > 0 && !isLoading"
+>
+  <mat-card
+    fxFlex.sm="0 1 calc(50%-10px)"
+    fxFlex.md="0 1 calc(33%-10px)"
+    fxFlex.gt-md="0 1 calc(25%-10px)"
+    *ngFor="let profile of profiles"
+  >
+    <mat-card-header>
+      <div mat-card-avatar *ngIf="profile.rol === 'patient'">
+        <fa-icon
+          class="user-icon"
+          [icon]="faWalking"
+        ></fa-icon>
+      </div>
+      <div mat-card-avatar *ngIf="profile.rol === 'undefined'">
+        <fa-icon
+          class="user-icon"
+          [icon]="faQuestion"
+        ></fa-icon>
+      </div>
+      <div mat-card-avatar *ngIf="profile.rol === 'responsible'">
+        <fa-icon
+          class="user-icon"
+          [icon]="faUserMd"
+        ></fa-icon>
+      </div>
+      <div mat-card-avatar *ngIf="profile.rol === 'admin'">
+        <fa-icon
+          class="user-icon"
+          [icon]="faUserCog"
+        ></fa-icon>
+      </div>
+      <mat-card-title>{{ profile.name }}</mat-card-title>
+      <mat-card-subtitle> {{ profile.surname }}</mat-card-subtitle>
+    </mat-card-header>
 
-      <mat-form-field *ngIf="userIsAuthenticated && rol === 'admin' && profile.rol === 'undefined'">
+    <img
+      mat-card-image
+      [src]="profile.userImagePath"
+      [alt]="profile.name"
+      class="image"
+    />
+    <mat-card-content>Primary </mat-card-content>
+    <mat-card-actions>Container </mat-card-actions>
+    <mat-divider></mat-divider>
+    <mat-card-actions
+      *ngIf="
+        (userIsAuthenticated && userId === profile.userId) ||
+        (userIsAuthenticated && rol === 'admin')
+      "
+    >
+      <mat-form-field
+        *ngIf="userIsAuthenticated && rol === 'admin' && userId !== profile.userId"
+      >
         <mat-label>Edit Role</mat-label>
-        <mat-select [(value)]= "profile.rol" (selectionChange)="onChangeUserRol(profile.userId, $event.value)">
+        <mat-select
+          [(value)]="profile.rol"
+          (selectionChange)="onChangeUserRol(profile.userId, $event.value)">
           <mat-option value="undefined">Undefined</mat-option>
           <mat-option value="patient">Patient</mat-option>
           <mat-option value="responsible">Responsible</mat-option>
           <mat-option value="admin">Admin</mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-button color="accent" [routerLink]="['/profile/',profile.userId]">EDIT</button>
-     <button *ngIf="userIsAuthenticated && rol === 'admin'"  mat-button color="warn" (click)="onDelete(profile.userId)">DELETE</button>
-    </mat-action-row>
-  </mat-expansion-panel>
-</mat-accordion>
-<mat-paginator [length]= "totalProfiles" [pageSize]="profilesPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangePage($event)" *ngIf="profiles.length > 0"></mat-paginator>
-<p class="info-text mat-body-2" *ngIf="profiles.length <= 0  && !isLoading">
-  No existen profiles
+      <button
+        mat-button
+        color="accent"
+        [routerLink]="['/profile/', profile.userId]"
+      >
+        EDIT
+      </button>
+      <button
+        *ngIf="userIsAuthenticated && rol === 'admin'"
+        mat-button
+        color="warn"
+        (click)="onDelete(profile.userId)"
+      >
+        DELETE
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<mat-paginator
+  [length]="totalProfiles"
+  [pageSize]="profilesPerPage"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="onChangePage($event)"
+  *ngIf="profiles.length > 0"
+></mat-paginator>
+<p class="info-text mat-body-2" *ngIf="profiles.length <= 0 && !isLoading">
+  There are not profiles to show
 </p>
-
-

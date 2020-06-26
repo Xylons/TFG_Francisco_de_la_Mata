@@ -74,20 +74,22 @@ exports.updateProfile = (req, res, err) => {
     ) {
       newProfileData.userImagePath = "";
     }
+
     try {
-      let diferentUser= req.userData.userId !== req.body.userId;
+      let diferentUser = req.userData.userId !== req.body.userId;
       switch (profileInfo.__t) {
         case PATIENT:
           if (diferentUser && requestRol === PATIENT) {
             throw new Error("Authorization Error");
           }
           profileModel = PatientProfile;
-          (newProfileData["bornDate"] = req.body.bornDate),
-            (newProfileData["patologies"] = req.body.patologies),
-            (newProfileData["contactPhone"] = req.body.contactPhone),
-            (newProfileData["comments"] = profileInfo.comments),
-            (newProfileData["responsibles"] = profileInfo.responsibles),
-            (newProfileData["insoles"] = profileInfo.insoles);
+          newProfileData["bornDate"] = req.body.bornDate;
+          newProfileData["patologies"] = req.body.patologies;
+          newProfileData["contactPhone"] = req.body.contactPhone;
+          newProfileData["comments"] = profileInfo.comments;
+          newProfileData["responsibles"] = profileInfo.responsibles;
+          newProfileData["insoles"] = profileInfo.insoles;
+          profile = this.cleanEmptyFields(profile);
           profile = new PatientProfile(newProfileData);
           break;
         case RESPONSIBLE:
@@ -95,9 +97,10 @@ exports.updateProfile = (req, res, err) => {
             throw new Error("Authorization Error");
           }
           profileModel = ResponsibleProfile;
-          (newProfileData["typeOfResponsible"] = req.body.typeOfResponsible),
-            (newProfileData["patients"] = req.body.patients),
-            (profile = new ResponsibleProfile(newProfileData));
+          newProfileData["typeOfResponsible"] = req.body.typeOfResponsible;
+          newProfileData["patients"] = req.body.patients;
+          profile = this.cleanEmptyFields(profile);
+          profile = new ResponsibleProfile(newProfileData);
 
           break;
         case ADMIN:
@@ -106,11 +109,13 @@ exports.updateProfile = (req, res, err) => {
           }
           profileModel = AdminProfile;
           newProfileData["authorizedUsers"] = req.body.authorizedUsers;
+          profile = this.cleanEmptyFields(profile);
           profile = new AdminProfile(newProfileData);
 
           break;
         default:
           profileModel = Profile;
+          profile = this.cleanEmptyFields(profile);
           profile = new Profile({ newProfileData });
           break;
       }
@@ -143,30 +148,43 @@ exports.updateProfile = (req, res, err) => {
 
 // Aqui se puede cambiar el rol de los usuarios undefined
 exports.updateRol = (req, res, err) => {
-  if (req.userData.rol !== ADMIN) {
+  // Controlo que si no es admin no puede cambiar y tampoco se puede cambiar el rol a si mismo
+  if (req.userData.rol !== ADMIN && req.userData.userId !== req.body.userId) {
     res.status(401).json({ message: "No authorized to change the rol" });
   } else {
     var user = Profile.findOne({ linkedAccount: req.body.userId }).then(
       (profile) => {
-        if (req.body.newRol !== profile.__t && profile.__t !== UNDEFINED) {
-          //var changedUser = PowerUser.hydrate(profile.toObject());
-          profile.updateOne({$set: {__t: req.body.newRol } }).then((result) => {
-            // Si elimina algun profile
-            if (result.n > 0) {
+        if (req.body.newRol !== profile.__t) {
+          let newProfileData = {
+            _id: profile.id,
+            __t: req.body.newRol,
+            name: profile.name,
+            surname: profile.surname,
+            phone: profile.phone,
+            userImagePath: profile.userImagePath,
+            linkedAccount: req.body.userId,
+          };
+          newProfileData = this.cleanEmptyFields(newProfileData);
+          if (
+            newProfileData.userImagePath ===
+            "http://localhost:3000/images/user.png"
+          ) {
+            delete newProfileData.userImagePath;
+          }
+          // Sustituyo el perfil existente por el del nuevo rol
+          Profile.findOneAndReplace(
+            { linkedAccount: req.body.userId },
+            newProfileData,
+            { new: true, overwrite: true }
+          )
+            .then((result) => {
               res.status(200).json({ message: "Rol changed!" });
-            } else {
-              res
-                .status(401)
-                .json({ message: "No authorized to change the rol" });
-            }
-          })
-          .catch((error) => {
-            res.status(500).json({
-              message: "Rol change failed!",
+            })
+            .catch((error) => {
+              res.status(500).json({
+                message: "Rol change failed!",
+              });
             });
-          });
-          
-         
         }
       }
     );
@@ -285,4 +303,12 @@ exports.deleteProfile = (req, res, next) => {
         });
       });
   }
+};
+
+exports.cleanEmptyFields = (profile) => {
+  // Controlo que no tenga campos en undefined
+  Object.keys(profile).forEach((key) => {
+    profile[key] === undefined ? delete profile[key] : null;
+  });
+  return profile;
 };
