@@ -28,4 +28,7 @@ router.get("/:id", checkAuth, ProfileController.getProfile);
 // Borrar un perfil
 router.delete("/:id", checkAuth, ProfileController.deleteProfile);
 
+// Buscar perfiles del filtro
+router.delete("/search", checkAuth, ProfileController.filteredSearch);
+
 module.exports = router;

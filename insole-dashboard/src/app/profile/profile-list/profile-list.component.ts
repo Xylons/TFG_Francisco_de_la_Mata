@@ -19,7 +19,8 @@ import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 //Admin Icon
 import { faUserCog } from '@fortawesome/free-solid-svg-icons';
 
-
+import { FiltersBarService } from '../../filters-bar/filters-bar.service';
+import { FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -52,7 +53,10 @@ export class ProfileListComponent implements OnInit, OnDestroy {
   private profilesSub: Subscription;
   //Aqui se usara para que solo pueda crear un gestor
   private authStatusSub: Subscription;
-  constructor(public profilesService: ProfilesService, private authService: AuthService) { }
+  private searchForm: FormGroup;
+
+  constructor(public profilesService: ProfilesService, private authService: AuthService, private filtersService: FiltersBarService) { }
+
   ngOnInit() {
     this.isLoading = true;
     this.profilesService.getProfiles(this.profilesPerPage, this.currentPage);
@@ -72,6 +76,18 @@ export class ProfileListComponent implements OnInit, OnDestroy {
       this.userIsAuthenticated = isAuthenticated;
     });
     this.rol = this.authService.getRolLogged();
+
+    this.searchForm= this.filtersService.getSearchForm();
+
+    this.searchForm.valueChanges.subscribe(changes => {
+      // do what you need with the form fields here
+      // you can access a form field via changes.fieldName
+      this.onFiltersChanged(changes);
+  });
+  }
+
+  onFiltersChanged(changes){
+    console.log(changes);
 
   }
 

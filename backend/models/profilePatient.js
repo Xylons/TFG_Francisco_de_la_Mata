@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const profile = require("./profile");
-
+//Meter DNI?, timestamp?
 const profilePatientSchema = profile.discriminator(
   "patient",
   new mongoose.Schema({

@@ -24,7 +24,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartsModule } from "ng2-charts";
 import { InsoleComponent } from './insole/insole.component';
 import { SharedModule } from './shared/shared.module';
-import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+
 
 //Flexlayout
 import {FlexLayoutModule} from '@angular/flex-layout';

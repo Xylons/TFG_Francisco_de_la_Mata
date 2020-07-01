@@ -312,3 +312,56 @@ exports.cleanEmptyFields = (profile) => {
   });
   return profile;
 };
+
+
+
+exports.filteredSearch = (req, res, next) => {
+  //req.query muestra los datos que hay anadidos despues de ? y separados por &
+  // + es la forma rapida de convertir en numero
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  let profileQuery;
+  let profilesCounter;
+  //Distintas querys segun el rol
+  switch (req.userData.rol) {
+    /*Aqui modificaría si quiero poner que un paciente tenga más de uno
+    case PATIENT:
+        break;*/
+    case RESPONSIBLE:
+      profileQuery = PatientProfile.find({ __t: PATIENT });
+      profilesCounter = PatientProfile.countDocuments({});
+      break;
+    case ADMIN:
+      profileQuery = Profile.find();
+      profilesCounter = Profile.countDocuments();
+      break;
+    default:
+      profileQuery = Profile.find({ linkedAccount: req.userData.userId });
+      profilesCounter = Profile.countDocuments({
+        linkedAccount: req.userData.userId,
+      });
+  }
+
+  let fechedProfiles;
+  if (pageSize && currentPage) {
+    profileQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
+  }
+  profileQuery
+    .then((documents) => {
+      fechedProfiles = documents;
+      return profilesCounter;
+    })
+    .then((count) => {
+      console.log(fechedProfiles);
+      res.status(200).json({
+        message: "All fine",
+        profiles: fechedProfiles,
+        maxProfiles: count,
+      });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Fetching profiles failed!",
+      });
+    });
+};

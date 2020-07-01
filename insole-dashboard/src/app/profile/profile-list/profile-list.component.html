@@ -1,30 +1,9 @@
-<!--<mat-spinner *ngIf="isLoading"></mat-spinner>
-<mat-accordion multi="true" *ngIf="profiles.length > 0 && !isLoading" >
-  <mat-expansion-panel *ngFor="let profile of profiles" >
-    <mat-expansion-panel-header >
-      <p>{{ profile.name}}</p>
-    </mat-expansion-panel-header>
-    <div class="profile-image">
-      <img [src]="profile.userImagePath" [alt]="profile.name">
-    </div>
-    <p>{{ profile.surname}}</p>
-    <mat-action-row *ngIf="userIsAuthenticated && userId === profile.userId">
-      <a mat-button color="accent" [routerLink]="['/edit/',profile.userId]">EDIT</a>
-     <!-- <button mat-button color="warn" (click)="onDelete(profile.id)">DELETE</button>-->
-<!--</mat-action-row>
-  </mat-expansion-panel>
-</mat-accordion>
-<mat-paginator [length]= "totalProfiles" [pageSize]="profilesPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangePage($event)" *ngIf="profiles.length > 0"></mat-paginator>
-<p class="info-text mat-body-2" *ngIf="profiles.length <= 0  && !isLoading">
-  No existen profiles
-</p>
--->
 <h1 fxHide fxShow.xs>XS</h1>
 <h1 fxHide fxShow.sm>SM</h1>
 <h1 fxHide fxShow.md>MD</h1>
 <h1 fxHide fxShow.lg>LG</h1>
 <h1 fxHide fxShow.xl>XL</h1>
-
+<app-filters-bar></app-filters-bar>
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 
 <div
@@ -97,6 +76,13 @@
           <mat-option value="admin">Admin</mat-option>
         </mat-select>
       </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        [routerLink]="['/dashboard/', profile.userId]"
+      >
+        INFO
+      </button>
       <button
         mat-button
         color="accent"

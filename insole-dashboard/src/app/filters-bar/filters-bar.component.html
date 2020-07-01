@@ -1,0 +1,137 @@
+<mat-accordion>
+  <mat-expansion-panel>
+<mat-expansion-panel-header>
+  <mat-panel-title>
+    Search Filters
+  </mat-panel-title>
+  <mat-panel-description>
+    Click to open the Search Filters <mat-icon>search</mat-icon>
+  </mat-panel-description>
+</mat-expansion-panel-header>
+
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <mat-card-subtitle>Search Filters</mat-card-subtitle>
+  <form
+    [formGroup]="formGroup"
+    (submit)="onApplyFilters()"
+    *ngIf="!isLoading"
+  >
+  <mat-grid-list cols="3" rowHeight="60px">
+    <mat-grid-tile
+      ><mat-card >
+        <mat-form-field>
+          <mat-icon matPrefix>search</mat-icon>
+          <input
+            matInput
+            type="search"
+            formControlName="searchField"
+            placeholder="Search"
+            class="search-input"
+          />
+        </mat-form-field> </mat-card
+    ></mat-grid-tile>
+    <mat-grid-tile>
+      <mat-card class="inside-card slide-container">
+        <label class="search-label">My Patients</label>
+        <mat-slide-toggle
+          formControlName="myPatients"
+        ></mat-slide-toggle> </mat-card
+    ></mat-grid-tile>
+    <mat-grid-tile
+      ><mat-card class="inside-card">
+        <label class="search-label">Age</label>
+        <mat-slider
+          class="age-container"
+          thumbLabel
+          [displayWith]="formatLabel"
+          tickInterval="1"
+          min="50"
+          max="100"
+          color="accent"
+          formControlName="age"
+        ></mat-slider> </mat-card
+    ></mat-grid-tile>
+    <mat-grid-tile
+      ><mat-card class="inside-card">
+        <label class="search-label">Gender</label>
+        <mat-radio-group
+          aria-labelledby="gender-label"
+          class="radio-group"
+          formControlName="selectedGender"
+        >
+          <mat-radio-button
+            class="radio-button"
+            *ngFor="let gender of genderList"
+            [value]="gender"
+          >
+            {{ gender }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </mat-card></mat-grid-tile
+    >
+    <mat-grid-tile
+      ><mat-card >
+        <mat-form-field class="disesases-selector" appearance="fill">
+          <mat-label>Diseases</mat-label>
+          <mat-select  (selectionChange)="selectionChanged($event)"  formControlName=diseases  multiple>
+            <mat-option #allSelected (click)="toggleAllSelection()" [value]="'All'">All</mat-option>
+            <mat-option
+
+              *ngFor="let disease of diseasesList"
+              [value]="disease"
+              >{{ disease }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </mat-card></mat-grid-tile
+    >
+    <mat-grid-tile
+      ><mat-card class="inside-card">
+        <mat-label class="search-label">Date</mat-label>
+        <div class="date-container">
+          <input
+            class="date-input"
+            matInput
+            [min]="minDate"
+            [max]="maxDate"
+            formControlName="datePicked"
+            [matDatepicker]="picker"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker
+            touchUi
+            startView="multi-year"
+            #picker
+            disabled="false"
+          ></mat-datepicker>
+        </div> </mat-card
+    ></mat-grid-tile>
+  </mat-grid-list>
+
+  <button mat-stroked-button color="primary" type="submit">Search</button>
+</form>
+
+
+  <!-- ESTO PARA LA VERSION DE ANGULAR 10<mat-form-field>
+   <mat-label>Admission Date Range</mat-label>
+    <mat-date-range-input [rangePicker]="admDateRangePicker"  formGroupName="admDateRange">
+      <input matStartDate formControlName="startDate" placeholder="Start date">
+      <input matEndDate formControlName="endDate" placeholder="End date">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="admDateRangePicker"></mat-datepicker-toggle>
+    <mat-date-range-picker #admDateRangePicker></mat-date-range-picker>
+
+    <mat-error *ngIf="formGroup.get('admDateRange').get('startDate').hasError('matStartDateInvalid')">
+      Invalid start date
+    </mat-error>
+    <mat-error *ngIf="formGroup.get('admDateRange').get('endDate').hasError('matEndDateInvalid')">
+      Invalid end date
+    </mat-error>
+  </mat-form-field>-->
+</mat-card>
+</mat-expansion-panel>
+</mat-accordion>

@@ -1,0 +1,1 @@
+//Modulo para obtener los parametros de la barra de busqueda
