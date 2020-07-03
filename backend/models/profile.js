@@ -3,7 +3,7 @@ const uniqueValidator = require("mongoose-unique-validator");
 
 const profileSchema = mongoose.Schema({
     name: {type: String, require: true, index: true },
-    surname: {type: String, require: true},
+    surname: {type: String, require: true, index: true},
     phone: {type: String, require: false},
     //tengo que cambiar por direccion dinamica
     userImagePath:{type: String, require: false, default: "http://localhost:3000/images/user.png"},

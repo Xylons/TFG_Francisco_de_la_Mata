@@ -72,7 +72,7 @@ exports.updateProfile = (req, res, err) => {
     if (
       newProfileData.userImagePath === "http://localhost:3000/images/user.png"
     ) {
-      newProfileData.userImagePath = "";
+      delete newProfileData.userImagePath;
     }
 
     try {
@@ -89,7 +89,7 @@ exports.updateProfile = (req, res, err) => {
           newProfileData["comments"] = profileInfo.comments;
           newProfileData["responsibles"] = profileInfo.responsibles;
           newProfileData["insoles"] = profileInfo.insoles;
-          profile = this.cleanEmptyFields(profile);
+          profile = this.cleanEmptyFields(newProfileData);
           profile = new PatientProfile(newProfileData);
           break;
         case RESPONSIBLE:
@@ -99,7 +99,7 @@ exports.updateProfile = (req, res, err) => {
           profileModel = ResponsibleProfile;
           newProfileData["typeOfResponsible"] = req.body.typeOfResponsible;
           newProfileData["patients"] = req.body.patients;
-          profile = this.cleanEmptyFields(profile);
+          profile = this.cleanEmptyFields(newProfileData);
           profile = new ResponsibleProfile(newProfileData);
 
           break;
@@ -129,12 +129,13 @@ exports.updateProfile = (req, res, err) => {
       .then((result) => {
         // Si modifica algun profile
         if (result.n > 0) {
+          console.log(result.n);
           res.status(200).json({
             message: "Profile Update Sucessfull",
           });
         } else {
           res.status(401).json({
-            message: "Not authorized to edit the Profile",
+            message: "Not authorized to edit the Profile!",
           });
         }
       })
@@ -313,11 +314,39 @@ exports.cleanEmptyFields = (profile) => {
   return profile;
 };
 
-
-
 exports.filteredSearch = (req, res, next) => {
   //req.query muestra los datos que hay anadidos despues de ? y separados por &
   // + es la forma rapida de convertir en numero
+  console.log("aaaaaaaaaaaaaaaaa");
+  let query={};
+  if(req.query.age !== ""){
+    query.bornDate = { $lt : req.query.age };
+  }
+  //No es necesario para usuario
+  /*if(req.query.datepicked){
+    query.
+  }*/
+  //Falta anadir
+  if(req.query.gender !== ""){
+    query.gender = req.query.gender;
+  }
+
+  if(req.query.mypatients=== "true"){
+    query.responsibles = req.userData.userId;
+  }
+  if(req.query.patologies !== ""){
+    query.patologies = req.query.patologies;
+  }
+  if(req.query.searchfield){
+   //query+="name: { \"$regex\":\"" +req.query.searchfield +"\", \"$options\": \"i\" } "
+   let nameOrSurname={};
+   nameOrSurname.name= { $regex : req.query.searchfield , $options: "i" }; 
+   nameOrSurname.surname= { $regex : req.query.searchfield , $options: "i" }; 
+   query.$or = [nameOrSurname];
+  }
+ //query+="}";
+  console.log(query);
+
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
   let profileQuery;
@@ -329,11 +358,11 @@ exports.filteredSearch = (req, res, next) => {
         break;*/
     case RESPONSIBLE:
       profileQuery = PatientProfile.find({ __t: PATIENT });
-      profilesCounter = PatientProfile.countDocuments({});
+      profilesCounter = PatientProfile.countDocuments({ __t: PATIENT });
       break;
     case ADMIN:
-      profileQuery = Profile.find();
-      profilesCounter = Profile.countDocuments();
+      profileQuery = Profile.find(query);
+      profilesCounter = Profile.countDocuments(query);
       break;
     default:
       profileQuery = Profile.find({ linkedAccount: req.userData.userId });
@@ -341,13 +370,14 @@ exports.filteredSearch = (req, res, next) => {
         linkedAccount: req.userData.userId,
       });
   }
-
+  
   let fechedProfiles;
   if (pageSize && currentPage) {
     profileQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
   }
   profileQuery
     .then((documents) => {
+      console.log(documents);
       fechedProfiles = documents;
       return profilesCounter;
     })

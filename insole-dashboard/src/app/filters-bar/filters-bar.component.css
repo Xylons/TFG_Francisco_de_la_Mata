@@ -1,4 +1,13 @@
-
+/*Posicion fija de la barra*/
+.search-bar{
+  position: fixed;
+  top: 70px;
+    z-index: 1;
+    display: block;
+    height: 100%;
+    overflow: auto;
+    width: 69%;
+}
 .mat-card {
   margin-bottom: 10px;
   z-index: 0;

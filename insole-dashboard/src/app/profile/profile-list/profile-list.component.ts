@@ -50,10 +50,13 @@ export class ProfileListComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false;
   userId: string;
   rol: string;
+  withFilters: boolean;
+  filters:object;
   private profilesSub: Subscription;
   //Aqui se usara para que solo pueda crear un gestor
   private authStatusSub: Subscription;
   private searchForm: FormGroup;
+
 
   constructor(public profilesService: ProfilesService, private authService: AuthService, private filtersService: FiltersBarService) { }
 
@@ -79,6 +82,7 @@ export class ProfileListComponent implements OnInit, OnDestroy {
 
     this.searchForm= this.filtersService.getSearchForm();
 
+    /// Estoy hay que solucionar, envia dos peticiones con cada cambio
     this.searchForm.valueChanges.subscribe(changes => {
       // do what you need with the form fields here
       // you can access a form field via changes.fieldName
@@ -87,6 +91,19 @@ export class ProfileListComponent implements OnInit, OnDestroy {
   }
 
   onFiltersChanged(changes){
+    this.filters=changes;
+    let allArray=['All'];
+    // Controlo que no tenga campos en undefined
+    Object.keys(changes).forEach(key => {
+      if(changes[key] === "" || changes[key]=== allArray) this.withFilters= true ;
+      console.log(changes[key]===allArray)
+    });
+    if(this.withFilters){
+      this.profilesService.searchWithFilters(changes, this.profilesPerPage, this.currentPage);
+    }else{
+      this.profilesService.getProfiles(this.profilesPerPage, this.currentPage);
+    }
+
     console.log(changes);
 
   }
@@ -98,7 +115,11 @@ export class ProfileListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.currentPage = pageData.pageIndex + 1;
     this.profilesPerPage = pageData.pageSize;
+    if(this.withFilters){
+      this.profilesService.searchWithFilters(this.filters, this.profilesPerPage, this.currentPage);
+    }else{
     this.profilesService.getProfiles(this.profilesPerPage, this.currentPage);
+    }
   }
 
   ngOnDestroy() {

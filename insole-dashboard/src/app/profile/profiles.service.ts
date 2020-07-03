@@ -14,6 +14,7 @@ import { map } from 'rxjs/operators'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { FormGroup } from '@angular/forms';
 // Dialog
 
 
@@ -69,7 +70,7 @@ export class ProfilesService {
       bornDate: number,
       contactPhone: string,
       typeOfResponsible: string
-    }>(BACKEND_URL + id);
+    }>(BACKEND_URL +"single/"+ id);
 
   }
   /*addProfile(title: string, content: string, image:File) {
@@ -127,7 +128,7 @@ export class ProfilesService {
   }
 
   deleteProfile(userId: string) {
-     return this.http.delete(BACKEND_URL + userId);
+    return this.http.delete(BACKEND_URL + userId);
   }
   changeUserRol(userId: string, newRol: string) {
     this.dialog
@@ -152,7 +153,48 @@ export class ProfilesService {
     */
   }
 
+  searchWithFilters(searchFilters, profilesPerPage: number, currentPage: number) {
+    if (searchFilters.datePicked !== "") {
+      searchFilters.datePicked = searchFilters.datePicked.getTime();
+    }
+    searchFilters.age= this.ageToEpochDate(searchFilters.age)
+    console.log(searchFilters);
+    const queryParams = `/?pagesize=${profilesPerPage}&page=${currentPage}`+
+    `&searchfield=${searchFilters.searchField}&mypatients=${searchFilters.myPatients}`+
+    `&age=${searchFilters.age}&gender=${searchFilters.selectedGender}`+
+    `&patologies=${searchFilters.patologies}&datepicked=${searchFilters.datePicked}`
 
+    console.log(queryParams);
+    // En este no hace falta unscribe ya que se desuscribe solo
+    this.http.get<{ message: string, profiles: any, maxProfiles: number }>(BACKEND_URL + "search" +queryParams)
+      .pipe(map((profilesData) => {
+        return {
+          profiles: profilesData.profiles.map(profile => {
+            return {
+              name: profile.name,
+              surname: profile.surname,
+              userImagePath: profile.userImagePath,
+              userId: profile.linkedAccount,
+              rol: profile.__t
+            };
+          }), maxProfiles: profilesData.maxProfiles
+        };
+
+      }))
+      .subscribe((transformedProfileData) => {
+        //console.log(transformedProfileData);
+        this.profiles = transformedProfileData.profiles;
+        this.profilesUpdated.next({ profiles: [...this.profiles], profileCount: transformedProfileData.maxProfiles });
+      });
+  }
+
+
+  ageToEpochDate(age){
+    //Datos en epoch
+    let actualDate = new Date();
+    let epochAge= actualDate.setFullYear(actualDate.getFullYear() -age);
+    return epochAge;
+  }
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {

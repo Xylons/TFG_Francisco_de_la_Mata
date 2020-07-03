@@ -14,7 +14,7 @@ const BACKEND_URL = environment.apiURL + "/search/"
   providedIn: 'root'
 })
 export class FiltersBarService {
-  public diseases: string[];
+  public patologies: string[];
   public maxAge: number;
   public minAge: number;
   private searchForm: FormGroup;
@@ -26,9 +26,9 @@ export class FiltersBarService {
   getSearchForm(){
     return this.searchForm;
   }
-  findDiseases(){
+  findPatologies(){
     return this.http.get<{
-      diseases: string[]
+      patologies: string[]
     }>(BACKEND_URL );
   }
   findAges(){

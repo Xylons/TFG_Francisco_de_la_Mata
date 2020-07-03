@@ -23,12 +23,12 @@ router.post("/changeRol", checkAuth, ProfileController.updateRol);
 router.get("", checkAuth, ProfileController.getProfilesByPage);
 
 // Obtener un solo perfil
-router.get("/:id", checkAuth, ProfileController.getProfile);
+router.get("/single/:id", checkAuth, ProfileController.getProfile);
 
 // Borrar un perfil
 router.delete("/:id", checkAuth, ProfileController.deleteProfile);
 
 // Buscar perfiles del filtro
-router.delete("/search", checkAuth, ProfileController.filteredSearch);
+router.get("/search", checkAuth, ProfileController.filteredSearch);
 
 module.exports = router;

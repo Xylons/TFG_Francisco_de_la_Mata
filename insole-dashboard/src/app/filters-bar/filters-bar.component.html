@@ -1,4 +1,4 @@
-<mat-accordion>
+<mat-accordion class="search-bar">
   <mat-expansion-panel>
 <mat-expansion-panel-header>
   <mat-panel-title>
@@ -11,7 +11,6 @@
 
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <mat-card-subtitle>Search Filters</mat-card-subtitle>
   <form
     [formGroup]="formGroup"
     (submit)="onApplyFilters()"
@@ -72,15 +71,15 @@
     >
     <mat-grid-tile
       ><mat-card >
-        <mat-form-field class="disesases-selector" appearance="fill">
-          <mat-label>Diseases</mat-label>
-          <mat-select  (selectionChange)="selectionChanged($event)"  formControlName=diseases  multiple>
-            <mat-option #allSelected (click)="toggleAllSelection()" [value]="'All'">All</mat-option>
+        <mat-form-field class="patologies-selector" appearance="fill">
+          <mat-label>Patologies</mat-label>
+          <mat-select  (selectionChange)="selectionChanged($event)"  formControlName=patologies  multiple>
+            <mat-option #allSelected (click)="toggleAllSelection()"  [value]="'All'">All</mat-option>
             <mat-option
-
-              *ngFor="let disease of diseasesList"
-              [value]="disease"
-              >{{ disease }}</mat-option
+            (click)="toggleOtherSelection()"
+              *ngFor="let patology of patologiesList"
+              [value]="patology"
+              >{{ patology }}</mat-option
             >
           </mat-select>
         </mat-form-field>
@@ -112,7 +111,6 @@
     ></mat-grid-tile>
   </mat-grid-list>
 
-  <button mat-stroked-button color="primary" type="submit">Search</button>
 </form>
 
 
