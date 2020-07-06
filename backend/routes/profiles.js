@@ -31,4 +31,11 @@ router.delete("/:id", checkAuth, ProfileController.deleteProfile);
 // Buscar perfiles del filtro
 router.get("/search", checkAuth, ProfileController.filteredSearch);
 
+// Buscar parametros para la barra de busqueda
+router.get("/params", checkAuth, ProfileController.getSearchParams);
+
+//Anadir responsable a paciente
+router.post("/editResponsible", checkAuth, ProfileController.editResponsible);
+
+
 module.exports = router;

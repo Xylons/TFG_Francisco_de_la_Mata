@@ -15,6 +15,7 @@ const BACKEND_URL = environment.apiURL + "/user/"
 })
 
 export class AuthService {
+
   private isAuthenticated = false;
   private token: string;
 
@@ -30,9 +31,11 @@ export class AuthService {
   private name: string;
   private surname: string;
   private image: string;
+
   // Clase para verificar si se ha enviado el mensaje
   private sendedStatusListener = new Subject<boolean>();
   constructor(private http: HttpClient, private router: Router) { }
+
 
   getToken() {
     return this.token;

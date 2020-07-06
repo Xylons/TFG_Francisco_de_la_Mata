@@ -48,7 +48,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.posts = postData.posts;
         this.totalPost = postData.postCount;
       });
-    // Ahora mismo no hace nada pero servira para controlar cuando existan roles
+
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
       this.userIsAuthenticated = isAuthenticated;

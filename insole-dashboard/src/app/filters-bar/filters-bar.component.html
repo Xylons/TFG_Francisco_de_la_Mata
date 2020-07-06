@@ -45,8 +45,8 @@
           thumbLabel
           [displayWith]="formatLabel"
           tickInterval="1"
-          min="50"
-          max="100"
+          min={{minAge}}
+          max={{maxAge}}
           color="accent"
           formControlName="age"
         ></mat-slider> </mat-card
@@ -75,7 +75,7 @@
           <mat-label>Patologies</mat-label>
           <mat-select  (selectionChange)="selectionChanged($event)"  formControlName=patologies  multiple>
             <mat-option #allSelected (click)="toggleAllSelection()"  [value]="'All'">All</mat-option>
-            <mat-option
+            <mat-option class= "capitalize-text"
             (click)="toggleOtherSelection()"
               *ngFor="let patology of patologiesList"
               [value]="patology"

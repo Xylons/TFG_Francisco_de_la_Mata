@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { FiltersBarService } from './filters-bar.service';
 import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-filters-bar',
@@ -10,7 +11,8 @@ import { MatOption } from '@angular/material/core';
   styleUrls: ['./filters-bar.component.css']
 })
 export class FiltersBarComponent implements OnInit {
-
+  maxAge=100;
+  minAge=0;
   genderList: string[] = ['All', 'Male', 'Female'];
   minDate: Date;
   maxDate: Date;
@@ -18,11 +20,15 @@ export class FiltersBarComponent implements OnInit {
   formGroup: FormGroup;
   admDateRange: FormGroup;
   patologies = new FormControl();
-  patologiesList: string[] = ['Dementia', 'Diabetes', 'Parkinson'];
+  patologiesList: string[] ;
   @ViewChild('allSelected') private allSelected: MatOption;
   //tengo que cambiar luego a observable
   isLoading = false;
+  typeOfBar= 'search';
 
+  private maxAgeSub: Subscription;
+  private minAgeSub: Subscription;
+  private patologiesListSub: Subscription;
 
 
 
@@ -48,6 +54,20 @@ export class FiltersBarComponent implements OnInit {
     });
     //Guardo el formGroup en service
     this.filtersService.setSearchForm(this.formGroup);
+
+    this.filtersService.findParams();
+    this.maxAgeSub= this.filtersService.getMaxAgeListener()
+    .subscribe(maxAge => {
+      this.maxAge= maxAge;
+    });
+    this.minAgeSub= this.filtersService.getMinAgeListener()
+    .subscribe(minAge => {
+      this.minAge= minAge;
+    });
+    this.patologiesListSub= this.filtersService.getPatologiesListListener()
+    .subscribe(patologiesList => {
+      this.patologiesList= patologiesList;
+    });
 
   }
 
@@ -79,6 +99,8 @@ export class FiltersBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.typeOfBar= this.filtersService.getTypeOfBar();
   }
 
   //metodo que captura el cambio de patologia

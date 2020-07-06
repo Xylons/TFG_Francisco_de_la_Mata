@@ -20,6 +20,7 @@
     *ngFor="let profile of profiles"
   >
     <mat-card-header>
+
       <div mat-card-avatar *ngIf="profile.rol === 'patient'">
         <fa-icon
           class="user-icon"
@@ -46,6 +47,17 @@
       </div>
       <mat-card-title>{{ profile.name }}</mat-card-title>
       <mat-card-subtitle> {{ profile.surname }}</mat-card-subtitle>
+      <div fxFlex>
+      <div class="button-container">
+        <button *ngIf="rol === 'responsible' && profile.responsibles && profile.responsibles.includes(userId)" mat-mini-fab color="accent" aria-label="Add to your patients" (click)="modifyMyPatients(profile.userId, false)">
+          <mat-icon>bookmark</mat-icon>
+        </button>
+        <button *ngIf="rol === 'responsible' && (!profile.responsibles || !profile.responsibles.includes(userId))" mat-mini-fab color="" aria-label="Add to your patients" (click)="modifyMyPatients(profile.userId, true)">
+          <mat-icon>bookmark</mat-icon>
+        </button>
+      </div>
+    </div>
+
     </mat-card-header>
 
     <img
@@ -58,13 +70,14 @@
     <mat-card-actions>Container </mat-card-actions>
     <mat-divider></mat-divider>
     <mat-card-actions
-      *ngIf="
-        (userIsAuthenticated && userId === profile.userId) ||
-        (userIsAuthenticated && rol === 'admin')
+      *ngIf=" userIsAuthenticated &&(
+        (userId === profile.userId) ||
+        (rol === 'admin') ||
+        (rol === 'responsible') )
       "
     >
       <mat-form-field
-        *ngIf="userIsAuthenticated && rol === 'admin' && userId !== profile.userId"
+        *ngIf="userIsAuthenticated && rol === 'admin' || userId !== profile.userId"
       >
         <mat-label>Edit Role</mat-label>
         <mat-select

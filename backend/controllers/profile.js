@@ -85,6 +85,7 @@ exports.updateProfile = (req, res, err) => {
           profileModel = PatientProfile;
           newProfileData["bornDate"] = req.body.bornDate;
           newProfileData["patologies"] = req.body.patologies;
+          //newProfileData["patologies"] = ["parkinson"];
           newProfileData["contactPhone"] = req.body.contactPhone;
           newProfileData["comments"] = profileInfo.comments;
           newProfileData["responsibles"] = profileInfo.responsibles;
@@ -195,6 +196,8 @@ exports.updateRol = (req, res, err) => {
 exports.getProfilesByPage = (req, res, next) => {
   //req.query muestra los datos que hay anadidos despues de ? y separados por &
   // + es la forma rapida de convertir en numero
+  //Los responsibles solo ven a pacientes sean suyos o no,
+  //Los administradores ven a todos, y el resto solo se ven a si mismo.
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
   let profileQuery;
@@ -229,7 +232,7 @@ exports.getProfilesByPage = (req, res, next) => {
       return profilesCounter;
     })
     .then((count) => {
-      console.log(fechedProfiles);
+      //console.log(fechedProfiles);
       res.status(200).json({
         message: "All fine",
         profiles: fechedProfiles,
@@ -281,7 +284,6 @@ exports.getProfile = (req, res, next) => {
 };
 
 exports.deleteProfile = (req, res, next) => {
-  // falta vincularlo con borrar usuario
   if (req.userData.rol !== ADMIN) {
     res.status(401).json({ message: "No authorized to delete this profile" });
   } else {
@@ -318,33 +320,34 @@ exports.filteredSearch = (req, res, next) => {
   //req.query muestra los datos que hay anadidos despues de ? y separados por &
   // + es la forma rapida de convertir en numero
   console.log("aaaaaaaaaaaaaaaaa");
-  let query={};
-  if(req.query.age !== ""){
-    query.bornDate = { $lt : req.query.age };
+  let query = {};
+  if (req.query.age !== "") {
+    //Desactivado temporamente
+    // query.bornDate = { $lt : req.query.age };
+    //Cuadno tenga 2 será query.bornDate: { $gte:req.query.Minage, $lte: req.query.Maxage }
   }
   //No es necesario para usuario
   /*if(req.query.datepicked){
     query.
   }*/
   //Falta anadir
-  if(req.query.gender !== ""){
+  if (req.query.gender !== "") {
     query.gender = req.query.gender;
   }
 
-  if(req.query.mypatients=== "true"){
+  if (req.query.mypatients === "true") {
     query.responsibles = req.userData.userId;
   }
-  if(req.query.patologies !== ""){
+  if (req.query.patologies !== "" && req.query.patologies !== "All") {
     query.patologies = req.query.patologies;
   }
-  if(req.query.searchfield){
-   //query+="name: { \"$regex\":\"" +req.query.searchfield +"\", \"$options\": \"i\" } "
-   let nameOrSurname={};
-   nameOrSurname.name= { $regex : req.query.searchfield , $options: "i" }; 
-   nameOrSurname.surname= { $regex : req.query.searchfield , $options: "i" }; 
-   query.$or = [nameOrSurname];
+  if (req.query.searchfield) {
+    let nameOrSurname = {};
+    nameOrSurname.name = { $regex: req.query.searchfield, $options: "i" };
+    nameOrSurname.surname = { $regex: req.query.searchfield, $options: "i" };
+    query.$or = [nameOrSurname];
   }
- //query+="}";
+
   console.log(query);
 
   const pageSize = +req.query.pagesize;
@@ -370,7 +373,7 @@ exports.filteredSearch = (req, res, next) => {
         linkedAccount: req.userData.userId,
       });
   }
-  
+
   let fechedProfiles;
   if (pageSize && currentPage) {
     profileQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
@@ -394,4 +397,99 @@ exports.filteredSearch = (req, res, next) => {
         message: "Fetching profiles failed!",
       });
     });
+};
+
+//Este campo se realiza cuando el alcance sea pequeño, para mejorar las busquedas y que sean
+// menos frustantes, si se amplia el alcance esto se desactivaria por rendimiento
+exports.getSearchParams = (req, res, next) => {
+  let maxAge;
+  let minAge;
+  let patologies;
+  //Distintas querys segun el rol
+  let rol = req.userData.rol;
+
+  if (rol === ADMIN || rol === RESPONSIBLE) {
+    try {
+      //Query para extraer la edad maxima
+      PatientProfile.findOne({ bornDate: { $exists: true } }, "bornDate")
+        .sort({ bornDate: 1 })
+        .then((maxDate) => {
+          let datediff = new Date() - new Date(maxDate.bornDate);
+          //Paso la fecha a years
+          maxAge = Math.trunc(datediff / (1000 * 60 * 60 * 24 * 365));
+          //Query para extraer la edad minima
+          PatientProfile.findOne({ bornDate: { $exists: true } }, "bornDate")
+            .sort({ bornDate: -1 })
+            .then((minDate) => {
+              let datediff = new Date() - new Date(minDate.bornDate);
+              minAge = Math.trunc(datediff / (1000 * 60 * 60 * 24 * 365));
+              ///Query para extraer patologias
+              PatientProfile.distinct("patologies").then((patologies) => {
+                patologies = patologies;
+
+                res.status(200).json({
+                  message: "All fine",
+                  maxAge: maxAge,
+                  minAge: minAge,
+                  patologies: patologies,
+                });
+              });
+            });
+        });
+    } catch (error) {
+      res.status(500).json({
+        message: "Fetching search failed!",
+      });
+    }
+  } else {
+    res.status(401).json({
+      message: "Not authorized to search!",
+    });
+    /*else{
+      // No es necesario ahora mismo, pero lo dejo por si se quiere que los usuarios tengan barra de busqueda
+      profileQuery = Profile.find({ linkedAccount: req.userData.userId }, "bornDate", "patologies").then(data=>{
+        minAge,maxAge=data.bornDate;
+        patologies=data.patologies;
+      });;;
+      profilesCounter = Profile.countDocuments({
+        linkedAccount: req.userData.userId,
+      });
+    }*/
+  }
+};
+// Aqui se puede cambiar el rol de los usuarios undefined
+exports.editResponsible = (req, res, err) => {
+  //
+  if (req.userData.rol !== RESPONSIBLE) {
+    res.status(401).json({ message: "No authorized to change the rol" });
+  } else {
+    //Anado el responsable al usuario
+    if (req.body.mode === true) {
+      PatientProfile.updateOne(
+        { linkedAccount: req.body.userId },
+        { $push: { responsibles: req.userData.userId } }
+      ).then((result) => {
+        if (result.n > 0) {
+          res.status(200).json({ message: "Assigned Patient" });
+        } else {
+          res.status(500).json({
+            message: "Change failed!",
+          });
+        }
+      });
+    } else {
+      PatientProfile.updateOne(
+        { linkedAccount: req.body.userId },
+        { $pull: { responsibles: req.userData.userId } }
+      ).then((result) => {
+        if (result.n > 0) {
+          res.status(200).json({ message: "Assigned Patient" });
+        } else {
+          res.status(500).json({
+            message: "Change failed!",
+          });
+        }
+      });
+    }
+  }
 };

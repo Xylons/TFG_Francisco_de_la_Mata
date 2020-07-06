@@ -27,6 +27,11 @@ export class ProfilesService {
   private profiles: Profile[] = [];
   private profilesUpdated = new Subject<{ profiles: Profile[], profileCount: number }>();
 
+  //Valores sobre los usuarios para filtrar en la barra de busqueda
+  /*private maxAge = new Subject<number>();
+  private minAge = new Subject<number>();
+  private patologiesList = new Subject<string[]>();*/
+
 
   constructor(private http: HttpClient, private router: Router, private _snackBar: MatSnackBar,
     public dialog: MatDialog) { }
@@ -36,13 +41,16 @@ export class ProfilesService {
     // En este no hace falta unscribe ya que se desuscribe solo
     this.http.get<{ message: string, profiles: any, maxProfiles: number }>(BACKEND_URL + queryParams)
       .pipe(map((profilesData) => {
+
         return {
+
           profiles: profilesData.profiles.map(profile => {
             return {
               name: profile.name,
               surname: profile.surname,
               userImagePath: profile.userImagePath,
               userId: profile.linkedAccount,
+              responsibles: profile.responsibles,
               rol: profile.__t
             };
           }), maxProfiles: profilesData.maxProfiles
@@ -53,8 +61,41 @@ export class ProfilesService {
         //console.log(transformedProfileData);
         this.profiles = transformedProfileData.profiles;
         this.profilesUpdated.next({ profiles: [...this.profiles], profileCount: transformedProfileData.maxProfiles });
+
       });
   }
+  /* Esto si en caso de hacerlo dinamico
+  updatePatologiesList(transformedProfileData) {
+    let agesList = transformedProfileData.profiles.map(profile => {
+
+        age: profile.bornDate
+    });
+    let uniqueArray = [...new Set(agesList)];
+  }
+  updateMinMaxAge(transformedProfileData) {
+    let agesList = transformedProfileData.profiles.map(profile => {
+        console.log(profile.bornDate);
+    });
+    console.log(agesList);
+    let min= Math.min(...agesList);
+    let max= Math.max(...agesList);
+  }
+  //Este metodo de updateMiMaxAge es para cuando el array es superior a 500 usuarios
+  // ya que reduce proporciona mejor rendimiento con muchos usuarios
+
+  updateMinMaxAgeHighNumber(transformedProfileData){
+    let min= transformedProfileData.reduce((min, p) => p.bornDate < min ? p.bornDate : min, transformedProfileData[0].bornDate);
+    let max=  transformedProfileData.reduce((max, p) => p.bornDate > max ? p.bornDate : max, transformedProfileData[0].bornDate);
+  }
+  getMaxAgeListener() {
+    return this.maxAge.asObservable();
+  }
+  getMinAgeListener() {
+    return this.minAge.asObservable();
+  }
+  getPatologiesListListener() {
+    return this.patologiesList.asObservable();
+  }*/
   getProfileUpdatedListener() {
     return this.profilesUpdated.asObservable();
   }
@@ -70,7 +111,7 @@ export class ProfilesService {
       bornDate: number,
       contactPhone: string,
       typeOfResponsible: string
-    }>(BACKEND_URL +"single/"+ id);
+    }>(BACKEND_URL + "single/" + id);
 
   }
   /*addProfile(title: string, content: string, image:File) {
@@ -157,16 +198,16 @@ export class ProfilesService {
     if (searchFilters.datePicked !== "") {
       searchFilters.datePicked = searchFilters.datePicked.getTime();
     }
-    searchFilters.age= this.ageToEpochDate(searchFilters.age)
+    searchFilters.age = this.ageToEpochDate(searchFilters.age)
     console.log(searchFilters);
-    const queryParams = `/?pagesize=${profilesPerPage}&page=${currentPage}`+
-    `&searchfield=${searchFilters.searchField}&mypatients=${searchFilters.myPatients}`+
-    `&age=${searchFilters.age}&gender=${searchFilters.selectedGender}`+
-    `&patologies=${searchFilters.patologies}&datepicked=${searchFilters.datePicked}`
+    const queryParams = `/?pagesize=${profilesPerPage}&page=${currentPage}` +
+      `&searchfield=${searchFilters.searchField}&mypatients=${searchFilters.myPatients}` +
+      `&age=${searchFilters.age}&gender=${searchFilters.selectedGender}` +
+      `&patologies=${searchFilters.patologies}&datepicked=${searchFilters.datePicked}`
 
     console.log(queryParams);
     // En este no hace falta unscribe ya que se desuscribe solo
-    this.http.get<{ message: string, profiles: any, maxProfiles: number }>(BACKEND_URL + "search" +queryParams)
+    this.http.get<{ message: string, profiles: any, maxProfiles: number }>(BACKEND_URL + "search" + queryParams)
       .pipe(map((profilesData) => {
         return {
           profiles: profilesData.profiles.map(profile => {
@@ -189,12 +230,34 @@ export class ProfilesService {
   }
 
 
-  ageToEpochDate(age){
+  ageToEpochDate(age) {
     //Datos en epoch
     let actualDate = new Date();
-    let epochAge= actualDate.setFullYear(actualDate.getFullYear() -age);
+    let epochAge = actualDate.setFullYear(actualDate.getFullYear() - age);
     return epochAge;
   }
+
+  modifyMyPatientsRequest(userId: string, mode: boolean) {
+    //Si mode es true se anade como responsible
+    let editInfo = {
+      userId: userId,
+      mode: mode
+    }
+    this.http.post(BACKEND_URL + "editResponsible", editInfo)
+      .subscribe((response: any) => {
+        console.log(response);
+        this.router.navigate(["/"]);
+        if(mode){
+          this.openSnackBar("Patient Added", "Ok");
+        }else{
+          this.openSnackBar("Patient Removed", "Ok");
+        }
+
+      });
+
+
+  }
+
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
@@ -205,7 +268,7 @@ export class ProfilesService {
     showDialog() {
       this.dialog
         .open(ConfirmDialogComponent, {
-          data: `¿Te gusta programar en TypeScript?`
+          data: `text`
         })
         .afterClosed()
         .subscribe((confirmed: Boolean) => {

@@ -12,4 +12,5 @@ export interface Profile {
   contactPhone?:string;
   type?:string;
   rol?:string;
+  responsibles?:string[]
 }

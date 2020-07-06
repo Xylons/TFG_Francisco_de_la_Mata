@@ -23,6 +23,7 @@ import { FiltersBarService } from '../../filters-bar/filters-bar.service';
 import { FormGroup } from '@angular/forms';
 
 
+
 @Component({
   selector: 'app-profile-list',
   templateUrl: './profile-list.component.html',
@@ -58,6 +59,7 @@ export class ProfileListComponent implements OnInit, OnDestroy {
   private searchForm: FormGroup;
 
 
+
   constructor(public profilesService: ProfilesService, private authService: AuthService, private filtersService: FiltersBarService) { }
 
   ngOnInit() {
@@ -80,6 +82,7 @@ export class ProfileListComponent implements OnInit, OnDestroy {
     });
     this.rol = this.authService.getRolLogged();
 
+
     this.searchForm= this.filtersService.getSearchForm();
 
     /// Estoy hay que solucionar, envia dos peticiones con cada cambio
@@ -88,6 +91,7 @@ export class ProfileListComponent implements OnInit, OnDestroy {
       // you can access a form field via changes.fieldName
       this.onFiltersChanged(changes);
   });
+
   }
 
   onFiltersChanged(changes){
@@ -96,7 +100,7 @@ export class ProfileListComponent implements OnInit, OnDestroy {
     // Controlo que no tenga campos en undefined
     Object.keys(changes).forEach(key => {
       if(changes[key] === "" || changes[key]=== allArray) this.withFilters= true ;
-      console.log(changes[key]===allArray)
+      console.log(changes[key]===allArray  );
     });
     if(this.withFilters){
       this.profilesService.searchWithFilters(changes, this.profilesPerPage, this.currentPage);
@@ -126,6 +130,28 @@ export class ProfileListComponent implements OnInit, OnDestroy {
     this.profilesSub.unsubscribe();
     this.authStatusSub.unsubscribe();
   }
+
+  modifyMyPatients(userId: string, status:boolean ){
+    this.profilesService.modifyMyPatientsRequest(userId, status);
+    console.log(status);
+    if(!status){
+      this.profiles.forEach(profile => {
+        if(profile.userId=== userId){
+          const index = profile.responsibles.indexOf(this.userId);
+          if (index > -1) {
+            profile.responsibles.splice(index, 1);
+          }
+        }
+      });
+    }else{
+      this.profiles.forEach(profile => {
+        if(profile.userId=== userId){
+          profile.responsibles.push(this.userId);
+        }
+      });
+
+    }
+  }
   onDelete(userId: string) {
     //falta anadir modal para confirmar
     this.isLoading = true;
@@ -153,4 +179,5 @@ export class ProfileListComponent implements OnInit, OnDestroy {
 
 
   }
+
 }
