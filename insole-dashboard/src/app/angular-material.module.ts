@@ -13,6 +13,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
 
 
 // Al poner exports solo realiza el import automaticamente
@@ -30,7 +32,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatListModule,
     MatGridListModule,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule,
+    MatSelectModule
     ]
 })
 export class AngularMaterialModule { }

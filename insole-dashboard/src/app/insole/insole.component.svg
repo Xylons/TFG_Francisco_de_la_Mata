@@ -1,4 +1,61 @@
 <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<mat-grid-list cols="3" rowHeight="60px">
+<mat-grid-tile >
+</mat-grid-tile >
+      <mat-grid-tile >
+
+
+<div  *ngIf="mode">
+<button
+        mat-raised-button
+        color="warn"
+        (click)="onChangeView( true)"
+      >
+        MAX
+      </button>
+      <button
+        mat-button
+        color="primary"
+        (click)="onChangeView(false)"
+      >
+        MEAN
+      </button>
+</div>
+<div  *ngIf="!mode">
+<button
+        mat-button
+        color="warn"
+        (click)="onChangeView(true)"
+      >
+        MAX
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onChangeView(false)"
+      >
+        MEAN
+      </button>
+</div>
+</mat-grid-tile >
+<mat-grid-tile >
+<form [formGroup]="formGroup">
+        <mat-form-field class="selector-class" appearance="fill">
+          <mat-label>Date</mat-label>
+          <mat-select
+            (selectionChange)="selectionChanged($event)"
+            formControlName="dates"
+          >
+            <mat-option
+              *ngFor="let date of allDatesArray"
+              [value]="date.value"
+              >{{ date.key }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+</form>
+</mat-grid-tile >
+</mat-grid-list >
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 701.8 828.6" style="enable-background:new 0 0 701.8 828.6;" xml:space="preserve">
 <style type="text/css">

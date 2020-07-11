@@ -1,5 +1,47 @@
 <div class="grid-container">
   <h1 class="mat-h1">Dashboard</h1>
+  <div><!--
+    <form [formGroup]="formGroup">
+
+      <mat-form-field class="selector-class" appearance="fill">
+        <mat-label>Date</mat-label>
+        <mat-select
+          (selectionChange)="selectionChanged($event)"
+          formControlName="dates"
+        >
+          <mat-option
+            *ngFor="let date of allDatesArray"
+            [value]="date.value"
+            >{{ date.key }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <mat-card class="inside-card">
+        <mat-label class="search-label">Date</mat-label>
+        <div class="date-container">
+          <input
+            class="date-input"
+            matInput
+            [min]="minDate"
+            [max]="maxDate"
+            formControlName="datePicked"
+            [matDatepicker]="picker"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker
+            touchUi
+            startView="multi-year"
+            #picker
+            disabled="false"
+          ></mat-datepicker>
+        </div> </mat-card
+
+</form>
+ -->
+  </div>
   <mat-grid-list cols="2" rowHeight="350px">
     <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
       <mat-card class="dashboard-card">
@@ -26,11 +68,13 @@
                  [chartType]="barChartType">
               </canvas>
               </div>
+
           </div>
 
         </mat-card-content>
         <ng-template #insole >
         <mat-card-content   class="dashboard-card-content">
+
           <app-insole></app-insole>
         </mat-card-content>
       </ng-template>

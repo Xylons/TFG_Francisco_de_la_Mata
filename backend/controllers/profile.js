@@ -41,6 +41,10 @@ exports.createProfile = (name, surname, id) => {
 exports.getBasicInfo = (id) => {
   return Profile.findOne({ linkedAccount: id }, "name surname userImagePath");
 };
+
+exports.getInsoleInfo = (id) => {
+  return PatientProfile.findOne({ linkedAccount: id }, "leftInsole rightInsole");
+}
 exports.updateProfile = (req, res, err) => {
   //falta limpiar campos nulos a la hora de editar
   let requestRol = req.userData.rol;
@@ -89,7 +93,9 @@ exports.updateProfile = (req, res, err) => {
           newProfileData["contactPhone"] = req.body.contactPhone;
           newProfileData["comments"] = profileInfo.comments;
           newProfileData["responsibles"] = profileInfo.responsibles;
-          newProfileData["insoles"] = profileInfo.insoles;
+          //newProfileData["insoles"] = profileInfo.insoles;
+          newProfileData["leftInsole"] = 1234;
+          newProfileData["rightInsole"] = 1234;
           profile = this.cleanEmptyFields(newProfileData);
           profile = new PatientProfile(newProfileData);
           break;
@@ -262,10 +268,15 @@ exports.getProfile = (req, res, next) => {
     .then((profile) => {
       console.log(profile);
       let profileRol = profile.__t;
+      //Si tu rol es responsable
+      // Y el perfil que quieres ver es igual a admin o responsable
+      // y tu id es distinto del perfil que quieres ver
+      //Entonces no tienes permiso
       if (
         req.userData.rol === RESPONSIBLE &&
-        (profileRol === ADMIN || profileRol === RESPONSIBLE)
-      ) {
+        (profileRol === ADMIN || profileRol === RESPONSIBLE) 
+        && req.userData.userId !== req.params.id)
+       {
         res.status(500).json({
           message: "Not authorized to see that profile",
         });
@@ -321,6 +332,7 @@ exports.filteredSearch = (req, res, next) => {
   // + es la forma rapida de convertir en numero
   console.log("aaaaaaaaaaaaaaaaa");
   let query = {};
+  console.log(req.query.age);
   if (req.query.age !== "") {
     //Desactivado temporamente
     // query.bornDate = { $lt : req.query.age };
@@ -331,23 +343,23 @@ exports.filteredSearch = (req, res, next) => {
     query.
   }*/
   //Falta anadir
-  if (req.query.gender !== "") {
+  if (req.query.gender !== "All" && req.query.gender !== "") {
     query.gender = req.query.gender;
   }
 
-  if (req.query.mypatients === "true") {
+  if (req.query.mypatients === "true" && req.userData.rol !== ADMIN) {
     query.responsibles = req.userData.userId;
   }
   if (req.query.patologies !== "" && req.query.patologies !== "All") {
     query.patologies = req.query.patologies;
   }
   if (req.query.searchfield) {
-    let nameOrSurname = {};
-    nameOrSurname.name = { $regex: req.query.searchfield, $options: "i" };
-    nameOrSurname.surname = { $regex: req.query.searchfield, $options: "i" };
-    query.$or = [nameOrSurname];
+  
+    let name = { $regex: req.query.searchfield, $options: "i" };
+    let surname = { $regex: req.query.searchfield, $options: "i" };
+    query.$or = [{name:name}, {surname:surname}];
   }
-
+  
   console.log(query);
 
   const pageSize = +req.query.pagesize;
@@ -360,8 +372,9 @@ exports.filteredSearch = (req, res, next) => {
     case PATIENT:
         break;*/
     case RESPONSIBLE:
-      profileQuery = PatientProfile.find({ __t: PATIENT });
-      profilesCounter = PatientProfile.countDocuments({ __t: PATIENT });
+      query.__t= PATIENT;
+      profileQuery = PatientProfile.find( query );
+      profilesCounter = PatientProfile.countDocuments( query );
       break;
     case ADMIN:
       profileQuery = Profile.find(query);
@@ -386,6 +399,7 @@ exports.filteredSearch = (req, res, next) => {
     })
     .then((count) => {
       console.log(fechedProfiles);
+      console.log(JSON.stringify(query));
       res.status(200).json({
         message: "All fine",
         profiles: fechedProfiles,

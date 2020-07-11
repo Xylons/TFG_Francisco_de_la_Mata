@@ -5,41 +5,54 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { Subscription } from 'rxjs';
 
+//All Genders Icon
+import { faVenusMars } from '@fortawesome/free-solid-svg-icons';
+//Female Icon
+import { faVenus } from '@fortawesome/free-solid-svg-icons';
+//Male Icon
+import { faMars } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../auth/auth.service';
+
 @Component({
   selector: 'app-filters-bar',
   templateUrl: './filters-bar.component.html',
   styleUrls: ['./filters-bar.component.css']
 })
 export class FiltersBarComponent implements OnInit {
-  maxAge=100;
-  minAge=0;
-  genderList: string[] = ['All', 'Male', 'Female'];
+
+  //icons
+  faVenusMars = faVenusMars;
+  faVenus = faVenus;
+  faMars = faMars;
+
+  maxAge = 100;
+  minAge = 0;
+  genderList = [{ value: 'All', icon: faVenusMars },
+  { value: 'Male', icon: faMars }, { value: 'Female', icon: faVenus }];
   minDate: Date;
   maxDate: Date;
   isChecked = true;
   formGroup: FormGroup;
   admDateRange: FormGroup;
   patologies = new FormControl();
-  patologiesList: string[] ;
+  patologiesList: string[];
   @ViewChild('allSelected') private allSelected: MatOption;
   //tengo que cambiar luego a observable
   isLoading = false;
-  typeOfBar= 'search';
+  typeOfBar = 'search';
 
   private maxAgeSub: Subscription;
   private minAgeSub: Subscription;
   private patologiesListSub: Subscription;
 
-
-
   constructor(public filtersService: FiltersBarService,
-    formBuilder: FormBuilder) {
+    formBuilder: FormBuilder, private authService: AuthService) {
 
     let date = new Date();
     const currentYear = date.getFullYear();
     this.minDate = new Date(currentYear - 130, 0, 1);
     this.maxDate = date;
-
+    let rol = authService.getRolLogged();
     this.formGroup = formBuilder.group({
       myPatients: '',
       searchField: '',
@@ -54,32 +67,34 @@ export class FiltersBarComponent implements OnInit {
     });
     //Guardo el formGroup en service
     this.filtersService.setSearchForm(this.formGroup);
-
-    this.filtersService.findParams();
-    this.maxAgeSub= this.filtersService.getMaxAgeListener()
-    .subscribe(maxAge => {
-      this.maxAge= maxAge;
-    });
-    this.minAgeSub= this.filtersService.getMinAgeListener()
-    .subscribe(minAge => {
-      this.minAge= minAge;
-    });
-    this.patologiesListSub= this.filtersService.getPatologiesListListener()
-    .subscribe(patologiesList => {
-      this.patologiesList= patologiesList;
-    });
+    //controlo que los pacientes o undefined no puedan hacer peticiones de los campos de busqueda
+    // esto tambien se controla en back
+    if (rol !== 'patient' && rol !== 'undefined') {
+      this.filtersService.findParams();
+      this.maxAgeSub = this.filtersService.getMaxAgeListener()
+        .subscribe(maxAge => {
+          this.maxAge = maxAge;
+        });
+      this.minAgeSub = this.filtersService.getMinAgeListener()
+        .subscribe(minAge => {
+          this.minAge = minAge;
+        });
+      this.patologiesListSub = this.filtersService.getPatologiesListListener()
+        .subscribe(patologiesList => {
+          this.patologiesList = patologiesList;
+        });
+    }
 
   }
 
   formatLabel(value: number) {
-
-    return value + 'Y';
-
+    return value ;
   }
+
   onApplyFilters() {
     console.log(this.formGroup);
-
   }
+
   toggleAllSelection() {
     if (this.allSelected.selected) {
       this.formGroup.controls.patologies
@@ -89,7 +104,7 @@ export class FiltersBarComponent implements OnInit {
 
   toggleOtherSelection() {
     if (this.allSelected.selected) {
-    let valuesArray = this.formGroup.controls.patologies.value;
+      let valuesArray = this.formGroup.controls.patologies.value;
       const index = this.formGroup.controls.patologies.value.indexOf('All');
       if (index > -1) {
         valuesArray.splice(index, 1);
@@ -100,7 +115,7 @@ export class FiltersBarComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.typeOfBar= this.filtersService.getTypeOfBar();
+    this.typeOfBar = this.filtersService.getTypeOfBar();
   }
 
   //metodo que captura el cambio de patologia

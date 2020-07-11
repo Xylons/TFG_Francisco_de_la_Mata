@@ -15,7 +15,7 @@
         routerLink="dashboard"
         routerLinkActive="mat-accent"
         >Dashboard</a>
-      <a mat-list-item routerLink="/" routerLinkActive="mat-accent"
+      <a *ngIf="userIsAuthenticated" mat-list-item routerLink="/" routerLinkActive="mat-accent"
       >Patients</a>
 
     </mat-nav-list>

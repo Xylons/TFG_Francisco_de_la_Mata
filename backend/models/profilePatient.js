@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const profile = require("./profile");
-//Meter DNI?, timestamp?
-// Altura, sexo
+//Meter idPersonal?, Altura, sexo, peso
 const profilePatientSchema = profile.discriminator(
   "patient",
   new mongoose.Schema({
@@ -9,7 +8,8 @@ const profilePatientSchema = profile.discriminator(
     patologies: [{ type: String }],
     comments: { type: String },
     responsibles: [{ type: String }],
-    insoles: [{ type: String }],
+    leftInsole:{ type: String },
+    rightInsole:{ type: String },
     contactPhone: { type: String, require: true },
   })
 );

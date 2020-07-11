@@ -7,7 +7,8 @@
         "responsible": "responsible",
         "admin": "admin",
         "notdefined": "undefined",
-        "IP_FRONT": "http://localhost:4200"
+        "IP_FRONT": "http://localhost:4200",
+        "IP_BACK": "http://localhost:3000"
     }
     
 }

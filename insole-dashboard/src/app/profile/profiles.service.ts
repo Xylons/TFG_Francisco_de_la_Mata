@@ -216,6 +216,7 @@ export class ProfilesService {
               surname: profile.surname,
               userImagePath: profile.userImagePath,
               userId: profile.linkedAccount,
+              responsibles: profile.responsibles,
               rol: profile.__t
             };
           }), maxProfiles: profilesData.maxProfiles

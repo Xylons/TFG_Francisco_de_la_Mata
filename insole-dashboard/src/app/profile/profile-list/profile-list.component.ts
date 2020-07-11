@@ -53,10 +53,13 @@ export class ProfileListComponent implements OnInit, OnDestroy {
   rol: string;
   withFilters: boolean;
   filters:object;
+  minAge=100;
+  private minAgeSub: Subscription;
   private profilesSub: Subscription;
   //Aqui se usara para que solo pueda crear un gestor
   private authStatusSub: Subscription;
   private searchForm: FormGroup;
+
 
 
 
@@ -82,26 +85,35 @@ export class ProfileListComponent implements OnInit, OnDestroy {
     });
     this.rol = this.authService.getRolLogged();
 
-
+    if(this.rol !== 'patient' && this.rol !== 'undefined'){
     this.searchForm= this.filtersService.getSearchForm();
-
+    this.minAgeSub = this.filtersService.getMinAgeListener()
+        .subscribe(minAge => {
+          this.minAge = minAge;
+        });
     /// Estoy hay que solucionar, envia dos peticiones con cada cambio
     this.searchForm.valueChanges.subscribe(changes => {
       // do what you need with the form fields here
       // you can access a form field via changes.fieldName
       this.onFiltersChanged(changes);
-  });
+  });}
 
   }
 
   onFiltersChanged(changes){
     this.filters=changes;
     let allArray=['All'];
+    console.log(changes);
+    this.withFilters=false;
     // Controlo que no tenga campos en undefined
     Object.keys(changes).forEach(key => {
-      if(changes[key] === "" || changes[key]=== allArray) this.withFilters= true ;
-      console.log(changes[key]===allArray  );
+      if(changes[key] !== "" && changes[key]!== allArray
+      && changes[key]!== false && changes[key]!==this.minAge){
+         this.withFilters= true ;
+        }
+
     });
+    console.log(this.withFilters);
     if(this.withFilters){
       this.profilesService.searchWithFilters(changes, this.profilesPerPage, this.currentPage);
     }else{

@@ -17,7 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatGridListModule} from '@angular/material/grid-list';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 @NgModule({
@@ -36,7 +36,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
     FormsModule,
     MatRadioModule,
     MatSelectModule,
-    MatGridListModule
+    MatGridListModule,
+    FontAwesomeModule
 
   ],
   exports: [

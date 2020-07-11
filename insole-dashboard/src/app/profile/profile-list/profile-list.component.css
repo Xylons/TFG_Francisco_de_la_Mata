@@ -44,6 +44,7 @@ mat-paginator{
 
 mat-card {
   margin-bottom: 10px;
+
 }
 
 .mr-10 {
@@ -72,3 +73,11 @@ mat-card {
     height: 40px;
 }
 */
+
+.grey-button{
+  background-color: lightgrey;
+}
+
+.spacer{
+  height: 69px;
+}

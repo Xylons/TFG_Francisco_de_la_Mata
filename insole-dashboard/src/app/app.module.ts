@@ -32,6 +32,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 // FontAwesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DialogModule } from './confirm-dialog/dialog.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatGridListModule } from '@angular/material/grid-list';
 //Added validators in sharedModule
 
 @NgModule({
@@ -56,7 +58,10 @@ import { DialogModule } from './confirm-dialog/dialog.module';
     SharedModule,
     FlexLayoutModule,
     FontAwesomeModule,
-    DialogModule
+    DialogModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatGridListModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

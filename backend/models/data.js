@@ -1,8 +1,8 @@
 const mongoose =require('mongoose');
 
 const datachema = mongoose.Schema({
-    insoleID: {type: String, require: true},
-    files: {
+    insoleId: {type: String, require: true},
+    unprocesedFiles: {
             name: { type: String, lowercase: true},
             date: { type: Number}
           }
