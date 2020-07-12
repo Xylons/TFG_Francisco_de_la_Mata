@@ -62,6 +62,7 @@ export class InsoleService {
   }
 
   setPressureData(leftInsoleData, rightInsoleData) {
+    try{
     this.leftInsoleData = leftInsoleData;
     this.rightInsoleData = rightInsoleData;
     if (rightInsoleData[0].day === rightInsoleData[0].day) {
@@ -76,6 +77,10 @@ export class InsoleService {
       this.LmeanData.next(leftInsoleData[0].meanPressureData);
       this.activeDate.next(rightInsoleData[0].day);
     }
+    }catch (error) {
+
+    }
+
   }
 
   changeActiveDate(date: number) {
@@ -92,5 +97,6 @@ export class InsoleService {
     //Extraigo las fechas de las dos plantillas y descarto las repetidas con set
     let bothDates = [...Object.keys(this.leftDatesArray), ...Object.keys(this.rightDatesArray)]
     this.allDatesArray.next(Array.from(new Set([...bothDates])));
+
   }
 }

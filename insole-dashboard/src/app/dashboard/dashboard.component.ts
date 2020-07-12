@@ -7,6 +7,8 @@ import { InsoleService } from '../insole/insole.service';
 import { DashboardService } from './dashboard.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +17,11 @@ import { AuthService } from '../auth/auth.service';
 })
 export class DashboardComponent implements OnInit {
   userId: string;
-  range: number= 1;
+  formGroup: FormGroup;
+  minDate: Date;
+  maxDate: Date= new Date();
+  days:number=1;
+  selectedDate: Date=new Date();
 
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
@@ -41,15 +47,33 @@ export class DashboardComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver, private insoleService: InsoleService,
     private dashboardService: DashboardService,
     public route: ActivatedRoute,
-    private authService: AuthService) { }
+    private authService: AuthService, formBuilder: FormBuilder) {
+      this.formGroup = formBuilder.group({
+        datePicked: '',
+      });
+    }
 
+
+  onChangeDays(days: number){
+    this.days=days;
+    this.dashboardService.getInsoleData(this.userId, this.days, this.selectedDate.getTime());
+  }
+  onDateChanged(event: MatDatepickerInputEvent<Date>){
+    console.log(event.value);
+    this.selectedDate=event.value;
+    this.dashboardService.getInsoleData(this.userId, this.days, this.selectedDate.getTime());
+  }
   ngOnInit() {
     //Suscripción para detectar cambios en route
     console.log("asdasdad");
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.userId = paramMap.get('userId');
     });
-    this.dashboardService.getInsoleData(this.userId, this.range, new Date().getTime());
+    this.dashboardService.getInsoleData(this.userId, this.days, new Date().getTime());
+
+    this.formGroup.patchValue({
+      'datePicked': new Date()
+    });
   }
   /// BarChart
   public barChartOptions = {

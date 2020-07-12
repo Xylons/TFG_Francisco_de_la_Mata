@@ -1,24 +1,42 @@
 <div class="grid-container">
+
+
   <h1 class="mat-h1">Dashboard</h1>
-  <div><!--
+  <div fxLayout="column"  fxLayoutAlign="center none">
     <form [formGroup]="formGroup">
 
-      <mat-form-field class="selector-class" appearance="fill">
-        <mat-label>Date</mat-label>
-        <mat-select
-          (selectionChange)="selectionChanged($event)"
-          formControlName="dates"
-        >
-          <mat-option
-            *ngFor="let date of allDatesArray"
-            [value]="date.value"
-            >{{ date.key }}</mat-option
-          >
-        </mat-select>
-      </mat-form-field>
-      <mat-card class="inside-card">
-        <mat-label class="search-label">Date</mat-label>
-        <div class="date-container">
+
+      <div fxFlex="50">
+        <button
+        mat-stroked-button
+        [class.mat-raised-button]= "days === 1"
+                color="primary"
+                (click)="onChangeDays(1)"
+              >
+                1 Day
+              </button>
+              <button
+              mat-stroked-button
+        [class.mat-raised-button]= "days === 7"
+
+                color="primary"
+                (click)="onChangeDays(7)"
+              >
+                7 Days
+              </button>
+              <button
+              mat-stroked-button
+        [class.mat-raised-button]= "days === 30"
+
+                color="primary"
+                (click)="onChangeDays(30)"
+              >
+                1 Month
+              </button>
+            </div>
+
+        <!--<mat-label class="search-label">Date</mat-label>-->
+        <div fxFlex="30" class="date-container">
           <input
             class="date-input"
             matInput
@@ -26,6 +44,7 @@
             [max]="maxDate"
             formControlName="datePicked"
             [matDatepicker]="picker"
+            (dateChange)="onDateChanged($event)"
           />
           <mat-datepicker-toggle
             matSuffix
@@ -37,10 +56,10 @@
             #picker
             disabled="false"
           ></mat-datepicker>
-        </div> </mat-card
+        </div>
 
 </form>
- -->
+
   </div>
   <mat-grid-list cols="2" rowHeight="350px">
     <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">

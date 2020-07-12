@@ -19,3 +19,9 @@
 .dashboard-card-content {
   text-align: center;
 }
+
+input.mat-input-element {
+  width: 50%;
+  font-size: 1.3em;
+}
+

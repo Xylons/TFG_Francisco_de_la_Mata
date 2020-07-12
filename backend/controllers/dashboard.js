@@ -96,11 +96,11 @@ exports.getOneUserInsoleData = (req, res, next) => {
       //solicito los datos de plantilla izquierda y luego de la derecha
       query.insoleId= profileData.leftInsole;
       Insole.find(query)
-        .sort({ day: 1 })
+        .sort({ day: -1 })
         .then((leftInsoleData) => {
           query.insoleId= profileData.rightInsole;
           Insole.find(query)
-            .sort({ day: 1 })
+            .sort({ day: -1 })
             .then((rightInsoleData) => {
               //Aqui se puede añadir que devuelva lo ultimo que encuentre en caso de no encontrar
               if (leftInsoleData || rightInsoleData) {

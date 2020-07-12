@@ -64,7 +64,7 @@ export class InsoleComponent implements OnInit {
       });
       this.allDatesArrayListener = this.insoleService.getAllDatesArrayListener()
       .subscribe((allDatesArray) => {
-
+        this.allDatesArray=[];
         for (let i = 0; i < allDatesArray.length; i++) {
           let dateInfo= {
             key: new Date(parseInt(allDatesArray[i])).toDateString() ,
