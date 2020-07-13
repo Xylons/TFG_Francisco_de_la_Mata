@@ -17,6 +17,12 @@
         >Dashboard</a>
       <a *ngIf="userIsAuthenticated" mat-list-item routerLink="/" routerLinkActive="mat-accent"
       >Patients</a>
+      <a
+        mat-list-item
+        *ngIf="userIsAuthenticated"
+        routerLink="dashboard/compare"
+        routerLinkActive="mat-accent"
+        >Compare</a>
 
     </mat-nav-list>
   </mat-sidenav>

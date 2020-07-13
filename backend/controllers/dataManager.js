@@ -78,3 +78,9 @@ exports.removeFiles = () => {
     console.log("Error file successfully deleted");
   });
 };
+
+
+exports.saveCSVFile = ( filePath, base64CSV) => {
+  fs.writeFileSync(filePath,base64CSV, {encoding: 'base64'});
+ 
+};

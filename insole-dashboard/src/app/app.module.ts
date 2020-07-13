@@ -62,7 +62,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     ReactiveFormsModule,
     FormsModule,
     MatGridListModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

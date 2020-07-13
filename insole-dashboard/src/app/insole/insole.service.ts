@@ -61,17 +61,18 @@ export class InsoleService {
     return this.allDatesArray.asObservable();
   }
 
-  setPressureData(leftInsoleData, rightInsoleData) {
+  setPressureData(leftInsoleData, rightInsoleData, allUniqueDates) {
     try{
     this.leftInsoleData = leftInsoleData;
     this.rightInsoleData = rightInsoleData;
+    this.allDatesArray.next(allUniqueDates);
     if (rightInsoleData[0].day === rightInsoleData[0].day) {
       this.LmaxData.next(leftInsoleData[0].maxPressureData);
       this.LmeanData.next(leftInsoleData[0].meanPressureData);
       this.RmaxData.next(rightInsoleData[0].maxPressureData);
       this.RmeanData.next(rightInsoleData[0].meanPressureData);
       this.activeDate.next(rightInsoleData[0].day);
-      this.getAllUniqueDates();
+
     } else {
       this.LmaxData.next(leftInsoleData[0].maxPressureData);
       this.LmeanData.next(leftInsoleData[0].meanPressureData);
@@ -87,16 +88,5 @@ export class InsoleService {
 
   }
 
-  getAllUniqueDates() {
-    for (let i = 0; i < this.leftInsoleData.length; i++) {
-      this.leftDatesArray[this.leftInsoleData[i].day] = i;
-    }
-    for (let i = 0; i < this.rightInsoleData.length; i++) {
-      this.rightDatesArray[this.rightInsoleData[i].day] = i;
-    }
-    //Extraigo las fechas de las dos plantillas y descarto las repetidas con set
-    let bothDates = [...Object.keys(this.leftDatesArray), ...Object.keys(this.rightDatesArray)]
-    this.allDatesArray.next(Array.from(new Set([...bothDates])));
 
-  }
 }

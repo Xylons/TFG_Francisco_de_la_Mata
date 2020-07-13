@@ -82,6 +82,7 @@ export class FiltersBarComponent implements OnInit {
       this.patologiesListSub = this.filtersService.getPatologiesListListener()
         .subscribe(patologiesList => {
           this.patologiesList = patologiesList;
+          console.log(this.patologiesList);
         });
     }
 

@@ -19,6 +19,7 @@ const routes: Routes = [
   {path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
   {path: 'dashboard/:userId', component: DashboardComponent, canActivate: [AuthGuard]},
+  {path: 'dashboard/compare', component: DashboardComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

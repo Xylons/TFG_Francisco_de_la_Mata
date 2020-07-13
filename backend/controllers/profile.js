@@ -43,7 +43,7 @@ exports.getBasicInfo = (id) => {
 };
 
 exports.getInsoleInfo = (id) => {
-  return PatientProfile.findOne({ linkedAccount: id }, "leftInsole rightInsole");
+  return PatientProfile.findOne({ linkedAccount: id }, "name surname leftInsole rightInsole");
 }
 exports.updateProfile = (req, res, err) => {
   //falta limpiar campos nulos a la hora de editar
@@ -438,9 +438,7 @@ exports.getSearchParams = (req, res, next) => {
               let datediff = new Date() - new Date(minDate.bornDate);
               minAge = Math.trunc(datediff / (1000 * 60 * 60 * 24 * 365));
               ///Query para extraer patologias
-              PatientProfile.distinct("patologies").then((patologies) => {
-                patologies = patologies;
-
+              PatientProfile.distinct('patologies').then((patologies) => {
                 res.status(200).json({
                   message: "All fine",
                   maxAge: maxAge,

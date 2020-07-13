@@ -108,6 +108,8 @@ exports.getOneUserInsoleData = (req, res, next) => {
                     message: "Success",
                     leftInsole: leftInsoleData,
                     rightInsole: rightInsoleData,
+                    name: profileData.name,
+                    surname: profileData.surname
                   });
               } else {
                 res.status(400).json({

@@ -22,6 +22,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 // FontAwesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FiltersBarModule } from '../filters-bar/filters-bar.module';
+import { PostListComponent } from '../post/post-list/post-list.component';
+import { PostModule } from '../post/post.module';
 
 //Formatos de fecha-- no usados de momento
 //import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
@@ -46,7 +48,8 @@ import { FiltersBarModule } from '../filters-bar/filters-bar.module';
     FlexLayoutModule,
     MatDividerModule,
     FontAwesomeModule,
-    FiltersBarModule
+    FiltersBarModule,
+
     ],
 
 })

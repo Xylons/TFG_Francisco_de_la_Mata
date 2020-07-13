@@ -1,10 +1,11 @@
 const mongoose =require('mongoose');
 
-const datachema = mongoose.Schema({
+const dataSchema = mongoose.Schema({
     insoleId: {type: String, require: true},
     unprocesedFiles: {
-            name: { type: String, lowercase: true},
-            date: { type: Number}
+            filename: { type: String, lowercase: true, require:true},
+            date: { type: Number, require:true},
+            userId: {type: mongoose.Schema.Types.ObjectId, ref: "User", require:true}
           }
 });
 

@@ -58,6 +58,7 @@ export class FiltersBarService {
           this.maxAge.next(paramsData.maxAge);
           this.minAge.next(paramsData.minAge);
           this.patologiesList.next(paramsData.patologies);
+          console.log(paramsData.patologies);
         });
   }
 

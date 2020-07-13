@@ -7,6 +7,8 @@ const profilesRoutes = require("./routes/profiles");
 const userRoutes = require("./routes/user");
 const dashboardRoutes = require("./routes/dashboard");
 
+const dataRoutes = require("./routes/data");
+
 
 const mongoose = require("mongoose");
 
@@ -46,8 +48,11 @@ mongoose
 
 //mongodb+srv://Fran:D7O2YXrU8eLlRMoB@cursoweb-xpbvj.mongodb.net/test?retryWrites=true&w=majority
 //Fran D7O2YXrU8eLlRMoB
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // Permiso para la carpeta de imagenes
 // si fuese una subcarpeta habría que hacer join e.j: app.use("/images", express.static(path.join("backend/images")));
@@ -70,5 +75,8 @@ app.use("/api/posts", postsRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/profile", profilesRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/data", dataRoutes);
+
+
 
 module.exports = app;
