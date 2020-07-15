@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Insole</string>
+    <string name="no_ble">BLE not supported</string>
+    <!-- Misc items -->
+    <string name="zero">0</string>
+    <string name="refreshText">Pull Down to Refresh</string>
+
+    <string name="title_activity_control">ControlActivity</string>
+    <string name="title_activity_scan">ScanActivity</string>
+    <string name="take_picture">Take picture</string>
+    <string name="start_record_video">Start record</string>
+    <string name="stop_record_video">Stop record</string>
+    <string name="request_permission">This sample needs permission for camera and audio recording.</string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
+    <string name="flash_auto">Flash auto</string>
+    <string name="flash_off">Flash off</string>
+    <string name="flash_on">Flash on</string>
+    <string name="switch_camera">Switch camera</string>
+    <string name="aspect_ratio">Aspect ratio</string>
+
+    <string name="data_service_started">The saving data service: STARTED</string>
+    <string name="data_service_stopped">The saving data service: STOPPED</string>
+    <string name="data_service_label">The saving data service: LABEL</string>
+
+</resources>

@@ -1,0 +1,4 @@
+Ref,Val,Package,PosX,PosY,Rot,Side
+"J1","Conn_Micro_USB","USB_Micro_CustomV2",196.009453,-203.670707,272.000000,top
+"L1","300ohm 100MHz","L_0805_2012Metric_Pad1.15x1.40mm_HandSolder",194.641777,-156.738207,150.000000,top
+"L2","300ohm 100MHz","L_0805_2012Metric_Pad1.15x1.40mm_HandSolder",191.441777,-147.458207,330.000000,top

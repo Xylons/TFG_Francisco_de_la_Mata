@@ -1,0 +1,26 @@
+Cntrol+F  para cosas como el loop fill(para rellenar huecos).para el loop hay que activar extensión.
+W para organizar los edges de manera uniforme.
+CTRL+G para juntar los vertices.
+shift+G para ver el menu de selección multiple.
+CNTRL+I para invertir selección.
+CNTRL+J para juntar objetos, no es una union boleana.
+
+
+Hacer grid  en la plantilla uniforme: https://www.youtube.com/watch?v=MuJldjg22Q8
+Rellenar huecos: https://www.youtube.com/watch?v=LQFZU8VGBDI
+Cambiar vectores normales: https://www.youtube.com/watch?v=p9Q5c-4AeRA
+Juntar objetos: https://www.youtube.com/watch?v=YLoKjR8H-JQ
+
+Nota: Para reducir poligonos de la base hay que seleccionar las caras luego borrar con supr y elegir limited disolve
+
+Procedimiento:
+Se borran las caras lateral de la plantilla.
+Se selecciona un verticey con shift+g selecciónamos  amound of face.....  luego invertimos la selección con CNTRL+i y borramos los edges.
+Nos quedara solo las lineas externas que representan la cara superior e inferior.
+Nos aseguramos que tenga el mismo numero de vertices, y ademas tiene que ser par. Si hace falta añadir mas.
+Hacemos un grill fill en ambas, asegurando que los cuadrados queden distribuido igual manera.
+Nos aseguramos que los vectores normales esten bien.Sobretodo en la cada de abajo que queden en Z negativo.
+Volvemos a selecciónar el perimetro igual que antes y CNTRL+F seleccionamos fill.
+Si hay problemas con alguans caras se pueden borrar y volver a seleccionar un loop de vertices y volver a rellenar.
+Asegurarse que los vectores normales de los laterales esten bien.
+No interesa que haya demasiadas divisiones en la cara de abajo, por tanto seleccionamos todas las caras de abajo y le damos a SUPR luego selecciónamos Limited Dissolved. Blender ya se encargara de hacer la división mas eficiente.

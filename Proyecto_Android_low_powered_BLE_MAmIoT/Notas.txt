@@ -1,0 +1,12 @@
+Medir consumo/carga con INA
+Volver a probar posibles interferencias.
+
+
+
+
+
+Añadir diodo protector batería.
+Cambiar fuente lineal por conmutada.
+Buscar otro controlador batería.
+
+Algoritmo de calibración.

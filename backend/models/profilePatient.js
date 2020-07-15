@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const profile = require("./profile");
-//Meter idPersonal?, Altura, sexo, peso
+//Meter idPersonal?, Altura, sexo, peso, timestamp
 const profilePatientSchema = profile.discriminator(
   "patient",
   new mongoose.Schema({

@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name cyble-222014-01_schematic_library)(type Legacy)(uri ${KIPRJMOD}/Libererias_especificas/cyble-222014-01/cyble-222014-01_schematic_library.lib)(options "")(descr ""))
+  (lib (name CD74HCxx)(type Legacy)(uri ${KIPRJMOD}/Libererias_especificas/Mux/CD74HCxx.lib)(options "")(descr ""))
+  (lib (name ism330dlc_schematic_library)(type Legacy)(uri ${KIPRJMOD}/Libererias_especificas/ism330dlc/ism330dlc_schematic_library.lib)(options "")(descr ""))
+)

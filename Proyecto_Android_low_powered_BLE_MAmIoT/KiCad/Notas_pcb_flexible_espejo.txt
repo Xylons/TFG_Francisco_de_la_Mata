@@ -1,0 +1,13 @@
+Nota : no reemplazar directamente sobre el fichero, abrirlo y hacerlo desde donde empiezan los modulos.
+
+Para poder tener una pcb flexible en espejo hay que editar el fichero con la extensión ".kicad_pcb" . Antes se editaban directamente los gerbers. Es mucho más tedioso.
+Se realiza una copia del original y se selección todas las capas menos la de F.SilkS para no voltear los logos. Se pulsa F para hacer el espejo.
+
+Se abre con notepad++ el fichero con la extensión ".kicad_pcb"  y se intercambian las capas F.Cu con B.Cu (Utilizando la herramienta reemplazar, cuidado que primero hay que cambiar F.Cu con F_____.Cu (por ejemplo) para no tener al final solo un tipo de capa ya que se puede liar parda).
+Luego hay que intercambiar las capas B.Paste con F.Paste.No es vital pero si no se hace se ve veo en el visor 3D y dependiendo del caso hará falta o no.
+
+En este paso las referencias de los sensores están en la B.SilkS (no equivocarse con poner B.SlikS) y hay que ponerlas en B.SilkS. Esto se tiene que hacer dentro de kicad pulsando f en cada una de ellas.
+
+
+
+B__.Paste

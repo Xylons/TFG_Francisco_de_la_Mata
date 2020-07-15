@@ -1,0 +1,8 @@
+(sym_lib_table
+  (lib (name cyble-222014-01_schematic_library)(type Legacy)(uri ${KIPRJMOD}/Libererias_especificas/cyble-222014-01/cyble-222014-01_schematic_library.lib)(options "")(descr ""))
+  (lib (name CD74HCxx)(type Legacy)(uri ${KIPRJMOD}/Libererias_especificas/Mux/CD74HCxx.lib)(options "")(descr ""))
+  (lib (name ism330dlc_schematic_library)(type Legacy)(uri ${KIPRJMOD}/Libererias_especificas/ism330dlc/ism330dlc_schematic_library.lib)(options "")(descr ""))
+  (lib (name fsr_schematic_library)(type Legacy)(uri D:/Users/Cosmin/Documents/GitHub/low_powered_BLE_MAmIoT/KiCad/FSRs_library/fsr_schematic_library.lib)(options "")(descr ""))
+  (lib (name AP9211SA-AK-HAC-7)(type Legacy)(uri D:/Users/Cosmin/Documents/GitHub/low_powered_BLE_MAmIoT/KiCad/AP9211SA-AK-HAC-7/AP9211SA-AK-HAC-7.lib)(options "")(descr ""))
+  (lib (name SamacSys_Parts)(type Legacy)(uri "D:/Program Files/KiCad/SamacSys_Parts.lib")(options "")(descr ""))
+)

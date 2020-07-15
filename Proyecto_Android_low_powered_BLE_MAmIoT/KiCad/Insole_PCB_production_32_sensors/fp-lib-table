@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name Digikey_EZ_BLE)(type KiCad)(uri ${KIPRJMOD}/Digikey_EZ_BLE.pretty)(options "")(descr ""))
+  (lib (name Graphics)(type KiCad)(uri D:/Users/Cosmin/Documents/GitHub/low_powered_BLE_MAmIoT/KiCad/Graphics.preety)(options "")(descr ""))
+)

@@ -1,0 +1,1 @@
+hay que poner el capacitor mucho mas cerca, el de entrada al IC regulador

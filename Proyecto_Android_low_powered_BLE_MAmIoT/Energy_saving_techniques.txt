@@ -1,0 +1,29 @@
+Lista de las técnicas de ahora de energía utilizados:
+•	Pin GND común, con posibilidad de apagar todos los FSR’s.
+•	Encender el ADC solo cuando se va a realizar la lectura de los datos.
+•	Bajar potencia de la antena de transmisión.
+•	Establecer un periodo de conexión para utilizarlo como reloj en lugar de un WDT.
+•	Utilizar 2 tiempos de advertisment, Rapido y Lento trascuridos un timeout. Alargando el advertisment Rapido lo máximo posible.
+•	Apagar el reloj de baja frecuencia ILO.
+•	Bajar la frecuencia del reloj ECO, dividiendo por 8 los 24Mhz que tiene, quedándose con 3Mhz.
+•	Bajar la frecuencia del reloj IMO, pudiendo ponerla entre 7-12 Mhz.
+•	Si entramos en sueño ligero en lugar de sueño profundo configuramos el sistema para que utilice el Eco en lugar del IMO y apagamos el IMO hasta que volvemos a salir de la llamada bloqueante de sueño ligero.
+•	Controlar la frecuencia del ADC.
+
+Implementadas solo en las plantillas autonomas.
+•	Controlar la frecuencia del ADC.
+
+
+Por Implementar:
+•	Reducir el voltaje de funcionamiento.
+•	Analizar implementación del DMA para la recogida de datos.
+•	Utilizar un ADC para los 12 FSR utilizando la siguiente tecnica: https://www.embedded.com/design/configurable-systems/4432749/Sampling-a-16-channel-SAR-with-an-8-channel-programmable-SoC
+•	Separar el Voltaje para la antena y para el microchip. Bajandolo lo maximo posible
+
+
+Por estudiar su eficiencia.
+•	Estudiar si es más eficiente hacer menos procesamiento para aprovechar todos los bytes enviados o enviar lo menos posible alineando todos los datos en el menor número de bytes posibles.
+•	Evitar que el dispositivo BLE tenga que notificar al móvil para informar que los datos están listos.
+•	Mirar las optimizaciones de compilación que ofrece cypress.
+•	Analizar posibles optimizaciones en el código.
+

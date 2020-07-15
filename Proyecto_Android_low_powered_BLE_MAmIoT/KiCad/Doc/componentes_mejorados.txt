@@ -1,0 +1,7 @@
+Fuente conmutada:
+https://www.mouser.es/Semiconductors/Integrated-Circuits-ICs/Power-Management-ICs/Voltage-Regulators-Voltage-Controllers/Switching-Voltage-Regulators/_/N-6j76f?Ns=Output+Voltage|0&No=25&P=1z0wa91Z1z0w87sZ1z0wcoiZ1z0w7yaZ1z0wbbzZ1z0w2k1Z1z0wcdhZ1z0wa2kZ1yzu4lsZ1z0z7ptZ1z0vne2Z1yutxogZ1yutx49Z1yxwtg1Z1z0vndnZ1y95l6b
+
+Controladores de carga de bateria:
+https://www.mouser.es/Semiconductors/Integrated-Circuits-ICs/Power-Management-ICs/Battery-Management/_/N-6j76v?P=1z0w9xmZ1y996qiZ1z0vzamZ1z0wd8oZ1ywvnmhZ1z0y0p1&Rl=6j76vZgjdhb5Z1z0vlizZ1yodoxeSGT&Ns=Output+Current%7c0
+
+150mA : https://www.mouser.es/datasheet/2/277/MP2603_r1.01-371747.pdf

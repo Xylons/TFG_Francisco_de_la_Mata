@@ -1,0 +1,5 @@
+(fp_lib_table
+  (lib (name fsr_footprints)(type KiCad)(uri "$(KIPRJMOD)/fsr_footprints.pretty")(options "")(descr ""))
+  (lib (name female_fpc_conn_1mm)(type KiCad)(uri "$(KIPRJMOD)/female_fpc_conn_1mm.pretty")(options "")(descr ""))
+  (lib (name insole_guide)(type KiCad)(uri "$(KIPRJMOD)/insole_guide")(options "")(descr ""))
+)

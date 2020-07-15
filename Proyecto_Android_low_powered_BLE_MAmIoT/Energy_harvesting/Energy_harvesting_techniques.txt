@@ -1,0 +1,12 @@
+•	Mini turbina movida por aire comprimido.[4]
+•	Bobinas de cobre sumergidas en el gel de la plantilla que al comprimir el gel realiza un movimiento vertical, acercándose a un imán produciendo energía.
+•	Tubos de PTFE (teflón) , por su baja fricción, con un imán interno y una bobina en el exterior para aprovechar el la inercia del pie.[2]
+•	Utilizar imanes para hacer vibrar los piezoeléctricos a la frecuencia de funcionamiento.[3]
+
+NOTA: En esta misma carpeta hay documentos que recogen artículos con algunas técnicas mencionadas.
+
+Enlaces relacionados:
+[1]	Brazalete que utilizado como un generador de Faraday: https://phys.org/news/2017-07-energy-harvesting-bracelet-power-wearable-electronics.html
+[2]	Ver Capitulo 7 pagina 212 con un  generador Faraday utilizando tubos, del PDF “10494660-tinyAVR microcontroller Projects for Evil the Genius.pdf”
+[3]	https://www.sciencedirect.com/science/article/pii/S0924424716306768
+[4]	Ver documento “Micro_turbina.pdf”.

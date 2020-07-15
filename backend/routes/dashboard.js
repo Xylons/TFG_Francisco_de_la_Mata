@@ -20,5 +20,8 @@ const extractFile = require("../middleware/file");
 // Obtener datos de un solo perfil
 router.get("/single", checkAuth, DashboardController.getOneUserInsoleData);
 
+// Obtener datos de un solo perfil
+router.get("/compare", checkAuth, DashboardController.compareUsersInsoleData);
+
 
 module.exports = router;

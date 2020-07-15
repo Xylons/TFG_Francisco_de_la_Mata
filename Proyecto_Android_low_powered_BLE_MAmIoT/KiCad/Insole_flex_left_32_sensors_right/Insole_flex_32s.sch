@@ -1,0 +1,818 @@
+EESchema Schematic File Version 4
+LIBS:Insole_flex_32s-cache
+EELAYER 26 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L fsr_schematic_library:FSR U1
+U 1 1 5BED9012
+P 1750 3750
+F 0 "U1" V 1600 3950 60  0000 R CNN
+F 1 "FSR" V 1500 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 1750 3750 60  0001 C CNN
+F 3 "" H 1750 3750 60  0001 C CNN
+	1    1750 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector:Conn_01x36_Male J1
+U 1 1 5BED9081
+P 5700 1500
+F 0 "J1" V 5535 1426 50  0000 C CNN
+F 1 "Conn_01x36_Male" V 5626 1426 50  0000 C CNN
+F 2 "fpc_female:fpc_female_36_pitch_0.5mm" H 5700 1500 50  0001 C CNN
+F 3 "~" H 5700 1500 50  0001 C CNN
+	1    5700 1500
+	0    -1   1    0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U2
+U 1 1 5BED922B
+P 2050 3750
+F 0 "U2" V 1900 3950 60  0000 R CNN
+F 1 "FSR" V 1800 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 2050 3750 60  0001 C CNN
+F 3 "" H 2050 3750 60  0001 C CNN
+	1    2050 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U3
+U 1 1 5BEDF61E
+P 2350 3750
+F 0 "U3" V 2200 3950 60  0000 R CNN
+F 1 "FSR" V 2100 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 2350 3750 60  0001 C CNN
+F 3 "" H 2350 3750 60  0001 C CNN
+	1    2350 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U4
+U 1 1 5BEDF625
+P 2650 3750
+F 0 "U4" V 2500 3950 60  0000 R CNN
+F 1 "FSR" V 2400 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 2650 3750 60  0001 C CNN
+F 3 "" H 2650 3750 60  0001 C CNN
+	1    2650 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U5
+U 1 1 5BEDF694
+P 2950 3750
+F 0 "U5" V 2800 3950 60  0000 R CNN
+F 1 "FSR" V 2700 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 2950 3750 60  0001 C CNN
+F 3 "" H 2950 3750 60  0001 C CNN
+	1    2950 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U6
+U 1 1 5BEDF69B
+P 3250 3750
+F 0 "U6" V 3100 3950 60  0000 R CNN
+F 1 "FSR" V 3000 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 3250 3750 60  0001 C CNN
+F 3 "" H 3250 3750 60  0001 C CNN
+	1    3250 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U7
+U 1 1 5BEDF6A2
+P 3550 3750
+F 0 "U7" V 3400 3950 60  0000 R CNN
+F 1 "FSR" V 3300 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 3550 3750 60  0001 C CNN
+F 3 "" H 3550 3750 60  0001 C CNN
+	1    3550 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U8
+U 1 1 5BEDF6A9
+P 3850 3750
+F 0 "U8" V 3700 3950 60  0000 R CNN
+F 1 "FSR" V 3600 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 3850 3750 60  0001 C CNN
+F 3 "" H 3850 3750 60  0001 C CNN
+	1    3850 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U9
+U 1 1 5BEDF800
+P 4150 3750
+F 0 "U9" V 4000 3950 60  0000 R CNN
+F 1 "FSR" V 3900 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 4150 3750 60  0001 C CNN
+F 3 "" H 4150 3750 60  0001 C CNN
+	1    4150 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U10
+U 1 1 5BEDF807
+P 4450 3750
+F 0 "U10" V 4300 4000 60  0000 R CNN
+F 1 "FSR" V 4200 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 4450 3750 60  0001 C CNN
+F 3 "" H 4450 3750 60  0001 C CNN
+	1    4450 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U11
+U 1 1 5BEDF80E
+P 4750 3750
+F 0 "U11" V 4600 4000 60  0000 R CNN
+F 1 "FSR" V 4500 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 4750 3750 60  0001 C CNN
+F 3 "" H 4750 3750 60  0001 C CNN
+	1    4750 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U12
+U 1 1 5BEDF815
+P 5050 3750
+F 0 "U12" V 4900 4000 60  0000 R CNN
+F 1 "FSR" V 4800 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 5050 3750 60  0001 C CNN
+F 3 "" H 5050 3750 60  0001 C CNN
+	1    5050 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U13
+U 1 1 5BEDF81C
+P 5350 3750
+F 0 "U13" V 5200 4000 60  0000 R CNN
+F 1 "FSR" V 5100 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 5350 3750 60  0001 C CNN
+F 3 "" H 5350 3750 60  0001 C CNN
+	1    5350 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U14
+U 1 1 5BEDF823
+P 5650 3750
+F 0 "U14" V 5500 4000 60  0000 R CNN
+F 1 "FSR" V 5400 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 5650 3750 60  0001 C CNN
+F 3 "" H 5650 3750 60  0001 C CNN
+	1    5650 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U15
+U 1 1 5BEDF82A
+P 5950 3750
+F 0 "U15" V 5800 4000 60  0000 R CNN
+F 1 "FSR" V 5700 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 5950 3750 60  0001 C CNN
+F 3 "" H 5950 3750 60  0001 C CNN
+	1    5950 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U16
+U 1 1 5BEDF831
+P 6250 3750
+F 0 "U16" V 6100 4000 60  0000 R CNN
+F 1 "FSR" V 6000 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 6250 3750 60  0001 C CNN
+F 3 "" H 6250 3750 60  0001 C CNN
+	1    6250 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U17
+U 1 1 5BEDFDCF
+P 6550 3750
+F 0 "U17" V 6400 4000 60  0000 R CNN
+F 1 "FSR" V 6300 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 6550 3750 60  0001 C CNN
+F 3 "" H 6550 3750 60  0001 C CNN
+	1    6550 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U18
+U 1 1 5BEDFDD6
+P 6850 3750
+F 0 "U18" V 6700 4000 60  0000 R CNN
+F 1 "FSR" V 6600 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 6850 3750 60  0001 C CNN
+F 3 "" H 6850 3750 60  0001 C CNN
+	1    6850 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U19
+U 1 1 5BEDFDDD
+P 7150 3750
+F 0 "U19" V 7000 4000 60  0000 R CNN
+F 1 "FSR" V 6900 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 7150 3750 60  0001 C CNN
+F 3 "" H 7150 3750 60  0001 C CNN
+	1    7150 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U20
+U 1 1 5BEDFDE4
+P 7450 3750
+F 0 "U20" V 7300 4000 60  0000 R CNN
+F 1 "FSR" V 7200 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 7450 3750 60  0001 C CNN
+F 3 "" H 7450 3750 60  0001 C CNN
+	1    7450 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U21
+U 1 1 5BEDFDEB
+P 7750 3750
+F 0 "U21" V 7600 4000 60  0000 R CNN
+F 1 "FSR" V 7500 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 7750 3750 60  0001 C CNN
+F 3 "" H 7750 3750 60  0001 C CNN
+	1    7750 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U22
+U 1 1 5BEDFDF2
+P 8050 3750
+F 0 "U22" V 7900 4000 60  0000 R CNN
+F 1 "FSR" V 7800 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 8050 3750 60  0001 C CNN
+F 3 "" H 8050 3750 60  0001 C CNN
+	1    8050 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U23
+U 1 1 5BEDFDF9
+P 8350 3750
+F 0 "U23" V 8200 4000 60  0000 R CNN
+F 1 "FSR" V 8100 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 8350 3750 60  0001 C CNN
+F 3 "" H 8350 3750 60  0001 C CNN
+	1    8350 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U24
+U 1 1 5BEDFE00
+P 8650 3750
+F 0 "U24" V 8500 4000 60  0000 R CNN
+F 1 "FSR" V 8400 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 8650 3750 60  0001 C CNN
+F 3 "" H 8650 3750 60  0001 C CNN
+	1    8650 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U25
+U 1 1 5BEDFE07
+P 8950 3750
+F 0 "U25" V 8800 4000 60  0000 R CNN
+F 1 "FSR" V 8700 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 8950 3750 60  0001 C CNN
+F 3 "" H 8950 3750 60  0001 C CNN
+	1    8950 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U26
+U 1 1 5BEDFE0E
+P 9250 3750
+F 0 "U26" V 9100 4000 60  0000 R CNN
+F 1 "FSR" V 9000 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 9250 3750 60  0001 C CNN
+F 3 "" H 9250 3750 60  0001 C CNN
+	1    9250 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U27
+U 1 1 5BEDFE15
+P 9550 3750
+F 0 "U27" V 9400 4000 60  0000 R CNN
+F 1 "FSR" V 9300 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 9550 3750 60  0001 C CNN
+F 3 "" H 9550 3750 60  0001 C CNN
+	1    9550 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U28
+U 1 1 5BEDFE1C
+P 9850 3750
+F 0 "U28" V 9700 4000 60  0000 R CNN
+F 1 "FSR" V 9600 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 9850 3750 60  0001 C CNN
+F 3 "" H 9850 3750 60  0001 C CNN
+	1    9850 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U29
+U 1 1 5BEDFE23
+P 10150 3750
+F 0 "U29" V 10000 4000 60  0000 R CNN
+F 1 "FSR" V 9900 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 10150 3750 60  0001 C CNN
+F 3 "" H 10150 3750 60  0001 C CNN
+	1    10150 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U30
+U 1 1 5BEDFE2A
+P 10450 3750
+F 0 "U30" V 10300 4000 60  0000 R CNN
+F 1 "FSR" V 10200 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 10450 3750 60  0001 C CNN
+F 3 "" H 10450 3750 60  0001 C CNN
+	1    10450 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U31
+U 1 1 5BEDFE31
+P 10750 3750
+F 0 "U31" V 10600 4000 60  0000 R CNN
+F 1 "FSR" V 10500 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 10750 3750 60  0001 C CNN
+F 3 "" H 10750 3750 60  0001 C CNN
+	1    10750 3750
+	0    -1   -1   0   
+$EndComp
+$Comp
+L fsr_schematic_library:FSR U32
+U 1 1 5BEDFE38
+P 11050 3750
+F 0 "U32" V 10900 4000 60  0000 R CNN
+F 1 "FSR" V 10800 4000 60  0000 R CNN
+F 2 "fsr_footprints:FSR_Circle_8mm" H 11050 3750 60  0001 C CNN
+F 3 "" H 11050 3750 60  0001 C CNN
+	1    11050 3750
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	1650 3350 1650 1700
+Wire Wire Line
+	1650 1700 4000 1700
+Wire Wire Line
+	1950 3350 1950 1750
+Wire Wire Line
+	1950 1750 4100 1750
+Wire Wire Line
+	4100 1750 4100 1700
+Wire Wire Line
+	2250 3350 2250 1800
+Wire Wire Line
+	2250 1800 4200 1800
+Wire Wire Line
+	4200 1800 4200 1700
+Wire Wire Line
+	2550 3350 2550 1850
+Wire Wire Line
+	2550 1850 4300 1850
+Wire Wire Line
+	4300 1850 4300 1700
+Wire Wire Line
+	2850 3350 2850 1900
+Wire Wire Line
+	2850 1900 4400 1900
+Wire Wire Line
+	4400 1900 4400 1700
+Wire Wire Line
+	3150 3350 3150 1950
+Wire Wire Line
+	3150 1950 4500 1950
+Wire Wire Line
+	4500 1950 4500 1700
+Wire Wire Line
+	3450 3350 3450 2000
+Wire Wire Line
+	3450 2000 4600 2000
+Wire Wire Line
+	4600 2000 4600 1700
+Wire Wire Line
+	3750 3350 3750 2050
+Wire Wire Line
+	3750 2050 4700 2050
+Wire Wire Line
+	4700 2050 4700 1700
+Wire Wire Line
+	4050 3350 4050 2100
+Wire Wire Line
+	4050 2100 4800 2100
+Wire Wire Line
+	4800 2100 4800 1700
+Wire Wire Line
+	4350 3350 4350 2150
+Wire Wire Line
+	4350 2150 4900 2150
+Wire Wire Line
+	4900 2150 4900 1700
+Wire Wire Line
+	4650 3350 4650 2200
+Wire Wire Line
+	4650 2200 5000 2200
+Wire Wire Line
+	5000 2200 5000 1700
+Wire Wire Line
+	4950 3350 4950 2250
+Wire Wire Line
+	4950 2250 5100 2250
+Wire Wire Line
+	5100 2250 5100 1700
+Wire Wire Line
+	5250 3350 5250 2250
+Wire Wire Line
+	5250 2250 5200 2250
+Wire Wire Line
+	5200 2250 5200 1700
+Wire Wire Line
+	5550 3350 5550 2750
+Wire Wire Line
+	5550 2750 5300 2750
+Wire Wire Line
+	5300 2750 5300 1700
+Wire Wire Line
+	5850 3350 5850 2700
+Wire Wire Line
+	5850 2700 5400 2700
+Wire Wire Line
+	5400 2700 5400 1700
+Wire Wire Line
+	6150 3350 6150 2650
+Wire Wire Line
+	6150 2650 5500 2650
+Wire Wire Line
+	5500 2650 5500 1700
+Wire Wire Line
+	1550 3350 1450 3350
+Wire Wire Line
+	1450 3350 1450 4150
+Wire Wire Line
+	1450 4150 1750 4150
+Wire Wire Line
+	3550 4150 3550 3350
+Wire Wire Line
+	3550 3350 3650 3350
+Wire Wire Line
+	1850 3350 1750 3350
+Wire Wire Line
+	1750 3350 1750 4150
+Connection ~ 1750 4150
+Wire Wire Line
+	1750 4150 2050 4150
+Wire Wire Line
+	2150 3350 2050 3350
+Wire Wire Line
+	2050 3350 2050 4150
+Connection ~ 2050 4150
+Wire Wire Line
+	2050 4150 2350 4150
+Wire Wire Line
+	2450 3350 2350 3350
+Wire Wire Line
+	2350 3350 2350 4150
+Connection ~ 2350 4150
+Wire Wire Line
+	2350 4150 2650 4150
+Wire Wire Line
+	2750 3350 2650 3350
+Wire Wire Line
+	2650 3350 2650 4150
+Connection ~ 2650 4150
+Wire Wire Line
+	2650 4150 2950 4150
+Wire Wire Line
+	3050 3350 2950 3350
+Wire Wire Line
+	2950 3350 2950 4150
+Connection ~ 2950 4150
+Wire Wire Line
+	2950 4150 3250 4150
+Wire Wire Line
+	3350 3350 3250 3350
+Wire Wire Line
+	3250 3350 3250 4150
+Connection ~ 3250 4150
+Wire Wire Line
+	3250 4150 3550 4150
+Wire Wire Line
+	3950 3350 3850 3350
+Wire Wire Line
+	3850 3350 3850 4150
+Wire Wire Line
+	3850 4150 4150 4150
+Wire Wire Line
+	5950 4150 5950 3350
+Wire Wire Line
+	5950 3350 6050 3350
+Wire Wire Line
+	5750 3350 5650 3350
+Wire Wire Line
+	5650 3350 5650 4150
+Connection ~ 5650 4150
+Wire Wire Line
+	5650 4150 5950 4150
+Wire Wire Line
+	5450 3350 5350 3350
+Wire Wire Line
+	5350 3350 5350 4150
+Connection ~ 5350 4150
+Wire Wire Line
+	5350 4150 5650 4150
+Wire Wire Line
+	5150 3350 5050 3350
+Wire Wire Line
+	5050 3350 5050 4150
+Connection ~ 5050 4150
+Wire Wire Line
+	5050 4150 5350 4150
+Wire Wire Line
+	4850 3350 4750 3350
+Wire Wire Line
+	4750 3350 4750 4150
+Connection ~ 4750 4150
+Wire Wire Line
+	4750 4150 5050 4150
+Wire Wire Line
+	4550 3350 4450 3350
+Wire Wire Line
+	4450 3350 4450 4150
+Connection ~ 4450 4150
+Wire Wire Line
+	4450 4150 4750 4150
+Wire Wire Line
+	4250 3350 4150 3350
+Wire Wire Line
+	4150 3350 4150 4150
+Connection ~ 4150 4150
+Wire Wire Line
+	4150 4150 4450 4150
+Wire Wire Line
+	6450 3350 6450 2600
+Wire Wire Line
+	6450 2600 6000 2600
+Wire Wire Line
+	6000 2600 6000 1700
+Wire Wire Line
+	6100 1700 6100 2550
+Wire Wire Line
+	6100 2550 6750 2550
+Wire Wire Line
+	6750 2550 6750 3350
+Wire Wire Line
+	7050 3350 7050 2500
+Wire Wire Line
+	7050 2500 6200 2500
+Wire Wire Line
+	6200 2500 6200 1700
+Wire Wire Line
+	7350 3350 7350 2450
+Wire Wire Line
+	7350 2450 6300 2450
+Wire Wire Line
+	6300 2450 6300 1700
+Wire Wire Line
+	7650 3350 7650 2400
+Wire Wire Line
+	7650 2400 6400 2400
+Wire Wire Line
+	6400 2400 6400 1700
+Wire Wire Line
+	7950 3350 7950 2350
+Wire Wire Line
+	7950 2350 6500 2350
+Wire Wire Line
+	6500 2350 6500 1700
+Wire Wire Line
+	8250 3350 8250 2300
+Wire Wire Line
+	8250 2300 6600 2300
+Wire Wire Line
+	6600 2300 6600 1700
+Wire Wire Line
+	8550 3350 8550 2250
+Wire Wire Line
+	8550 2250 6700 2250
+Wire Wire Line
+	6700 2250 6700 1700
+Wire Wire Line
+	8850 3350 8850 2200
+Wire Wire Line
+	8850 2200 6800 2200
+Wire Wire Line
+	6800 2200 6800 1700
+Wire Wire Line
+	9150 3350 9150 2150
+Wire Wire Line
+	9150 2150 6900 2150
+Wire Wire Line
+	6900 2150 6900 1700
+Wire Wire Line
+	9450 3350 9450 2100
+Wire Wire Line
+	9450 2100 7000 2100
+Wire Wire Line
+	7000 2100 7000 1700
+Wire Wire Line
+	9750 3350 9750 2050
+Wire Wire Line
+	9750 2050 7100 2050
+Wire Wire Line
+	7100 2050 7100 1700
+Wire Wire Line
+	10050 3350 10050 2000
+Wire Wire Line
+	10050 2000 7200 2000
+Wire Wire Line
+	7200 2000 7200 1700
+Wire Wire Line
+	10350 3350 10350 1950
+Wire Wire Line
+	10350 1950 7300 1950
+Wire Wire Line
+	7300 1950 7300 1700
+Wire Wire Line
+	10650 3350 10650 1900
+Wire Wire Line
+	10650 1900 7400 1900
+Wire Wire Line
+	7400 1900 7400 1700
+Wire Wire Line
+	10950 3350 10950 1850
+Wire Wire Line
+	10950 1850 7500 1850
+Wire Wire Line
+	7500 1850 7500 1700
+Wire Wire Line
+	6350 3350 6250 3350
+Wire Wire Line
+	6250 3350 6250 4150
+Wire Wire Line
+	6250 4150 6550 4150
+Wire Wire Line
+	8350 4150 8350 3350
+Wire Wire Line
+	8350 3350 8450 3350
+Wire Wire Line
+	8150 3350 8050 3350
+Wire Wire Line
+	8050 3350 8050 4150
+Connection ~ 8050 4150
+Wire Wire Line
+	8050 4150 8300 4150
+Wire Wire Line
+	7850 3350 7750 3350
+Wire Wire Line
+	7750 3350 7750 4150
+Connection ~ 7750 4150
+Wire Wire Line
+	7750 4150 8050 4150
+Wire Wire Line
+	7550 3350 7450 3350
+Wire Wire Line
+	7450 3350 7450 4150
+Connection ~ 7450 4150
+Wire Wire Line
+	7450 4150 7750 4150
+Wire Wire Line
+	7250 3350 7150 3350
+Wire Wire Line
+	7150 3350 7150 4150
+Connection ~ 7150 4150
+Wire Wire Line
+	7150 4150 7450 4150
+Wire Wire Line
+	6950 3350 6850 3350
+Wire Wire Line
+	6850 3350 6850 4150
+Connection ~ 6850 4150
+Wire Wire Line
+	6850 4150 7150 4150
+Wire Wire Line
+	6650 3350 6550 3350
+Wire Wire Line
+	6550 3350 6550 4150
+Connection ~ 6550 4150
+Wire Wire Line
+	6550 4150 6850 4150
+Wire Wire Line
+	8750 3350 8650 3350
+Wire Wire Line
+	8650 3350 8650 4150
+Wire Wire Line
+	8650 4150 8950 4150
+Wire Wire Line
+	10750 4150 10750 3350
+Wire Wire Line
+	10750 3350 10850 3350
+Wire Wire Line
+	10550 3350 10450 3350
+Wire Wire Line
+	10450 3350 10450 4150
+Connection ~ 10450 4150
+Wire Wire Line
+	10450 4150 10750 4150
+Wire Wire Line
+	10250 3350 10150 3350
+Wire Wire Line
+	10150 3350 10150 4150
+Connection ~ 10150 4150
+Wire Wire Line
+	10150 4150 10450 4150
+Wire Wire Line
+	9950 3350 9850 3350
+Wire Wire Line
+	9850 3350 9850 4150
+Connection ~ 9850 4150
+Wire Wire Line
+	9850 4150 10150 4150
+Wire Wire Line
+	9650 3350 9550 3350
+Wire Wire Line
+	9550 3350 9550 4150
+Connection ~ 9550 4150
+Wire Wire Line
+	9550 4150 9850 4150
+Wire Wire Line
+	9350 3350 9250 3350
+Wire Wire Line
+	9250 3350 9250 4150
+Connection ~ 9250 4150
+Wire Wire Line
+	9250 4150 9550 4150
+Wire Wire Line
+	9050 3350 8950 3350
+Wire Wire Line
+	8950 3350 8950 4150
+Connection ~ 8950 4150
+Wire Wire Line
+	8950 4150 9250 4150
+Wire Wire Line
+	1550 3350 1550 1300
+Wire Wire Line
+	1550 1300 5600 1300
+Wire Wire Line
+	5600 1300 5600 1700
+Connection ~ 1550 3350
+Wire Wire Line
+	3850 4150 3850 4250
+Wire Wire Line
+	3850 4250 1400 4250
+Wire Wire Line
+	1400 4250 1400 1200
+Wire Wire Line
+	1400 1200 5700 1200
+Wire Wire Line
+	5700 1200 5700 1700
+Connection ~ 3850 4150
+Wire Wire Line
+	10750 4150 11100 4150
+Wire Wire Line
+	11100 4150 11100 1300
+Wire Wire Line
+	11100 1300 5900 1300
+Wire Wire Line
+	5900 1300 5900 1700
+Connection ~ 10750 4150
+Wire Wire Line
+	5800 1700 5800 1200
+Wire Wire Line
+	5800 1200 11200 1200
+Wire Wire Line
+	11200 1200 11200 4250
+Wire Wire Line
+	11200 4250 8300 4250
+Wire Wire Line
+	8300 4250 8300 4150
+Connection ~ 8300 4150
+Wire Wire Line
+	8300 4150 8350 4150
+$EndSCHEMATC

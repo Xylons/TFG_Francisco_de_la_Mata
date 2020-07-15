@@ -43,8 +43,11 @@ exports.getBasicInfo = (id) => {
 };
 
 exports.getInsoleInfo = (id) => {
-  return PatientProfile.findOne({ linkedAccount: id }, "name surname leftInsole rightInsole");
-}
+  return PatientProfile.findOne(
+    { linkedAccount: id },
+    "name surname leftInsole rightInsole"
+  );
+};
 exports.updateProfile = (req, res, err) => {
   //falta limpiar campos nulos a la hora de editar
   let requestRol = req.userData.rol;
@@ -274,9 +277,9 @@ exports.getProfile = (req, res, next) => {
       //Entonces no tienes permiso
       if (
         req.userData.rol === RESPONSIBLE &&
-        (profileRol === ADMIN || profileRol === RESPONSIBLE) 
-        && req.userData.userId !== req.params.id)
-       {
+        (profileRol === ADMIN || profileRol === RESPONSIBLE) &&
+        req.userData.userId !== req.params.id
+      ) {
         res.status(500).json({
           message: "Not authorized to see that profile",
         });
@@ -354,12 +357,11 @@ exports.filteredSearch = (req, res, next) => {
     query.patologies = req.query.patologies;
   }
   if (req.query.searchfield) {
-  
     let name = { $regex: req.query.searchfield, $options: "i" };
     let surname = { $regex: req.query.searchfield, $options: "i" };
-    query.$or = [{name:name}, {surname:surname}];
+    query.$or = [{ name: name }, { surname: surname }];
   }
-  
+
   console.log(query);
 
   const pageSize = +req.query.pagesize;
@@ -372,9 +374,9 @@ exports.filteredSearch = (req, res, next) => {
     case PATIENT:
         break;*/
     case RESPONSIBLE:
-      query.__t= PATIENT;
-      profileQuery = PatientProfile.find( query );
-      profilesCounter = PatientProfile.countDocuments( query );
+      query.__t = PATIENT;
+      profileQuery = PatientProfile.find(query);
+      profilesCounter = PatientProfile.countDocuments(query);
       break;
     case ADMIN:
       profileQuery = Profile.find(query);
@@ -438,7 +440,7 @@ exports.getSearchParams = (req, res, next) => {
               let datediff = new Date() - new Date(minDate.bornDate);
               minAge = Math.trunc(datediff / (1000 * 60 * 60 * 24 * 365));
               ///Query para extraer patologias
-              PatientProfile.distinct('patologies').then((patologies) => {
+              PatientProfile.distinct("patologies").then((patologies) => {
                 res.status(200).json({
                   message: "All fine",
                   maxAge: maxAge,
@@ -451,6 +453,51 @@ exports.getSearchParams = (req, res, next) => {
     } catch (error) {
       res.status(500).json({
         message: "Fetching search failed!",
+      });
+    }
+  } else {
+    res.status(401).json({
+      message: "Not authorized to search!",
+    });
+    /*else{
+      // No es necesario ahora mismo, pero lo dejo por si se quiere que los usuarios tengan barra de busqueda
+      profileQuery = Profile.find({ linkedAccount: req.userData.userId }, "bornDate", "patologies").then(data=>{
+        minAge,maxAge=data.bornDate;
+        patologies=data.patologies;
+      });;;
+      profilesCounter = Profile.countDocuments({
+        linkedAccount: req.userData.userId,
+      });
+    }*/
+  }
+};
+
+exports.getPatients = (req, res, next) => {
+  //Distintas querys segun el rol
+  let rol = req.userData.rol;
+
+  if (rol === RESPONSIBLE) {
+    try {
+      //Query para extrar los datos de pacientes que tienen asginado como responsable al que solicita
+      PatientProfile.find(
+        { responsibles: req.userData.userId },
+        "name surname bornDate leftInsole rightInsole linkedAccount"
+      ).then((patients) => {
+        
+        if (patients.length > 0) {
+          res.status(200).json({
+            message: "All fine",
+            patients: patients,
+          });
+        } else {
+          res
+            .status(404)
+            .json({ message: "You need to have assigned patients first" });
+        }
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Failed getting the patients!",
       });
     }
   } else {

@@ -34,6 +34,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DialogModule } from './confirm-dialog/dialog.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { SecondInsoleComponent } from './insole/second-insole.component';
 //Added validators in sharedModule
 
 @NgModule({
@@ -44,6 +45,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MainNavComponent,
     DashboardComponent,
     InsoleComponent,
+    SecondInsoleComponent
   ],
   imports: [
     BrowserModule,

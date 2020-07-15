@@ -18,16 +18,16 @@ export class InsoleComponent implements OnInit {
   LmeanData: number[];
   RmaxData: number[];
   RmeanData: number[];
-  private leftMaxDataListener: Subscription;
-  private leftMeanDataListener: Subscription;
-  private rightMaxDataListener: Subscription;
-  private rightMeanDataListener: Subscription;
+  public leftMaxDataListener: Subscription;
+  public leftMeanDataListener: Subscription;
+  public rightMaxDataListener: Subscription;
+  public rightMeanDataListener: Subscription;
   mode = true;
 
-  private allDatesArrayListener: Subscription;
-  private activeDateListener: Subscription;
+  public allDatesArrayListener: Subscription;
+  public activeDateListener: Subscription;
   allDatesArray:any[]=[];
-  private activeDate: number;
+  public activeDate: number;
 
   formGroup: FormGroup;
   dates = new FormControl();

@@ -1,0 +1,23 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP 5V_Qi
+K POWER, PWR
+$ENDCMP
+#
+$CMP B+
+K POWER, PWR
+$ENDCMP
+#
+$CMP B-
+K POWER, PWR
+$ENDCMP
+#
+$CMP GND_BAT
+K POWER, PWR
+$ENDCMP
+#
+$CMP VOUT_REG
+K POWER, PWR
+$ENDCMP
+#
+#End Doc Library

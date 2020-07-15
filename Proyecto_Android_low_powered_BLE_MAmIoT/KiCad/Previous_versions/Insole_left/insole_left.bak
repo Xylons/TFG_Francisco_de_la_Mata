@@ -1,0 +1,320 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:fsr_schematic_library
+LIBS:insole_left-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L FSR U9
+U 1 1 5AE39597
+P 9400 5550
+F 0 "U9" V 9150 5700 60  0000 C CNN
+F 1 "FSR" H 9400 5500 60  0000 C CNN
+F 2 "fsr_footprints:FSR15x30mm" H 9400 5550 60  0001 C CNN
+F 3 "" H 9400 5550 60  0001 C CNN
+	1    9400 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L FSR U8
+U 1 1 5AE396A9
+P 8900 5550
+F 0 "U8" V 8650 5700 60  0000 C CNN
+F 1 "FSR" H 8900 5500 60  0000 C CNN
+F 2 "fsr_footprints:FSR15x30mm" H 8900 5550 60  0001 C CNN
+F 3 "" H 8900 5550 60  0001 C CNN
+	1    8900 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L FSR U7
+U 1 1 5AE396CF
+P 8400 5550
+F 0 "U7" V 8150 5700 60  0000 C CNN
+F 1 "FSR" H 8400 5500 60  0000 C CNN
+F 2 "fsr_footprints:FSR15x30mm" H 8400 5550 60  0001 C CNN
+F 3 "" H 8400 5550 60  0001 C CNN
+	1    8400 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L FSR U6
+U 1 1 5AE3971A
+P 7950 5550
+F 0 "U6" V 7700 5700 60  0000 C CNN
+F 1 "FSR" H 7950 5500 60  0000 C CNN
+F 2 "fsr_footprints:FSR15x30mm" H 7950 5550 60  0001 C CNN
+F 3 "" H 7950 5550 60  0001 C CNN
+	1    7950 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L FSR U5
+U 1 1 5AE39742
+P 7500 5550
+F 0 "U5" V 7250 5700 60  0000 C CNN
+F 1 "FSR" H 7500 5500 60  0000 C CNN
+F 2 "fsr_footprints:FSR15x30mm" H 7500 5550 60  0001 C CNN
+F 3 "" H 7500 5550 60  0001 C CNN
+	1    7500 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L FSR U4
+U 1 1 5AE39774
+P 7050 5550
+F 0 "U4" V 6800 5700 60  0000 C CNN
+F 1 "FSR" H 7050 5500 60  0000 C CNN
+F 2 "fsr_footprints:FSR15x30mm" H 7050 5550 60  0001 C CNN
+F 3 "" H 7050 5550 60  0001 C CNN
+	1    7050 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L FSR U10
+U 1 1 5AE397A8
+P 9900 5550
+F 0 "U10" V 9650 5700 60  0000 C CNN
+F 1 "FSR" H 9900 5500 60  0000 C CNN
+F 2 "fsr_footprints:FSR15x30mm" H 9900 5550 60  0001 C CNN
+F 3 "" H 9900 5550 60  0001 C CNN
+	1    9900 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L FSR U3
+U 1 1 5AE39930
+P 6600 5550
+F 0 "U3" V 6350 5700 60  0000 C CNN
+F 1 "FSR" H 6600 5500 60  0000 C CNN
+F 2 "fsr_footprints:FSR15x30mm" H 6600 5550 60  0001 C CNN
+F 3 "" H 6600 5550 60  0001 C CNN
+	1    6600 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L FSR U2
+U 1 1 5AE39966
+P 6150 5550
+F 0 "U2" V 5900 5700 60  0000 C CNN
+F 1 "FSR" H 6150 5500 60  0000 C CNN
+F 2 "fsr_footprints:FSR15x30mm" H 6150 5550 60  0001 C CNN
+F 3 "" H 6150 5550 60  0001 C CNN
+	1    6150 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L FSR U1
+U 1 1 5AE399A3
+P 5700 5550
+F 0 "U1" V 5450 5700 60  0000 C CNN
+F 1 "FSR" H 5700 5500 60  0000 C CNN
+F 2 "fsr_footprints:FSR15x30mm" H 5700 5550 60  0001 C CNN
+F 3 "" H 5700 5550 60  0001 C CNN
+	1    5700 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L FSR U11
+U 1 1 5AE399E1
+P 10350 5550
+F 0 "U11" V 10100 5700 60  0000 C CNN
+F 1 "FSR" H 10350 5500 60  0000 C CNN
+F 2 "fsr_footprints:FSR15x30mm" H 10350 5550 60  0001 C CNN
+F 3 "" H 10350 5550 60  0001 C CNN
+	1    10350 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L FSR U12
+U 1 1 5AE39A1E
+P 10800 5550
+F 0 "U12" V 10550 5700 60  0000 C CNN
+F 1 "FSR" H 10800 5500 60  0000 C CNN
+F 2 "fsr_footprints:FSR15x30mm" H 10800 5550 60  0001 C CNN
+F 3 "" H 10800 5550 60  0001 C CNN
+	1    10800 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L CONN_01X13 J1
+U 1 1 5AE39ADE
+P 7950 3400
+F 0 "J1" H 7950 4100 50  0000 C CNN
+F 1 "CONN_01X13" V 8050 3400 50  0000 C CNN
+F 2 "female_fpc_conn_1mm:Conn_FPC_1mm" H 7950 3400 50  0001 C CNN
+F 3 "" H 7950 3400 50  0001 C CNN
+	1    7950 3400
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	7950 3600 7950 4900
+Wire Wire Line
+	7950 4900 8200 4900
+Wire Wire Line
+	8200 4900 8200 5150
+Wire Wire Line
+	5500 5150 5300 5150
+Wire Wire Line
+	5300 5150 5300 5850
+Wire Wire Line
+	5950 5150 5850 5150
+Wire Wire Line
+	5850 5150 5850 5850
+Wire Wire Line
+	5300 5850 10500 5850
+Wire Wire Line
+	6300 5850 6300 5150
+Wire Wire Line
+	6300 5150 6400 5150
+Connection ~ 5850 5850
+Wire Wire Line
+	6750 5850 6750 5150
+Wire Wire Line
+	6750 5150 6850 5150
+Connection ~ 6300 5850
+Wire Wire Line
+	7200 5850 7200 5150
+Wire Wire Line
+	7200 5150 7300 5150
+Connection ~ 6750 5850
+Wire Wire Line
+	7650 5850 7650 5150
+Wire Wire Line
+	7650 5150 7750 5150
+Connection ~ 7200 5850
+Wire Wire Line
+	8100 5850 8100 5150
+Wire Wire Line
+	8100 5150 8200 5150
+Connection ~ 7650 5850
+Wire Wire Line
+	8600 5850 8600 5150
+Wire Wire Line
+	8600 5150 8700 5150
+Connection ~ 8100 5850
+Wire Wire Line
+	9100 5850 9100 5150
+Wire Wire Line
+	9100 5150 9200 5150
+Connection ~ 8600 5850
+Wire Wire Line
+	9600 5850 9600 5150
+Wire Wire Line
+	9600 5150 9700 5150
+Connection ~ 9100 5850
+Wire Wire Line
+	10050 5850 10050 5150
+Wire Wire Line
+	10050 5150 10150 5150
+Connection ~ 9600 5850
+Wire Wire Line
+	10500 5850 10500 5150
+Wire Wire Line
+	10500 5150 10600 5150
+Connection ~ 10050 5850
+Wire Wire Line
+	7350 3600 5600 3600
+Wire Wire Line
+	5600 3600 5600 5150
+Wire Wire Line
+	6050 5150 6050 3750
+Wire Wire Line
+	6050 3750 7450 3750
+Wire Wire Line
+	7450 3750 7450 3600
+Wire Wire Line
+	6500 5150 6500 3900
+Wire Wire Line
+	6500 3900 7550 3900
+Wire Wire Line
+	7550 3900 7550 3600
+Wire Wire Line
+	6950 5150 6950 4050
+Wire Wire Line
+	6950 4050 7650 4050
+Wire Wire Line
+	7650 4050 7650 3600
+Wire Wire Line
+	7400 5150 7400 4150
+Wire Wire Line
+	7400 4150 7750 4150
+Wire Wire Line
+	7750 4150 7750 3600
+Wire Wire Line
+	7850 5150 7850 3600
+Wire Wire Line
+	10700 5150 10700 3600
+Wire Wire Line
+	10700 3600 8550 3600
+Wire Wire Line
+	10250 5150 10250 3700
+Wire Wire Line
+	10250 3700 8450 3700
+Wire Wire Line
+	8450 3700 8450 3600
+Wire Wire Line
+	9800 5150 9800 3850
+Wire Wire Line
+	9800 3850 8350 3850
+Wire Wire Line
+	8350 3850 8350 3600
+Wire Wire Line
+	9300 5150 9300 4000
+Wire Wire Line
+	9300 4000 8250 4000
+Wire Wire Line
+	8250 4000 8250 3600
+Wire Wire Line
+	8800 5150 8800 4150
+Wire Wire Line
+	8800 4150 8150 4150
+Wire Wire Line
+	8150 4150 8150 3600
+Wire Wire Line
+	8300 5150 8300 4300
+Wire Wire Line
+	8300 4300 8050 4300
+Wire Wire Line
+	8050 4300 8050 3600
+$EndSCHEMATC

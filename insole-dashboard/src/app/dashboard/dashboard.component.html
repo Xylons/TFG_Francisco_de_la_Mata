@@ -1,72 +1,93 @@
 <div class="grid-container">
-
-
   <h1 class="mat-h1">Dashboard</h1>
-  <div fxLayout="column"  fxLayoutAlign="center none">
+  <div fxLayout="column" fxLayoutAlign="center none">
     <form [formGroup]="formGroup">
-
-
       <div fxFlex="50">
         <button
-        mat-stroked-button
-        [class.mat-raised-button]= "days === 1"
-                color="primary"
-                (click)="onChangeDays(1)"
-              >
-                1 Day
-              </button>
-              <button
-              mat-stroked-button
-        [class.mat-raised-button]= "days === 7"
+          mat-stroked-button
+          [class.mat-raised-button]="days === 1"
+          color="primary"
+          (click)="onChangeDays(1)"
+        >
+          1 Day
+        </button>
+        <button
+          mat-stroked-button
+          [class.mat-raised-button]="days === 7"
+          color="primary"
+          (click)="onChangeDays(7)"
+        >
+          7 Days
+        </button>
+        <button
+          mat-stroked-button
+          [class.mat-raised-button]="days === 30"
+          color="primary"
+          (click)="onChangeDays(30)"
+        >
+          1 Month
+        </button>
+      </div>
 
-                color="primary"
-                (click)="onChangeDays(7)"
-              >
-                7 Days
-              </button>
-              <button
-              mat-stroked-button
-        [class.mat-raised-button]= "days === 30"
+      <!--<mat-label class="search-label">Date</mat-label>-->
+      <div fxFlex="30" class="date-container">
+        <input
+          class="date-input"
+          matInput
+          [min]="minDate"
+          [max]="maxDate"
+          formControlName="datePicked"
+          [matDatepicker]="picker"
+          (dateChange)="onDateChanged($event)"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker
+          touchUi
+          startView="multi-year"
+          #picker
+          disabled="false"
+        ></mat-datepicker>
+      </div>
 
-                color="primary"
-                (click)="onChangeDays(30)"
-              >
-                1 Month
-              </button>
-            </div>
+                <mat-form-field class="selector-class" appearance="fill">
+                  <mat-label>Patient 1</mat-label>
+                  <mat-select
+                    (selectionChange)="selectionChanged($event,1)"
+                    formControlName="patient1"
+                  >
+                    <mat-option
+                      *ngFor="let patient of patients"
+                      [value]="patient"
+                      >{{ patient.name+ " " +patient.surname }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="selector-class" appearance="fill">
+                  <mat-label>Patient 2</mat-label>
+                  <mat-select
+                    (selectionChange)="selectionChanged($event, 2)"
+                    formControlName="patient2"
+                  >
+                    <mat-option
+                      *ngFor="let patient of patients"
+                      [value]="patient"
+                      >{{ patient.name+ " " +patient.surname }}</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
 
-        <!--<mat-label class="search-label">Date</mat-label>-->
-        <div fxFlex="30" class="date-container">
-          <input
-            class="date-input"
-            matInput
-            [min]="minDate"
-            [max]="maxDate"
-            formControlName="datePicked"
-            [matDatepicker]="picker"
-            (dateChange)="onDateChanged($event)"
-          />
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker
-            touchUi
-            startView="multi-year"
-            #picker
-            disabled="false"
-          ></mat-datepicker>
-        </div>
-
-</form>
-
+    </form>
   </div>
   <mat-grid-list cols="2" rowHeight="350px">
-    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
+    <mat-grid-tile
+      *ngFor="let card of cards | async"
+      [colspan]="card.cols"
+      [rowspan]="card.rows"
+    >
       <mat-card class="dashboard-card">
         <mat-card-header>
           <mat-card-title>
-            {{card.title}}
+            {{ card.title }}
             <!--<button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
               <mat-icon>more_vert</mat-icon>
             </button>
@@ -76,32 +97,62 @@
             </mat-menu>-->
           </mat-card-title>
         </mat-card-header>
-        <mat-card-content class="dashboard-card-content" *ngIf="card.title.toLowerCase()!=='insole'.toLowerCase(); else insole"  >
-          <div>Card Content Here
-            <div class="chart" style="position: relative; min-height: unset">
-              <canvas baseChart
-                 [datasets]="barChartData"
-                 [labels]="barChartLabels"
-                 [options]="barChartOptions"
-                 [legend]="barChartLegend"
-                 [chartType]="barChartType">
+        <mat-card-content
+          class="dashboard-card-content"
+          *ngIf="
+            card.title.toLowerCase() !== 'insole'.toLowerCase() &&
+            card.title.toLowerCase() !== 'comments'.toLowerCase()
+            &&
+            card.title.toLowerCase() !== 'insole2'.toLowerCase()
+            ;
+            else insole
+          "
+
+        >
+          <div>
+            Card Content Here
+            <div class="chart" style="position: relative; min-height: unset;">
+              <canvas
+                baseChart
+                [datasets]="barChartData"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [legend]="barChartLegend"
+                [chartType]="barChartType"
+              >
               </canvas>
-              </div>
-
+            </div>
           </div>
-
         </mat-card-content>
-        <ng-template #insole >
-        <mat-card-content   class="dashboard-card-content">
+        <ng-template #insole>
+          <mat-card-content class="dashboard-card-content"
+          *ngIf="
+          card.title.toLowerCase() === 'insole'.toLowerCase() ;
+          else comments;
+        "
+        >
+            <app-insole></app-insole>
+          </mat-card-content>
+        </ng-template>
 
-          <app-insole></app-insole>
-        </mat-card-content>
+        <ng-template #comments >
+          <mat-card-content class="dashboard-card-content comment-card"
+          *ngIf="
+          card.title.toLowerCase() !== 'insole2'.toLowerCase() ;
+          else secondInsole;
+        "
+        >
+            <app-post-create></app-post-create>
+            <app-post-list></app-post-list>
+          </mat-card-content>
+        </ng-template>
 
-
-
-      </ng-template>
+        <ng-template #secondInsole>
+          <mat-card-content class="dashboard-card-content comment-card">
+            <app-second-insole></app-second-insole>
+          </mat-card-content>
+        </ng-template>
       </mat-card>
     </mat-grid-tile>
-
   </mat-grid-list>
 </div>

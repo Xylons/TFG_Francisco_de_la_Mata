@@ -61,7 +61,7 @@ export class InsoleService {
     return this.allDatesArray.asObservable();
   }
 
-  setPressureData(leftInsoleData, rightInsoleData, allUniqueDates) {
+  setPressureData(leftInsoleData, rightInsoleData, allUniqueDates, allUniqueDates2?) {
     try{
     this.leftInsoleData = leftInsoleData;
     this.rightInsoleData = rightInsoleData;
@@ -77,6 +77,9 @@ export class InsoleService {
       this.LmaxData.next(leftInsoleData[0].maxPressureData);
       this.LmeanData.next(leftInsoleData[0].meanPressureData);
       this.activeDate.next(rightInsoleData[0].day);
+    }
+    if(allUniqueDates2){
+
     }
     }catch (error) {
 

@@ -1,0 +1,40 @@
+Item #;*Ref Des;*Qty;Manufacturer;*Mfg Part #;Description/Value;*Package;Provider ref and manufacturer ref;Link to Mouser Reference
+1;C16,C13,C11,C9,C7,C5,C14,C1;6;;8,85012E+11;0.1uF;C_0603_1608Metric;"Mouser REF: 710-885012206020
+Fabr. N.º: 885012206020 ";https://www.mouser.es/ProductDetail/Wurth-Elektronik/885012206020?qs=sGAEpiMZZMs0AnBnWHyRQEGbLOF2VP1ivD1RfS10zjEe%2FCqv5VAAJA%3D%3D
+2;C15,C12,C10,C8,C6,C2;6;;LMK107B7105KA-T ;1uF;C_0603_1608Metric;"Mouser REF: 963-LMK107B7105KA-T
+Fabr. N.º: LMK107B7105KA-T ";https://www.mouser.es/ProductDetail/Taiyo-Yuden/LMK107B7105KA-T?qs=sGAEpiMZZMs0AnBnWHyRQAEIN6r3SS%2FOs9g1%2FNgEin8%3D
+3;U9,U8,U7,U6;4;;TCMT1100 ;TCMT1100;SOP-4_4.4x2.8mm_P1.27mm;"Mouser REF:782-TCMT1100
+Fabr. N.º:TCMT1100 ";https://www.mouser.es/ProductDetail/Vishay-Semiconductors/TCMT1100?qs=%2Fha2pyFadugr66Rzl0XYTMhZFTBY4%2FGxQvLuwSP1tSA%3D
+4;U5;1;;AP9211S-AN-HAC-7;AP9211SA-AN-HAC-7;AP9211SAACHAC7;"Mouser REF:621-AP9211S-AN-HAC-7
+Fabr. N.º:AP9211S-AN-HAC-7 ";https://www.mouser.es/ProductDetail/Diodes-Incorporated/AP9211S-AN-HAC-7?qs=sGAEpiMZZMsfD%252BbMpEGFJZg9tvIjiADq5dDJOeTJyqE%3D
+5;U4;1;;CYBLE-222014-01 ;CYBLE-222014-01;CYBLE-222014-01;"Mouser REF:727-CYBLE-222014-01
+Fabr. N.º:CYBLE-222014-01 ";https://www.mouser.es/ProductDetail/Cypress-Semiconductor/CYBLE-222014-01?qs=sGAEpiMZZMu3sxpa5v1qrs8hjHNN5Rcp1xgGEemMnHc%3D
+6;U3;1;;ADP2108AUJZ-3.3-R7;ADP2108AUJ-3.3;TSOT-23-5;"Mouser REF:584-ADP2108AUJZ3.3R7
+Fabr. N.º:ADP2108AUJZ-3.3-R7";https://www.mouser.es/ProductDetail/Analog-Devices-Linear-Technology/ADP2108AUJZ-33-R7?qs=sGAEpiMZZMv9Q1JI0Mo%2FtbtrrYUVOrni
+7;U1;1;;STC4054GR;STC4054-4.2;TSOT-23-5;"Mouser REF:511-STC4054GR
+Fabr. N.º:STC4054GR ";https://www.mouser.es/ProductDetail/STMicroelectronics/STC4054GR?qs=%2Fha2pyFaduj53KbRRACqOVqH%252B%252BB9nszlp6eMiYCoshg%3D
+8;R14;1;;RC0603FR-7W100KL ;100kohm;R_0603_1608Metric;"Mouser REF:603-RC0603FR-7W100KL
+Fabr. N.º:RC0603FR-7W100KL ";https://www.mouser.es/ProductDetail/Yageo/RC0603FR-7W100KL?qs=sGAEpiMZZMtlubZbdhIBIE8A1EWi7VIOaARuCRznIl0%3D
+9;R13,R12,R9,R8,R7,R6,R3,R2,R1;9;;CRCW060310K0JNEBC ;10kohm;R_0603_1608Metric;"Mouser REF:71-CRCW060310K0JNEBC
+Fabr. N.º:CRCW060310K0JNEBC ";https://www.mouser.es/ProductDetail/Vishay-Dale/CRCW060310K0JNEBC?qs=sGAEpiMZZMtlubZbdhIBIEVnJA25NYWZL1LAW%2FhplJI%3D
+10;R10;1;;CRCW06032K70JNEAC;2.7kohm;R_0603_1608Metric;"Mouser REF:71-CRCW06032K70JNEAC
+Fabr. N.º:CRCW06032K70JNEAC ";https://www.mouser.es/ProductDetail/Vishay-Dale/CRCW06032K70JNEAC?qs=sGAEpiMZZMtlubZbdhIBIIZe04wfiaJWfEFaXe08J0k%3D
+11;R4;1;;CRCW0603390RJNEA ; between 340-460 ohm;R_0603_1608Metric;"Mouser REF:71-CRCW0603J-390-E3
+Fabr. N.º:CRCW0603390RJNEA ";https://www.mouser.es/ProductDetail/Vishay-Dale/CRCW0603390RJNEA?qs=sGAEpiMZZMtlubZbdhIBIGFBittgiF6FvAgtS3jlW%2FA%3D
+12;Q2;1;;SI2319DS-T1-E3 ;Q_PMOS_GSD;SOT-23;"Mouser REF:781-SI2319DS-T1-E3
+Fabr. N.º:SI2319DS-T1-E3 ";https://www.mouser.es/ProductDetail/Vishay-Siliconix/SI2319DS-T1-E3?qs=sGAEpiMZZMshyDBzk1%2FWi0tr%252BCiCW54dJ4%252B5x9DGzGc%3D
+13;MUX4,MUX3,MUX2,MUX1;4;;CD74HC4051PWT ;CD74HC4051;TSSOP-16_4.4x5mm_P0.65mm;"Mouser REF:595-CD74HC4051PWT
+Fabr. N.º:CD74HC4051PWT ";https://www.mouser.es/ProductDetail/595-CD74HC4051PWT
+14;L3;1;;LQM21PN1R0MC0D ;1uH;L_0805_2012Metric_Pad1.15x1.40mm_HandSolder;"Mouser REF:81-LQM21PN1R0MC0D
+Fabr. N.º:LQM21PN1R0MC0D ";https://www.mouser.es/ProductDetail/Murata-Electronics/LQM21PN1R0MC0D?qs=sGAEpiMZZMsg%252By3WlYCkU9oBvn8kICtvHEVko4azGeY%3D
+15;L2,L1;2;;BLM21PG331SN1D ;300ohm 100MHz;L_0805_2012Metric_Pad1.15x1.40mm_HandSolder;"Mouser REF:81-BLM21P331SG
+Fabr. N.º:BLM21PG331SN1D ";https://www.mouser.es/ProductDetail/Murata-Electronics/BLM21PG331SN1D?qs=%2Fha2pyFaduh48AW%2FXw9aj3nquXPBFZV5Zyd%2F%2Fy0ryyxfw3N8wCa1Fw%3D%3D
+16;J1;1;;ZX62M-B-5P(30) ;Conn_Micro_USB;USB_Micro_Custom;"Mouser REF:798-ZX62M-B-5P30
+Fabr. N.º:ZX62M-B-5P(30) ";https://www.mouser.es/ProductDetail/Hirose-Connector/ZX62M-B-5P30?qs=sGAEpiMZZMulM8LPOQ%252Byk6r3VmhUEyMLimdKXdfWrrNRRlB4HSh6yw%3D%3D
+17;C4;1;;JMK107ABJ106MA-T ;10uF;C_0603_1608Metric;" Mouser REF: 963-JMK107ABJ106MA-T
+Fabr. N.º: JMK107ABJ106MA-T ";https://www.mouser.es/ProductDetail/Taiyo-Yuden/JMK107ABJ106MA-T?qs=sGAEpiMZZMs0AnBnWHyRQC2E6McmylamemGwLGJ5obb80g38u9cPJQ%3D%3D
+18;C3;1;;JMK107BB7475KA-T ;4.7uF;C_0603_1608Metric;"Mouser REF: 963-JMK107BB7475KA-T
+Fabr. N.º: JMK107BB7475KA-T ";https://www.mouser.es/ProductDetail/Taiyo-Yuden/JMK107BB7475KA-T?qs=sGAEpiMZZMs0AnBnWHyRQMvIYFJ8iykVeXxHGR4pzFqYRxkcdbazVA%3D%3D
+19;U2;1;;ISM330DLCTR ;ISM330DLC;Bosch_LGA-14_3x2.5mm_P0.5mm;"Mouser REF:511-ISM330DLCTR
+Fabr. N.º:ISM330DLCTR ";https://www.mouser.es/ProductDetail/STMicroelectronics/ISM330DLCTR?qs=sGAEpiMZZMve4%2FbfQkoj%252BOzCxzfnVdCMu6rh%252BWDn5YY%3D
+;;44;;;;;;

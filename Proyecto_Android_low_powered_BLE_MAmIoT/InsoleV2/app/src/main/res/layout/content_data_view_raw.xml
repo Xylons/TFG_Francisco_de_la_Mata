@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="0.9"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+    <TableLayout
+        android:layout_width="0dp"
+        android:layout_weight="0.5"
+        android:layout_height="match_parent">
+
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/R_FSR0"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/zero"
+
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/R_FSR1"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/zero"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/R_FSR2"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/zero"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/R_FSR3"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/zero"
+                android:textSize="18sp" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/R_FSR4"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR5"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/R_FSR6"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR7"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/R_FSR8"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR9"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/R_FSR10"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR11"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/R_FSR12"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR13"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/R_FSR14"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR15"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/R_FSR16"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR17"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/R_FSR18"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR19"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/R_FSR20"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR21"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/R_FSR22"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR23"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/R_FSR24"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR25"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/R_FSR26"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR27"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/R_FSR28"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR29"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_FSR30"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/zero"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/R_FSR31"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/R_Frequence"
+                android:gravity="right"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text=" Hz"
+                android:textSize="18sp"
+                />
+
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/R_GyroYaw"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_GyroPitch"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/R_GyroRoll"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/R_AccelX"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/R_AccelY"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/R_AccelZ"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+
+    </TableLayout>
+    <TableLayout
+        android:layout_width="0dp"
+        android:layout_weight="0.5"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/L_FSR0"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/zero"
+
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/L_FSR1"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/zero"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/L_FSR2"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/zero"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/L_FSR3"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/zero"
+                android:textSize="18sp" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/L_FSR4"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR5"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/L_FSR6"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR7"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/L_FSR8"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR9"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/L_FSR10"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR11"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/L_FSR12"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR13"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/L_FSR14"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR15"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/L_FSR16"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR17"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/L_FSR18"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR19"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/L_FSR20"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR21"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/L_FSR22"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR23"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/L_FSR24"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR25"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/L_FSR26"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR27"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/L_FSR28"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR29"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_FSR30"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/zero"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/L_FSR31"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/L_Frequence"
+                android:gravity="right"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text=" Hz"
+                android:textSize="18sp"
+                />
+
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/L_GyroYaw"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_GyroPitch"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/L_GyroRoll"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/L_AccelX"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+
+            <TextView
+                android:id="@+id/L_AccelY"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+            <TextView
+                android:id="@+id/L_AccelZ"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/zero" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>
+    <TableRow
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/Record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#13ff00"
+            android:text="Start Record" />
+
+    </TableRow>
+</LinearLayout>

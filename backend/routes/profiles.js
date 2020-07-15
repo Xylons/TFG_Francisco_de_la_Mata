@@ -34,6 +34,8 @@ router.get("/search", checkAuth, ProfileController.filteredSearch);
 // Buscar parametros para la barra de busqueda
 router.get("/params", checkAuth, ProfileController.getSearchParams);
 
+// Busca los pacientes de un responsable
+router.get("/patients", checkAuth, ProfileController.getPatients);
 //Anadir responsable a paciente
 router.post("/editResponsible", checkAuth, ProfileController.editResponsible);
 

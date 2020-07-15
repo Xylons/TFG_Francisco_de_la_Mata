@@ -81,6 +81,6 @@ exports.removeFiles = () => {
 
 
 exports.saveCSVFile = ( filePath, base64CSV) => {
-  fs.writeFileSync(filePath,base64CSV, {encoding: 'base64'});
+  fs.writeFileSync(filePath,base64CSV);
  
 };

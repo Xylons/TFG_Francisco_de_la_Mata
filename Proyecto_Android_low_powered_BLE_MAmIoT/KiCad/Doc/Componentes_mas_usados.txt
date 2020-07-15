@@ -1,0 +1,24 @@
+Resistencias, son mucho más baratas que los condensadores:
+10k SMD para FSRs: Se utilizan bastante, por lo menos 14 por PCB.1000 unidades. Serán 2€ las 1000 unidades.
+https://www.mouser.es/ProductDetail/Yageo/RC0603FR-0710KL?qs=sGAEpiMZZMtlubZbdhIBIAhzU1Tw%252bHVakiDuQ4Zki0U%3d
+1k SMD : 1 por PCB. Si ponemos led 3 por PCB. 100  unidades.
+https://www.mouser.es/ProductDetail/Yageo/RC0603FR-071KL?qs=sGAEpiMZZMtlubZbdhIBIPpBVm91En7ng0Bhp%2fMNH0Y%3d
+100 ohm las utilizamos, pero menos. Solo hace falta 1 por PCB.100 unidades.
+https://www.mouser.es/ProductDetail/Yageo/RC0603FR-07100RL?qs=sGAEpiMZZMtlubZbdhIBICtsPjK35vDHFEzhP8agZzw%3d
+
+Tenemos 170mha-150mha para 7kohm-8kohm respectivamente. Elegir solo 1 enlace:
+	7.5k para configurar una corriente de aproximativamente 160mha.100 unidades.
+	https://www.mouser.es/ProductDetail/Yageo/RC0603FR-077K5L?qs=sGAEpiMZZMtlubZbdhIBIP1i7CT%2fCYQhKRVjQ15qNRI%3d
+	8k para configurar la corriente a 150mha:
+	https://www.mouser.es/ProductDetail/Yageo/AC0603FR-078K06L?qs=sGAEpiMZZMtlubZbdhIBIG07xJe44c5A0JCHh5W5L7Y%3d
+
+No vendría mal comprar de mouser por 0,6€(10 unidades) los filtros de ferrita, dejo el enlace por si acaso:
+https://www.mouser.es/ProductDetail/Murata-Electronics/BLM21PG331SN1D?qs=%2fha2pyFaduh48AW%2fXw9aj3nquXPBFZV5Zyd%2f%2fy0ryyxfw3N8wCa1Fw%3d%3d
+
+Condensadores, 100 de cada tipo:
+10uF: 
+https://www.mouser.es/ProductDetail/Taiyo-Yuden/JMK107ABJ106MA-T?qs=sGAEpiMZZMs0AnBnWHyRQC2E6McmylamemGwLGJ5obb80g38u9cPJQ%3d%3d
+1uF:
+https://www.mouser.es/ProductDetail/KEMET/C0603C105K9PACTU?qs=sGAEpiMZZMs0AnBnWHyRQFqPnX0OlvcosbIujTgUfW4%3d
+0.1uF:
+https://www.mouser.es/ProductDetail/KEMET/C0603C104K9PACTU?qs=sGAEpiMZZMs0AnBnWHyRQG1RinhVX0EY0RacoAv%2fQKhCyIp85JUSKA==

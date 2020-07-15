@@ -1,0 +1,8 @@
+(fp_lib_table
+  (lib (name fsr_footprints)(type KiCad)(uri D:/Users/Cosmin/Documents/GitHub/low_powered_BLE_MAmIoT/KiCad/FSRs_library/fsr_footprints.pretty)(options "")(descr ""))
+  (lib (name insole_guide)(type KiCad)(uri D:/Users/Cosmin/Documents/GitHub/low_powered_BLE_MAmIoT/KiCad/Previous_versions/Insole_left/insole_guide)(options "")(descr ""))
+  (lib (name mounting_hole)(type KiCad)(uri D:/Users/Cosmin/Documents/GitHub/low_powered_BLE_MAmIoT/KiCad/mounting_hole.pretty)(options "")(descr ""))
+  (lib (name insole_guide_Stiffener)(type KiCad)(uri D:/Users/Cosmin/Documents/GitHub/low_powered_BLE_MAmIoT/KiCad/insole_guide_Stiffener.pretty)(options "")(descr ""))
+  (lib (name fpc_female)(type KiCad)(uri D:/Users/Cosmin/Documents/GitHub/low_powered_BLE_MAmIoT/KiCad/fpc_female.pretty)(options "")(descr ""))
+  (lib (name Graphics)(type KiCad)(uri D:/Users/Cosmin/Documents/GitHub/low_powered_BLE_MAmIoT/KiCad/Graphics.preety)(options "")(descr ""))
+)

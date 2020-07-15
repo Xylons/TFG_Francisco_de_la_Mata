@@ -9,7 +9,11 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
+import { MatSelectChange } from '@angular/material/select';
+import { MatDialog } from '@angular/material/dialog';
+import { SimpleDialogComponent } from '../confirm-dialog/form-dialog/simple-dialog.component';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -20,66 +24,62 @@ export class DashboardComponent implements OnInit {
   userId: string;
   formGroup: FormGroup;
   minDate: Date;
-  maxDate: Date= new Date();
-  days:number=1;
-  selectedDate: Date=new Date();
+  maxDate: Date = new Date();
+  days: number = 1;
+  selectedDate: Date = new Date();
   mode: string;
 
   //valores para un unico paciente
   private allDatesArrayListener: Subscription;
   private nameAndSurnameListener: Subscription;
   private daysAndStepsListener: Subscription;
-  nameAndSurname:string;
-  allDatesArray:any[]=[];
-  daysAndSteps={}
+  nameAndSurname: string;
+  allDatesArray: any[] = [];
+  daysAndSteps = {}
+
+
+  //Valores para comparar pacientes
+  private patientsListener: Subscription;
+  patients: { _id: string, name: string, surname: string, bornDate: number, leftInsole: string, rightInsole: string, linkedAccount: string }[];
+  patient1;
+  patient2;
+
 
   //Valores del primer chart
   barChartLabels: string[];
-  barChartData:[{data: number[], label: string}]=[{data:[0], label:""}];
-  onebarChartData:{data: number[], label: string}={data: [], label:""};
+  barChartData: [{ data: number[], label: string }] = [{ data: [0], label: "" }];
+  onebarChartData: { data: number[], label: string } = { data: [], label: "" };
 
-  /** Based on the screen size, switch from standard to one column per row */
-  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
-        return [
-          { title: 'Card 1', cols: 1, rows: 1 },
-          { title: 'Card 2', cols: 1, rows: 1 },
-          { title: 'Insole', cols: 1, rows: 1 },
-          { title: 'Card 4', cols: 1, rows: 1 }
-        ];
-      }
+  cards: Observable<{
+    title: string;
+    cols: number;
+    rows: number;
+}[]>;
 
-      return [
-        { title: 'Card 1', cols: 2, rows: 1 },
-        { title: 'Card 2', cols: 1, rows: 1 },
-        { title: 'Insole', cols: 1, rows: 2 },
-        { title: 'Card 4', cols: 1, rows: 1 }
-      ];
-    })
-  );
 
   constructor(private breakpointObserver: BreakpointObserver, private insoleService: InsoleService,
     private dashboardService: DashboardService,
     public route: ActivatedRoute,
-    private authService: AuthService, formBuilder: FormBuilder) {
-      this.formGroup = formBuilder.group({
-        datePicked: '',
-      });
+    private authService: AuthService, formBuilder: FormBuilder, public dialog: MatDialog) {
+    this.formGroup = formBuilder.group({
+      datePicked: '',
+      patient1: '',
+      patient2: ''
+    });
+  }
+
+
+  onChangeDays(days: number) {
+    this.days = days;
+    if (this.mode === 'single') {
+      this.dashboardService.getInsoleData(this.userId, this.days, this.selectedDate.getTime());
     }
-
-
-  onChangeDays(days: number){
-    this.days=days;
-    if(this.mode=== 'single'){
-    this.dashboardService.getInsoleData(this.userId, this.days, this.selectedDate.getTime());
   }
-  }
-  onDateChanged(event: MatDatepickerInputEvent<Date>){
+  onDateChanged(event: MatDatepickerInputEvent<Date>) {
     console.log(event.value);
-    this.selectedDate=event.value;
-    if(this.mode=== 'single'){
-    this.dashboardService.getInsoleData(this.userId, this.days, this.selectedDate.getTime());
+    this.selectedDate = event.value;
+    if (this.mode === 'single') {
+      this.dashboardService.getInsoleData(this.userId, this.days, this.selectedDate.getTime());
     }
   }
   ngOnInit() {
@@ -89,55 +89,111 @@ export class DashboardComponent implements OnInit {
     // Si la segunda parte de la url es compare es para comparar,
     //si no tiene nada es dashboard general
     this.route.url.subscribe((url) => {
-      if(url[1].path === "compare"){
-        this.mode= 'compare';
-      }else{
-        this.mode= 'multiple';
+      if (url[1].path === "compare") {
+        let changed= this.mode !== undefined && this.mode !== 'compare';
+
+        this.mode = 'compare';
+        if(changed) {location.reload();}
+
+      } else {
+
+        this.mode = 'multiple';
+
       }
     });
     // si la url contiene un parametro es el dashboard personal
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.userId = paramMap.get('userId');
-      if(this.userId !== 'compare'  ){
-        this.mode= 'single';
+      if (this.userId !== 'compare') {
+
+        this.mode = 'single';
 
       }
     });
-    if(this.mode=== 'single'){
-    this.dashboardService.getInsoleData(this.userId, this.days, new Date().getTime());
 
-    this.nameAndSurnameListener = this.dashboardService.getNameAndSurnameListener()
-    .subscribe((nameAndSurname) => {
-   this.nameAndSurname=nameAndSurname;
-   this.onebarChartData.label=nameAndSurname;
+    /** Based on the screen size, switch from standard to one column per row */
+  this.cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+    map(({ matches }) => {
+      if (this.mode === 'single') {
+        if (matches) {
+          return [
+            { title: 'Card 1', cols: 1, rows: 1 },
+            { title: 'Comments', cols: 1, rows: 1 },
+            { title: 'Insole', cols: 1, rows: 1 },
+          ];
+        }
 
-    });
+        return [
+          { title: 'Card 1', cols: 2, rows: 1 },
+          { title: 'Comments', cols: 1, rows: 2 },
+          { title: 'Insole', cols: 1, rows: 2 },
+        ];
+      }
+      if (this.mode === 'compare') {
+        if (matches) {
+          return [
+            { title: 'Card 1', cols: 1, rows: 1 },
+            { title: 'Insole', cols: 1, rows: 1 },
+            { title: 'Insole2', cols: 1, rows: 1 },
+          ];
+        }
 
-    this.daysAndStepsListener = this.dashboardService.getDaysAndStepsListener()
-    .subscribe((daysAndSteps) => {
-   this.daysAndSteps=daysAndSteps;
-   let firstCharData=[]
-      this.allDatesArray.forEach((day) =>{
-        firstCharData.push(this.daysAndSteps[day]);
-      })
-      console.log(daysAndSteps);
-   this.onebarChartData.data=[...firstCharData];
-   //this.barChartData.push(this.onebarChartData);
-   this.barChartData=[this.onebarChartData];
-    });
+        return [
+          { title: 'Card 1', cols: 2, rows: 1 },
+          { title: 'Insole', cols: 1, rows: 2 },
+          { title: 'Insole2', cols: 1, rows: 2 },
+        ];
+      }
+    })
+  );
 
-}
+    if (this.mode === 'single') {
+      this.dashboardService.getInsoleData(this.userId, this.days, new Date().getTime());
+
+      this.nameAndSurnameListener = this.dashboardService.getNameAndSurnameListener()
+        .subscribe((nameAndSurname) => {
+          this.nameAndSurname = nameAndSurname;
+          this.onebarChartData.label = nameAndSurname;
+
+        });
+
+      this.daysAndStepsListener = this.dashboardService.getDaysAndStepsListener()
+        .subscribe((daysAndSteps) => {
+          this.daysAndSteps = daysAndSteps;
+          let firstCharData = []
+          this.allDatesArray.forEach((day) => {
+            firstCharData.push(this.daysAndSteps[day]);
+          })
+          console.log(daysAndSteps);
+          //Hago reverse() para que coincida con los valores de las label
+          this.onebarChartData.data = [...firstCharData.reverse()];
+          //this.barChartData.push(this.onebarChartData);
+          this.barChartData = [this.onebarChartData];
+        });
+
+    }
+
+    if (this.mode === 'compare') {
+      this.dashboardService.getMyPatientsInfo();
+      this.patientsListener = this.dashboardService.getPatientsListener()
+        .subscribe((patients) => {
+          this.patients = patients;
+
+        });
+    }
     this.formGroup.patchValue({
       'datePicked': new Date()
+
     });
 
     this.allDatesArrayListener = this.dashboardService.getAllDatesArrayListener()
       .subscribe((allDatesArray) => {
-        this.barChartLabels=[];
-        this.allDatesArray=allDatesArray;
-        for (let i = 0; i < allDatesArray.length; i++) {
-          let dateInfo= new Date(parseInt(allDatesArray[i]));
-          let dayAndMonth= dateInfo.getDay() + "/"+ dateInfo.getMonth();
+        this.barChartLabels = [];
+        this.allDatesArray = allDatesArray;
+        // For inverso para respetar el orden de fechas
+        for (let i = allDatesArray.length - 1; i >= 0; i--) {
+          let dateInfo = new Date(parseInt(allDatesArray[i]));
+          let dayAndMonth = dateInfo.getDate() + "/" + (dateInfo.getMonth() + 1);
           this.barChartLabels.push(dayAndMonth);
           console.log(this.barChartLabels);
         }
@@ -145,12 +201,60 @@ export class DashboardComponent implements OnInit {
       });
 
   }
+
+  selectionChanged(event: MatSelectChange, numberOfPatient: number) {
+    console.log(event);
+    let patient1Info = this.formGroup.get('patient1').value;
+    let patient2Info = this.formGroup.get('patient2').value;
+    //comprobacion de usuarios sin plantillas asignadas
+    if (numberOfPatient === 1 && !patient1Info.leftInsole && !patient1Info.rightInsole) {
+      this.dialog
+        .open(SimpleDialogComponent, {
+          data: 'The user ' + patient1Info.name + ' ' + patient1Info.surname + ' does not have Insoles'
+        });
+      this.formGroup.get('patient1').patchValue("");
+    }
+    else if (numberOfPatient === 2 && !patient2Info.leftInsole && !patient2Info.rightInsole) {
+      this.dialog
+        .open(SimpleDialogComponent, {
+          data: 'The user ' + patient2Info.name + ' ' + patient2Info.surname + ' does not have Insoles'
+        });
+      this.formGroup.get('patient2').patchValue("");
+    }
+
+    else if (patient1Info && patient2Info) {
+      if (patient1Info !== patient2Info) {
+        //Hago copia profunda del objeto para modificarlo
+        let sendedPatient1 = JSON.parse(JSON.stringify(patient1Info));
+        delete sendedPatient1.__t,
+          delete sendedPatient1._id, delete sendedPatient1.name,
+          delete sendedPatient1.surname, delete sendedPatient1.bornDate;
+        let sendedPatient2 = JSON.parse(JSON.stringify(patient2Info));
+        delete sendedPatient2.__t,
+          delete sendedPatient2._id, delete sendedPatient2.name,
+          delete sendedPatient2.surname, delete sendedPatient2.bornDate;
+
+        console.log(sendedPatient1);
+        this.dashboardService.getCompareInsoleData(JSON.stringify(sendedPatient1), JSON.stringify(sendedPatient2), this.days, this.selectedDate.getTime());
+
+
+      } else {
+        this.dialog
+          .open(SimpleDialogComponent, {
+            data: 'Choose diferent users'
+          });
+      }
+
+    }
+
+
+  }
   /// BarChart
   public barChartOptions = {
     scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    scales: { xAxes: [{}], yAxes: [{ ticks: {beginAtZero: true  } }] },
+    scales: { xAxes: [{}], yAxes: [{ ticks: { beginAtZero: true } }] },
     plugins: {
       datalabels: {
         anchor: 'end',
@@ -163,10 +267,10 @@ export class DashboardComponent implements OnInit {
   public barChartType = 'bar';
   public barChartLegend = true;
 
- /* public barChartData = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
-  ];*/
+  /* public barChartData = [
+     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+     { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
+   ];*/
 
   ///INSOLE svg
 
