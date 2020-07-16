@@ -1,6 +1,16 @@
 <!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <mat-grid-list cols="3" rowHeight="60px">
 <mat-grid-tile >
+<mat-slider *ngIf="mode"
+  (input)="onHourChange($event)"
+        class="example-margin"
+
+        [max]=24
+        [min]=1
+        [step]=1
+        [thumbLabel]=true
+        [vertical]=false>
+    </mat-slider>
 </mat-grid-tile >
       <mat-grid-tile >
 
@@ -8,7 +18,7 @@
 <div  *ngIf="mode">
 <button
         mat-raised-button
-        color="warn"
+        color="accent"
         (click)="onChangeView( true)"
       >
         HOUR
@@ -24,7 +34,7 @@
 <div  *ngIf="!mode">
 <button
         mat-button
-        color="warn"
+        color="accent"
         (click)="onChangeView(true)"
       >
         HOUR
@@ -36,6 +46,8 @@
       >
         DAY
       </button>
+
+
 </div>
 </mat-grid-tile >
 <mat-grid-tile >
@@ -43,7 +55,7 @@
         <mat-form-field class="selector-class" appearance="fill">
           <mat-label>Date</mat-label>
           <mat-select
-            (selectionChange)="selectionChanged($event)"
+            (selectionChange)="selectionDayChanged($event)"
             formControlName="dates"
           >
             <mat-option

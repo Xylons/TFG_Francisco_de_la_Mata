@@ -103,5 +103,9 @@ background-color: #f3e5f5;
   margin-bottom: 10px;
 }
 
+.mat-grid-tile {
+  overflow: inherit;
+}
+
 
 

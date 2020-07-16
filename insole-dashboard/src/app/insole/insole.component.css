@@ -5,3 +5,7 @@
 .mat-form-field {
   text-align: center;
 }
+
+.mat-grid-tile {
+  overflow: inherit;
+}

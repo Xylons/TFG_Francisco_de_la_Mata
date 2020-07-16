@@ -27,6 +27,7 @@ export class DashboardService {
   private allCompareDatesArray = new Subject<string[]>();
 
   private nameAndSurname = new Subject<string>();
+  private stepsByHour = new Subject<{ steps: [], hours: [] }>();
 
   private leftDatesArray = {};
   private rightDatesArray = {};
@@ -88,7 +89,7 @@ export class DashboardService {
     console.log(this.router.url);
   }
 
-  setUserId(userId:string){
+  setUserId(userId: string) {
     console.log(userId);
     this.postService.setPatientId(userId);
     this.userId.next(userId);
@@ -100,39 +101,52 @@ export class DashboardService {
     console.log(BACKEND_URL + "single" + queryParams);
 
     this.http.get<{
-      name: string, surname: string, leftInsole: {
-        meanPressureData: number[], maxPressureData: number[], day: number
-        insoleId: string, steps: number, name: string, surname: string
-      }[], rightInsole: {
-        meanPressureData: number[], maxPressureData: number[], day: number
-        insoleId: string, steps: number
-      }[]
-
+      name: string, surname: string,
+      insoleData: {
+        allDatesArray: [],
+        daysAndSteps: {},
+        leftInsole: { insoleId: string, meanByDay: [] },
+        rightInsole: { insoleId: string, meanByDay: [] },
+      }
     }>(BACKEND_URL + "single" + queryParams)
-      .subscribe((insoleData) => {
-        console.log(insoleData);
-        this.nameAndSurname.next(insoleData.name + " " + insoleData.surname.charAt(0));
-        this.leftInsoleData = insoleData.leftInsole;
-        this.rightInsoleData = insoleData.rightInsole;
-        let allUniqueDates = this.getAllUniqueDates();
-        this.insoleService.setPressureData(insoleData.leftInsole, insoleData.rightInsole, allUniqueDates);
-        this.getStepsByDay(insoleData.leftInsole[0].insoleId, insoleData.rightInsole[0].insoleId, customDay)
+      .subscribe((response) => {
+        console.log(response);
+        this.nameAndSurname.next(response.name + " " + response.surname.charAt(0));
+        this.allDatesArray.next(response.insoleData.allDatesArray);
+        this.daysAndSteps.next(response.insoleData.daysAndSteps);
+
+        //Mando la informacion diaria de la presion al componente insole
+        this.insoleService.setPressureData(response.insoleData.leftInsole,
+          response.insoleData.rightInsole, response.insoleData.allDatesArray);
+        if (days === 1) {
+          this.getStepsByDay(response.insoleData.leftInsole.insoleId, response.insoleData.rightInsole.insoleId, customDay)
+        }
       });
   }
 
-  getStepsByDay(leftInsoleId: string, rightInsoleId:string, day:number){
+  getStepsByDay(leftInsoleId: string, rightInsoleId: string, day: number) {
+    let date=new Date(day);
+    date.setDate(date.getDate() - 1);
+    day= date.getTime();
     //esto se lanza si elige un dia
-   /// `` sirve añadir valores a un string dinamicamente
-   const queryParams = `?leftInsoleId=${leftInsoleId}&rightInsoleId=${rightInsoleId}&day=${day}`
-   // En este no hace falta unscribe ya que se desuscribe solo
-   console.log(BACKEND_URL + "hourdata" + queryParams);
+    /// `` sirve añadir valores a un string dinamicamente
+    const queryParams = `?leftInsoleId=${leftInsoleId}&rightInsoleId=${rightInsoleId}&day=${day}`
+    // En este no hace falta unscribe ya que se desuscribe solo
+    console.log(BACKEND_URL + "hourdata" + queryParams);
 
-   this.http.get<{
-   }>(BACKEND_URL + "hourdata" + queryParams)
-     .subscribe((insoleData) => {
-       console.log(insoleData);
-
-     });
+    this.http.get<{
+      insoleData: {
+        allDatesArray: [],
+        daysAndSteps: {},
+        leftInsole: { insoleId: string, meanByDay: [] },
+        rightInsole: { insoleId: string, meanByDay: [] },
+      }
+    }>(BACKEND_URL + "hourdata" + queryParams)
+      .subscribe((response) => {
+        console.log(response);
+        this.allDatesArray.next(response.insoleData.allDatesArray);
+        this.daysAndSteps.next(response.insoleData.daysAndSteps);
+      });
   }
 
   getCompareInsoleData(patient1, patient2, days: number, customDay: number) {
@@ -168,7 +182,7 @@ export class DashboardService {
         this.rightInsoleData = patientsData.patient1.rightInsole;
         this.leftInsoleData2 = patientsData.patient1.leftInsole;
         this.rightInsoleData2 = patientsData.patient1.rightInsole;
-        let allCompareUniqueDates = this.getAllUniqueDates(true);
+        //let allCompareUniqueDates = this.getAllUniqueDates(true);
         this.insoleService.setPressureData(this.leftInsoleData,
           this.rightInsoleData, this.patient1AllUniqueDates, this.patient2AllUniqueDates);
 
@@ -197,70 +211,5 @@ export class DashboardService {
       });
   }
 
-  getAllUniqueDates(compare?: boolean) {
-    let daysAndStepsTemp = {};
-    this.leftDatesArray=[];
-    this.rightDatesArray=[];
-    //Anado los datos un array indicando como indice el dia
-    for (let i = 0; i < this.leftInsoleData.length; i++) {
-      this.leftDatesArray[this.leftInsoleData[i].day] = this.leftInsoleData[i].steps;
-      if (daysAndStepsTemp[this.leftInsoleData[i].day]) {
-        daysAndStepsTemp[this.leftInsoleData[i].day] += this.leftInsoleData[i].steps;
-      } else {
-        daysAndStepsTemp[this.leftInsoleData[i].day] = this.leftInsoleData[i].steps;
-      }
-    }
-    for (let i = 0; i < this.rightInsoleData.length; i++) {
-      this.rightDatesArray[this.rightInsoleData[i].day] = this.rightInsoleData[i].steps;
-      if (daysAndStepsTemp[this.rightInsoleData[i].day]) {
-        daysAndStepsTemp[this.rightInsoleData[i].day] += this.rightInsoleData[i].steps;
-      } else {
-        daysAndStepsTemp[this.rightInsoleData[i].day] = this.rightInsoleData[i].steps;
-      }
-    }
-    //Si esta en modo compare calculo el segundo paciente
-    if (compare) {
-      let daysAndStepsTemp2 = {};
-      this.leftDatesArray2=[];
-    this.rightDatesArray2=[];
-      for (let i = 0; i < this.leftInsoleData2.length; i++) {
-        this.leftDatesArray2[this.leftInsoleData2[i].day] = this.leftInsoleData2[i].steps;
-        if (daysAndStepsTemp2[this.leftInsoleData2[i].day]) {
-          daysAndStepsTemp2[this.leftInsoleData2[i].day] += this.leftInsoleData2[i].steps;
-        } else {
-          daysAndStepsTemp2[this.leftInsoleData2[i].day] = this.leftInsoleData2[i].steps;
-        }
-      }
-      for (let i = 0; i < this.rightInsoleData2.length; i++) {
-        this.rightDatesArray2[this.rightInsoleData2[i].day] = this.rightInsoleData2[i].steps;
-        if (daysAndStepsTemp2[this.rightInsoleData2[i].day]) {
-          daysAndStepsTemp2[this.rightInsoleData2[i].day] += this.rightInsoleData2[i].steps;
-        } else {
-          daysAndStepsTemp2[this.rightInsoleData2[i].day] = this.rightInsoleData2[i].steps;
-        }
-      }
-      let bothDates = [...Object.keys(this.leftDatesArray), ...Object.keys(this.rightDatesArray)];
-      let uniqueDates = Array.from(new Set([...bothDates]));
-      let bothDates2 = [...Object.keys(this.leftDatesArray2), ...Object.keys(this.rightDatesArray2)];
-      let uniqueDates2 = Array.from(new Set([...bothDates2]));
-
-      this.allDatesArray.next(uniqueDates);
-      this.allDatesArray2.next(uniqueDates2);
-      let bothUsersDates = [...Object.keys(uniqueDates), ...Object.keys(uniqueDates2)]
-      this.allCompareDatesArray.next(bothUsersDates);
-
-      this.patient1AllUniqueDates = [...uniqueDates];
-      this.patient2AllUniqueDates = [...uniqueDates2];
-
-      this.daysAndSteps.next(daysAndStepsTemp);
-    } else {
-      //Extraigo las fechas de las dos plantillas y descarto las repetidas con set
-      let bothDates = [...Object.keys(this.leftDatesArray), ...Object.keys(this.rightDatesArray)];
-      let uniqueDates = Array.from(new Set([...bothDates]));
-      this.allDatesArray.next(uniqueDates);
-      this.daysAndSteps.next(daysAndStepsTemp);
-      return uniqueDates;
-    }
-  }
 
 }

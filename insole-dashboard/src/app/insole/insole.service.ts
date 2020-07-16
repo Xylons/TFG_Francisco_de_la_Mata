@@ -11,49 +11,50 @@ import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 
 
+const BACKEND_URL = environment.apiURL + "/dashboard/"
 
 @Injectable({
   providedIn: 'root'
 })
 export class InsoleService {
-  private LmaxData = new Subject<number[]>();
-  private LmeanData = new Subject<number[]>();
-  private RmaxData = new Subject<number[]>();
-  private RmeanData = new Subject<number[]>();
-  private leftInsoleData: {
-    meanPressureData: number[], maxPressureData: number[], day: number
-    insoleId: string, steps: number
-  }[];
-  private rightInsoleData: {
-    meanPressureData: number[], maxPressureData: number[], day: number
-    insoleId: string, steps: number
-  }[];
 
-  private leftDatesArray = {};
-  private rightDatesArray = {};
+  private LmeanData = new Subject<number[]>();
+  private RmeanData = new Subject<number[]>();
+
+  private LmeanDayData = new Subject<number[]>();
+  private RmeanDayData = new Subject<number[]>();
+
+
+
+  private LAllMeanDays;
+  private RAllMeanDays;
+
   private allDatesArray = new Subject<string[]>();
   private activeDate = new Subject<number>();
   public changed: boolean;
+  private pressureByHour = new Subject<[{ hours: number, meanPressure: [] }]>();
 
   constructor(private http: HttpClient, private router: Router) {
     this.changed = false;
   }
 
-  getLmaxDataListener() {
-    return this.LmaxData.asObservable();
-  }
+
 
   getLmeanDataListener() {
     return this.LmeanData.asObservable();
   }
-
-  getRmaxDataListener() {
-    return this.RmaxData.asObservable();
-  }
-
   getRmeanDataListener() {
     return this.RmeanData.asObservable();
   }
+
+  getLMeanDayDataListener() {
+    return this.LmeanDayData.asObservable();
+  }
+  getRMeanDayDataListener() {
+    return this.RmeanDayData.asObservable();
+  }
+
+
   getActiveDateListener() {
     return this.activeDate.asObservable();
   }
@@ -62,33 +63,55 @@ export class InsoleService {
   }
 
   setPressureData(leftInsoleData, rightInsoleData, allUniqueDates, allUniqueDates2?) {
-    try{
-    this.leftInsoleData = leftInsoleData;
-    this.rightInsoleData = rightInsoleData;
-    this.allDatesArray.next(allUniqueDates);
-    if (rightInsoleData[0].day === rightInsoleData[0].day) {
-      this.LmaxData.next(leftInsoleData[0].maxPressureData);
-      this.LmeanData.next(leftInsoleData[0].meanPressureData);
-      this.RmaxData.next(rightInsoleData[0].maxPressureData);
-      this.RmeanData.next(rightInsoleData[0].meanPressureData);
-      this.activeDate.next(rightInsoleData[0].day);
+    try {
+      console.log("Pressure recieved in Insole Service");
+      this.LAllMeanDays = leftInsoleData;
+      this.RAllMeanDays = rightInsoleData;
+      this.allDatesArray.next(allUniqueDates);
 
-    } else {
-      this.LmaxData.next(leftInsoleData[0].maxPressureData);
-      this.LmeanData.next(leftInsoleData[0].meanPressureData);
-      this.activeDate.next(rightInsoleData[0].day);
-    }
-    if(allUniqueDates2){
+      this.LmeanData.next(leftInsoleData.meanByDay[allUniqueDates[0]]);
+      this.RmeanData.next(rightInsoleData.meanByDay[allUniqueDates[0]]);
 
-    }
-    }catch (error) {
+      this.activeDate.next(parseInt(allUniqueDates[0]));
+
+      this.getDataByHours(leftInsoleData.insoleId, rightInsoleData.insoleId, parseInt(allUniqueDates[0]))
+
+      if (allUniqueDates2) {
+
+      }
+    } catch (error) {
 
     }
 
   }
+  getDataByHours(leftInsoleId: string, rightInsoleId: string, day: number) {
+    //esto se lanza si elige un dia
+    /// `` sirve añadir valores a un string dinamicamente
+    const queryParams = `?leftInsoleId=${leftInsoleId}&rightInsoleId=${rightInsoleId}&day=${day}`
+    // En este no hace falta unscribe ya que se desuscribe solo
+    console.log(BACKEND_URL + "hourdata" + queryParams);
+
+    this.http.get<{
+    }>(BACKEND_URL + "hourdata" + queryParams)
+      .subscribe((insoleData) => {
+        console.log(insoleData);
+        let temporalStepsByHour;
+
+      });
+  }
+
+
 
   changeActiveDate(date: number) {
+    this.LmeanData.next(this.LAllMeanDays[date]);
+      this.RmeanData.next(this.RAllMeanDays[date]);
 
+    //LLamar a solicitar datos por hora
+  }
+
+  changeHourData(date: number) {
+    this.LmeanDayData.next();
+      this.RmeanDayData.next();
   }
 
 

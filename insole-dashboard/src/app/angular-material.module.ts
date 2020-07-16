@@ -16,6 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSliderModule } from '@angular/material/slider';
 
 
 // Al poner exports solo realiza el import automaticamente
@@ -36,7 +37,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatDialogModule,
     MatTooltipModule,
     MatSelectModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatSliderModule
     ]
 })
 export class AngularMaterialModule { }

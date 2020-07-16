@@ -114,15 +114,13 @@
           <div>
             Card Content Here
             <div class="chart" style="position: relative; min-height: unset;">
-              <canvas
-                baseChart
-                [datasets]="barChartData"
-                [labels]="barChartLabels"
-                [options]="barChartOptions"
-                [legend]="barChartLegend"
-                [chartType]="barChartType"
-              >
-              </canvas>
+              <div id="chart-container">
+                <canvas #myCanvas id="canvas" width=800 height=200 baseChart
+                [chartType]="chartType"
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="chartOptions"></canvas>
+              </div>
             </div>
           </div>
         </mat-card-content>

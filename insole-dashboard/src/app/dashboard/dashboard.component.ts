@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 //import * as Chart from 'chart.js'
@@ -13,6 +13,7 @@ import { Subscription, Observable } from 'rxjs';
 import { MatSelectChange } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleDialogComponent } from '../confirm-dialog/form-dialog/simple-dialog.component';
+
 
 
 @Component({
@@ -46,16 +47,25 @@ export class DashboardComponent implements OnInit {
 
 
   //Valores del primer chart
-  barChartLabels: string[];
-  barChartData: [{ data: number[], label: string }] = [{ data: [0], label: "" }];
-  onebarChartData: { data: number[], label: string } = { data: [], label: "" };
+  lineChartLabels: string[];
+  lineChartData: [{ data: number[], label: string }] = [{ data: [0], label: "" }];
+  oneLineChartData: { data: number[], label: string } = { data: [], label: "" };
 
   cards: Observable<{
     title: string;
     cols: number;
     rows: number;
-}[]>;
+  }[]>;
+  // Valores chart lineas
 
+  @ViewChild('myCanvas')
+  public canvas: ElementRef;
+  public context: CanvasRenderingContext2D;
+  public chartType: string = 'line';
+  public chartData: any[];
+  public chartLabels: any[];
+  public chartColors: any[];
+  public chartOptions: any;
 
   constructor(private breakpointObserver: BreakpointObserver, private insoleService: InsoleService,
     private dashboardService: DashboardService,
@@ -66,7 +76,57 @@ export class DashboardComponent implements OnInit {
       patient1: '',
       patient2: ''
     });
+    this.chartData = [{
+      data: [3, 1, 4, 2, 5],
+      label: 'Anthracnose',
+      fill: false
+    },
+    {
+      data: [8, 4, 1, 5, 2],
+      label: 'Anthe',
+      fill: false
+    },
+    ];
+    this.chartLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
+
+    this.chartOptions = {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            stepSize: 1
+          }
+        }]
+      },
+      annotation: {
+        drawTime: 'beforeDatasetsDraw',
+        annotations: [{
+          type: 'box',
+          id: 'a-box-1',
+          yScaleID: 'y-axis-0',
+          yMin: 0,
+          yMax: 1,
+          backgroundColor: '#4cf03b'
+        }, {
+          type: 'box',
+          id: 'a-box-2',
+          yScaleID: 'y-axis-0',
+          yMin: 1,
+          yMax: 2.7,
+          backgroundColor: '#fefe32'
+        }, {
+          type: 'box',
+          id: 'a-box-3',
+          yScaleID: 'y-axis-0',
+          yMin: 2.7,
+          yMax: 5,
+          backgroundColor: '#fe3232'
+        }]
+      }
+    }
+
   }
+
 
 
   onChangeDays(days: number) {
@@ -84,16 +144,18 @@ export class DashboardComponent implements OnInit {
   }
   ngOnInit() {
 
+
+
     //Suscripción para detectar cambios en route
     console.log("asdasdad");
     // Si la segunda parte de la url es compare es para comparar,
     //si no tiene nada es dashboard general
     this.route.url.subscribe((url) => {
       if (url[1].path === "compare") {
-        let changed= this.mode !== undefined && this.mode !== 'compare';
+        let changed = this.mode !== undefined && this.mode !== 'compare';
 
         this.mode = 'compare';
-        if(changed) {this.ngOnInit();}
+        if (changed) { this.ngOnInit(); }
 
       } else {
 
@@ -114,54 +176,54 @@ export class DashboardComponent implements OnInit {
     });
 
     /** Based on the screen size, switch from standard to one column per row */
-  this.cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (this.mode === 'single') {
-        if (matches) {
+    this.cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+      map(({ matches }) => {
+        if (this.mode === 'single') {
+          if (matches) {
+            return [
+              { title: 'Evolution', cols: 1, rows: 1 },
+              { title: 'Comments', cols: 1, rows: 1 },
+              { title: 'Insole', cols: 1, rows: 1 },
+            ];
+          }
+
           return [
-            { title: 'Evolution', cols: 1, rows: 1 },
-            { title: 'Comments', cols: 1, rows: 1 },
-            { title: 'Insole', cols: 1, rows: 1 },
+            { title: 'Evolution', cols: 2, rows: 1 },
+            { title: 'Comments', cols: 1, rows: 2 },
+            { title: 'Insole', cols: 1, rows: 2 },
+          ];
+        }
+        if (this.mode === 'compare') {
+          if (matches) {
+            return [
+              { title: 'Evolution', cols: 1, rows: 1 },
+              { title: 'Insole', cols: 1, rows: 1 },
+              { title: 'Insole2', cols: 1, rows: 1 },
+            ];
+          }
+
+          return [
+            { title: 'Evolution', cols: 2, rows: 1 },
+            { title: 'Insole', cols: 1, rows: 2 },
+            { title: 'Insole2', cols: 1, rows: 2 },
           ];
         }
 
-        return [
-          { title: 'Evolution', cols: 2, rows: 1 },
-          { title: 'Comments', cols: 1, rows: 2 },
-          { title: 'Insole', cols: 1, rows: 2 },
-        ];
-      }
-      if (this.mode === 'compare') {
-        if (matches) {
-          return [
-            { title: 'Evolution', cols: 1, rows: 1 },
-            { title: 'Insole', cols: 1, rows: 1 },
-            { title: 'Insole2', cols: 1, rows: 1 },
-          ];
-        }
+        if (this.mode === 'multiple') {
+          if (matches) {
+            return [
+              { title: 'Evolution', cols: 1, rows: 1 },
 
-        return [
-          { title: 'Evolution', cols: 2, rows: 1 },
-          { title: 'Insole', cols: 1, rows: 2 },
-          { title: 'Insole2', cols: 1, rows: 2 },
-        ];
-      }
+            ];
+          }
 
-      if (this.mode === 'multiple') {
-        if (matches) {
           return [
-            { title: 'Evolution', cols: 1, rows: 1 },
+            { title: 'Evolution', cols: 2, rows: 1 },
 
           ];
         }
-
-        return [
-          { title: 'Evolution', cols: 2, rows: 1 },
-
-        ];
-      }
-    })
-  );
+      })
+    );
 
     if (this.mode === 'single') {
       this.dashboardService.getInsoleData(this.userId, this.days, new Date().getTime());
@@ -169,7 +231,7 @@ export class DashboardComponent implements OnInit {
       this.nameAndSurnameListener = this.dashboardService.getNameAndSurnameListener()
         .subscribe((nameAndSurname) => {
           this.nameAndSurname = nameAndSurname;
-          this.onebarChartData.label = nameAndSurname;
+          this.oneLineChartData.label = nameAndSurname;
 
         });
 
@@ -182,10 +244,16 @@ export class DashboardComponent implements OnInit {
           })
           console.log(daysAndSteps);
           //Hago reverse() para que coincida con los valores de las label
-          this.onebarChartData.data =[];
-          this.onebarChartData.data = [...firstCharData.reverse()];
+          this.oneLineChartData.data = [];
+          //Si son horas no hay que hacer reverse ya que llega correcto
+          if(this.days===1){
+            this.oneLineChartData.data = [...firstCharData];
+          }else{
+            this.oneLineChartData.data = [...firstCharData.reverse()];
+          }
+
           //this.barChartData.push(this.onebarChartData);
-          this.barChartData = [this.onebarChartData];
+          this.lineChartData = [this.oneLineChartData];
         });
 
     }
@@ -205,15 +273,21 @@ export class DashboardComponent implements OnInit {
 
     this.allDatesArrayListener = this.dashboardService.getAllDatesArrayListener()
       .subscribe((allDatesArray) => {
-        this.barChartLabels = [];
+        this.lineChartLabels = [];
         console.log(allDatesArray);
         this.allDatesArray = allDatesArray;
         // For inverso para respetar el orden de fechas
         for (let i = allDatesArray.length - 1; i >= 0; i--) {
-          let dateInfo = new Date(parseInt(allDatesArray[i]));
-          let dayAndMonth = dateInfo.getDate() + "/" + (dateInfo.getMonth() + 1);
-          this.barChartLabels.push(dayAndMonth);
-          console.log(this.barChartLabels);
+
+          let dayAndMonth;
+          if (this.days == 1) {
+            dayAndMonth = allDatesArray[(i-(allDatesArray.length - 1))*-1];
+          } else {
+            let dateInfo = new Date(parseInt(allDatesArray[i]));
+            dayAndMonth = dateInfo.getDate() + "/" + (dateInfo.getMonth() + 1);
+          }
+          this.lineChartLabels.push(dayAndMonth);
+          //console.log(this.lineChartLabels);
         }
 
       });

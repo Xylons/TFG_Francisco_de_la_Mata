@@ -112,14 +112,16 @@ exports.getOneUserInsoleData = (req, res, next) => {
             .then((rightInsoleData) => {
               //Aqui se puede añadir que devuelva lo ultimo que encuentre en caso de no encontrar
               if (leftInsoleData || rightInsoleData) {
+                let insoleData = this.getAllUniqueDates(
+                  leftInsoleData,
+                  rightInsoleData,
+                  'day'
+                );
                 res.status(200).json({
                   message: "Success",
-                  leftInsole: leftInsoleData,
-                  rightInsole: rightInsoleData,
+                  insoleData: insoleData,
                   name: profileData.name,
                   surname: profileData.surname,
-                  leftInsoleId: profileData.leftInsole,
-                  rightInsoleId: profileData.rightInsole,
                 });
               } else {
                 res.status(400).json({
@@ -149,8 +151,8 @@ exports.getOneUserHourData = (req, res, next) => {
   let rightInsoleId = req.query.rightInsoleId;
 
   //transformacion a las 00:00:00 de ese dia
-  let date=new Date(day)
-  date.setDate(date.getDate() - 1);
+  let date = new Date(day);
+  //date.setDate(date.getDate() - 1);
   day = new Date(date.toDateString()).getTime();
 
   if (
@@ -168,11 +170,15 @@ exports.getOneUserHourData = (req, res, next) => {
           .sort({ hour: -1 })
           .then((rightInsoleData) => {
             //Aqui se puede añadir que devuelva lo ultimo que encuentre en caso de no encontrar
-            if (leftInsoleData || rightInsoleData) {
+            if (leftInsoleData && rightInsoleData) {
+              let insoleData = this.getAllUniqueDates(
+                leftInsoleData,
+                rightInsoleData,
+                'hour'
+              );
               res.status(200).json({
                 message: "Success",
-                leftInsole: leftInsoleData,
-                rightInsole: rightInsoleData,
+                insoleData: insoleData
               });
             } else {
               res.status(400).json({
@@ -182,7 +188,7 @@ exports.getOneUserHourData = (req, res, next) => {
           })
           .catch((error) => {
             res.status(500).json({
-              message: "Fetching insole data failed!",
+              message: "Fetching insole data failed!"+error,
             });
           });
       });
@@ -264,4 +270,97 @@ exports.compareUsersInsoleData = (req, res, next) => {
       message: "The user doesnt have assigned Insoles",
     });
   }
+};
+
+
+
+exports.getAllUniqueDates = (leftInsole, rightInsole, dayOrHour) => {
+  if(leftInsole && rightInsole && dayOrHour){
+  let daysAndStepsTemp = {};
+  let leftDatesArray = [];
+  let rightDatesArray = [];
+  let leftMeanArray = {};
+  let rightMeanArray = {};
+  
+  
+
+  let leftInsoleId = leftInsole[0].insoleId;
+  let rightInsoleId = rightInsole[0].insoleId;
+  //Anado los datos un array indicando como indice el dia
+  for (let i = 0; i < leftInsole.length; i++) {
+    leftDatesArray[leftInsole[i][dayOrHour]] = leftInsole[i].steps;
+    leftMeanArray[leftInsole[i][dayOrHour]] = leftInsole[i].meanPressureData;
+    if (daysAndStepsTemp[leftInsole[i][dayOrHour]]) {
+      daysAndStepsTemp[leftInsole[i][dayOrHour]] += leftInsole[i].steps;
+    } else {
+      daysAndStepsTemp[leftInsole[i][dayOrHour]] = leftInsole[i].steps;
+    }
+  }
+  for (let i = 0; i < rightInsole.length; i++) {
+    rightDatesArray[rightInsole[i][dayOrHour]] = rightInsole[i].steps;
+    rightMeanArray[rightInsole[i][dayOrHour]] = rightInsole[i].meanPressureData;
+    if (daysAndStepsTemp[rightInsole[i][dayOrHour]]) {
+      daysAndStepsTemp[rightInsole[i][dayOrHour]] += rightInsole[i].steps;
+    } else {
+      daysAndStepsTemp[rightInsole[i][dayOrHour]] = rightInsole[i].steps;
+    }
+  }
+
+  //Extraigo las fechas de las dos plantillas y descarto las repetidas con set
+  let bothDates = [
+    ...Object.keys(leftDatesArray),
+    ...Object.keys(rightDatesArray),
+  ];
+  let uniqueDates = Array.from(new Set([...bothDates]));
+
+  //leftMeanArray= Array.from(...leftMeanArray);
+  //rightMeanArray= Array.from(...rightMeanArray);
+  return {
+    allDatesArray: uniqueDates,
+    daysAndSteps: daysAndStepsTemp,
+    leftInsole: { insoleId: leftInsoleId, meanByDay: leftMeanArray },
+    rightInsole: { insoleId: rightInsoleId, meanByDay:rightMeanArray},
+  };}
+  else{
+    return {
+      allDatesArray: [],
+      daysAndSteps: {},
+      leftInsole: { insoleId: 0, meanByDay: [] },
+      rightInsole: { insoleId: 0, meanByDay:[]},
+    };
+  
+  }
+  //    return {allDatesArray: uniqueDates, daysAndSteps: daysAndStepsTemp {day: {daysAndStepsTemp: daysAndStepsTemp, leftInsole:{id:, steps: ,mean: }, rightInsole:{steps: },}}}
+};
+exports.getAllUniqueHours = (leftInsole, rightInsole, dayOrHour) => {
+  /*
+  let daysAndStepsTemp = {};
+  let leftDatesArray = [];
+  let rightDatesArray = [];
+  //Anado los datos un array indicando como indice el dia
+  for (let i = 0; i < leftInsoleData.length; i++) {
+    this.leftDatesArray[leftInsoleData[i].day] = leftInsoleData[i].steps;
+    if (daysAndStepsTemp[leftInsoleData[i].day]) {
+      daysAndStepsTemp[leftInsoleData[i].day] += leftInsoleData[i].steps;
+    } else {
+      daysAndStepsTemp[leftInsoleData[i].day] = leftInsoleData[i].steps;
+    }
+  }
+  for (let i = 0; i < rightInsoleData.length; i++) {
+    rightDatesArray[rightInsoleData[i].day] = rightInsoleData[i].steps;
+    if (daysAndStepsTemp[rightInsoleData[i].day]) {
+      daysAndStepsTemp[rightInsoleData[i].day] += rightInsoleData[i].steps;
+    } else {
+      daysAndStepsTemp[rightInsoleData[i].day] = rightInsoleData[i].steps;
+    }
+  }
+
+  //Extraigo las fechas de las dos plantillas y descarto las repetidas con set
+  let bothDates = [...Object.keys(leftDatesArray), ...Object.keys(rightDatesArray)];
+  let uniqueDates = Array.from(new Set([...bothDates]));
+  this.allDatesArray.next(uniqueDates);
+  this.daysAndSteps.next(daysAndStepsTemp);
+  {day: {leftInsole:{steps: ,mean:, hour: {steps:,mean:} }, rightInsole:{steps: },}}
+  return 
+*/
 };

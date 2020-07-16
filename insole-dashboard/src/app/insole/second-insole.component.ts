@@ -16,50 +16,7 @@ export class SecondInsoleComponent extends InsoleComponent{
 
 
   ngOnInit(): void {
-
-    this.leftMaxDataListener = this.insoleService.getLmaxDataListener()
-      .subscribe((maxData) => {
-        //this.isLoading = false;
-        this.LmaxData = maxData;
-        this.onChangeView(true);
-      });
-    this.leftMeanDataListener = this.insoleService.getLmeanDataListener()
-      .subscribe((meanData) => {
-        //this.isLoading = false;
-        this.LmeanData = meanData;
-      });
-    this.rightMaxDataListener = this.insoleService.getRmaxDataListener()
-      .subscribe((maxData) => {
-        //this.isLoading = false;
-        this.RmaxData = maxData;
-        this.onChangeView(true);
-      });
-    this.rightMeanDataListener = this.insoleService.getRmeanDataListener()
-      .subscribe((meanData) => {
-        //this.isLoading = false;
-        this.RmeanData = meanData;
-      });
-      this.allDatesArrayListener = this.insoleService.getAllDatesArrayListener()
-      .subscribe((allDatesArray) => {
-        this.allDatesArray=[];
-        for (let i = 0; i < allDatesArray.length; i++) {
-          let dateInfo= {
-            key: new Date(parseInt(allDatesArray[i])).toDateString() ,
-            value: parseInt(allDatesArray[i])
-          };
-          this.allDatesArray.push(dateInfo)
-        }
-
-      });
-      this.activeDateListener = this.insoleService.getActiveDateListener()
-      .subscribe((activeDate) => {
-        //this.isLoading = false;
-        this.activeDate = activeDate;
-        this.formGroup.controls.dates
-        .patchValue(activeDate);
-      });
-
-
+//hay que poner nginit especifico
   }
 
 }
