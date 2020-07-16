@@ -55,7 +55,8 @@ exports.readCSV =async function getCSVdata() {
         sensorsSum[i]= sensorsSum[i]/rowCount;
       };
       console.log(`Parsed ${rowCount} rows`+ sensorsSum + "   ---------   "+ maxValues+ " steps " + steps)
-      DashboardController.addInsoleData(new Date().getTime(), "1234", sensorsSum,maxValues,steps);
+      //DashboardController.addDailyInsoleData(1594245600000, "1234", sensorsSum,maxValues,steps, new Date().getHours());
+      DashboardController.addHourInsoleData(1594245600000, 12, "1234", sensorsSum,steps, );
     });
 
   /*const table = data.split("\n").slice(1);

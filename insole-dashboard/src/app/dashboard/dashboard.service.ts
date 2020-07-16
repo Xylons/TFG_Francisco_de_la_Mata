@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 // Uso variables de entorno para obtener la direccion API
@@ -10,6 +10,7 @@ import { FormGroup } from '@angular/forms';
 //Observable
 import { Subject } from 'rxjs';
 import { InsoleService } from '../insole/insole.service';
+import { PostsService } from '../post/posts.service';
 
 
 const BACKEND_URL = environment.apiURL + "/dashboard/"
@@ -20,6 +21,7 @@ const PATIENTS_BACKEND_URL = environment.apiURL + "/profile/"
 })
 export class DashboardService {
   //Variables usadas en modo single
+  private userId = new Subject<string>();
   private allDatesArray = new Subject<string[]>();
   private allDatesArray2 = new Subject<string[]>();
   private allCompareDatesArray = new Subject<string[]>();
@@ -56,6 +58,9 @@ export class DashboardService {
   patient1AllUniqueDates = [];
   patient2AllUniqueDates = [];
 
+  getUserIdListener() {
+    return this.userId.asObservable();
+  }
   getAllDatesArrayListener() {
     return this.allDatesArray.asObservable();
   }
@@ -78,8 +83,16 @@ export class DashboardService {
   getPatientsListener() {
     return this.patients.asObservable();
   }
-  constructor(private http: HttpClient, private router: Router, private insoleService: InsoleService) { }
+  constructor(private http: HttpClient, private router: Router, private insoleService: InsoleService,
+    private postService: PostsService) {
+    console.log(this.router.url);
+  }
 
+  setUserId(userId:string){
+    console.log(userId);
+    this.postService.setPatientId(userId);
+    this.userId.next(userId);
+  }
   getInsoleData(id: string, days: number, customDay: number) {
     /// `` sirve añadir valores a un string dinamicamente
     const queryParams = `?id=${id}&range=${days}&customday=${customDay}`
@@ -103,7 +116,23 @@ export class DashboardService {
         this.rightInsoleData = insoleData.rightInsole;
         let allUniqueDates = this.getAllUniqueDates();
         this.insoleService.setPressureData(insoleData.leftInsole, insoleData.rightInsole, allUniqueDates);
+        this.getStepsByDay(insoleData.leftInsole[0].insoleId, insoleData.rightInsole[0].insoleId, customDay)
       });
+  }
+
+  getStepsByDay(leftInsoleId: string, rightInsoleId:string, day:number){
+    //esto se lanza si elige un dia
+   /// `` sirve añadir valores a un string dinamicamente
+   const queryParams = `?leftInsoleId=${leftInsoleId}&rightInsoleId=${rightInsoleId}&day=${day}`
+   // En este no hace falta unscribe ya que se desuscribe solo
+   console.log(BACKEND_URL + "hourdata" + queryParams);
+
+   this.http.get<{
+   }>(BACKEND_URL + "hourdata" + queryParams)
+     .subscribe((insoleData) => {
+       console.log(insoleData);
+
+     });
   }
 
   getCompareInsoleData(patient1, patient2, days: number, customDay: number) {
@@ -170,6 +199,8 @@ export class DashboardService {
 
   getAllUniqueDates(compare?: boolean) {
     let daysAndStepsTemp = {};
+    this.leftDatesArray=[];
+    this.rightDatesArray=[];
     //Anado los datos un array indicando como indice el dia
     for (let i = 0; i < this.leftInsoleData.length; i++) {
       this.leftDatesArray[this.leftInsoleData[i].day] = this.leftInsoleData[i].steps;
@@ -190,6 +221,8 @@ export class DashboardService {
     //Si esta en modo compare calculo el segundo paciente
     if (compare) {
       let daysAndStepsTemp2 = {};
+      this.leftDatesArray2=[];
+    this.rightDatesArray2=[];
       for (let i = 0; i < this.leftInsoleData2.length; i++) {
         this.leftDatesArray2[this.leftInsoleData2[i].day] = this.leftInsoleData2[i].steps;
         if (daysAndStepsTemp2[this.leftInsoleData2[i].day]) {

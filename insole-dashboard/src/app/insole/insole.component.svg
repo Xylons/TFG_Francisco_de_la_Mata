@@ -11,14 +11,14 @@
         color="warn"
         (click)="onChangeView( true)"
       >
-        MAX
+        HOUR
       </button>
       <button
         mat-button
         color="primary"
         (click)="onChangeView(false)"
       >
-        MEAN
+        DAY
       </button>
 </div>
 <div  *ngIf="!mode">
@@ -27,14 +27,14 @@
         color="warn"
         (click)="onChangeView(true)"
       >
-        MAX
+        HOUR
       </button>
       <button
         mat-raised-button
         color="primary"
         (click)="onChangeView(false)"
       >
-        MEAN
+        DAY
       </button>
 </div>
 </mat-grid-tile >

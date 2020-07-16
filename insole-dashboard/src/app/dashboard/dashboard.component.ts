@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit {
         let changed= this.mode !== undefined && this.mode !== 'compare';
 
         this.mode = 'compare';
-        if(changed) {location.reload();}
+        if(changed) {this.ngOnInit();}
 
       } else {
 
@@ -104,9 +104,11 @@ export class DashboardComponent implements OnInit {
     // si la url contiene un parametro es el dashboard personal
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.userId = paramMap.get('userId');
+
       if (this.userId !== 'compare') {
 
         this.mode = 'single';
+        this.dashboardService.setUserId(this.userId);
 
       }
     });
@@ -117,14 +119,14 @@ export class DashboardComponent implements OnInit {
       if (this.mode === 'single') {
         if (matches) {
           return [
-            { title: 'Card 1', cols: 1, rows: 1 },
+            { title: 'Evolution', cols: 1, rows: 1 },
             { title: 'Comments', cols: 1, rows: 1 },
             { title: 'Insole', cols: 1, rows: 1 },
           ];
         }
 
         return [
-          { title: 'Card 1', cols: 2, rows: 1 },
+          { title: 'Evolution', cols: 2, rows: 1 },
           { title: 'Comments', cols: 1, rows: 2 },
           { title: 'Insole', cols: 1, rows: 2 },
         ];
@@ -132,16 +134,30 @@ export class DashboardComponent implements OnInit {
       if (this.mode === 'compare') {
         if (matches) {
           return [
-            { title: 'Card 1', cols: 1, rows: 1 },
+            { title: 'Evolution', cols: 1, rows: 1 },
             { title: 'Insole', cols: 1, rows: 1 },
             { title: 'Insole2', cols: 1, rows: 1 },
           ];
         }
 
         return [
-          { title: 'Card 1', cols: 2, rows: 1 },
+          { title: 'Evolution', cols: 2, rows: 1 },
           { title: 'Insole', cols: 1, rows: 2 },
           { title: 'Insole2', cols: 1, rows: 2 },
+        ];
+      }
+
+      if (this.mode === 'multiple') {
+        if (matches) {
+          return [
+            { title: 'Evolution', cols: 1, rows: 1 },
+
+          ];
+        }
+
+        return [
+          { title: 'Evolution', cols: 2, rows: 1 },
+
         ];
       }
     })
@@ -166,6 +182,7 @@ export class DashboardComponent implements OnInit {
           })
           console.log(daysAndSteps);
           //Hago reverse() para que coincida con los valores de las label
+          this.onebarChartData.data =[];
           this.onebarChartData.data = [...firstCharData.reverse()];
           //this.barChartData.push(this.onebarChartData);
           this.barChartData = [this.onebarChartData];
@@ -189,6 +206,7 @@ export class DashboardComponent implements OnInit {
     this.allDatesArrayListener = this.dashboardService.getAllDatesArrayListener()
       .subscribe((allDatesArray) => {
         this.barChartLabels = [];
+        console.log(allDatesArray);
         this.allDatesArray = allDatesArray;
         // For inverso para respetar el orden de fechas
         for (let i = allDatesArray.length - 1; i >= 0; i--) {

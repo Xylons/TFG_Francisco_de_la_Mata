@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Router } from '@angular/router';
+import { Router, ParamMap, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Post } from './post.model';
 
 // Uso variables de entorno para obtener la direccion API
 import{ environment } from '../../environments/environment';
 
 //Observable
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 // Map se usa para transformar arrays en otros nuevos
 import { map } from 'rxjs/operators'
+import { DashboardService } from '../dashboard/dashboard.service';
 
 const BACKEND_URL = environment.apiURL + "/posts/"
 
@@ -19,12 +20,27 @@ const BACKEND_URL = environment.apiURL + "/posts/"
 export class PostsService {
   private posts: Post[] = [];
   private postsUpdated = new Subject<{posts:Post[], postCount: number}>();
+  userIdListener:Subscription;
+  //Objeto para suscribir el post component con el id que recibe de dashboard
+  recieveduserIdListener=new Subject<string>();
+
+  private patientId:string;
+
+  constructor(private http: HttpClient, private router: Router, ) {
 
 
-  constructor(private http: HttpClient, private router: Router) { }
+  }
+  setPatientId(patientId:string){
+    console.log(patientId);
+    this.patientId=(patientId);
+  }
+
+  getRecUserIdListener(){
+    return this.recieveduserIdListener.asObservable();
+  }
   getPosts(postPerPage: number, currentPage: number) {
     /// `` sirve añadir valores a un string dinamicamente
-    const queryParams= `?pagesize=${postPerPage}&page=${currentPage}`
+    const queryParams= `?pagesize=${postPerPage}&page=${currentPage}&userId=${this.patientId}`
     // En este no hace falta unscribe ya que se desuscribe solo
     this.http.get<{ message: string, posts: any , maxPosts: number}>(BACKEND_URL+ queryParams)
       .pipe(map((postData) => {
@@ -33,7 +49,7 @@ export class PostsService {
             title: post.title,
             content: post.content,
             id: post._id,
-            imagePath: post.imagePath,
+            tiemstamp: post.timestamp,
             creator: post.creator
           };
         }), maxPosts: postData.maxPosts};
@@ -53,44 +69,38 @@ export class PostsService {
       _id: string,
       title: string,
       content: string,
-      imagePath: string,
+      timestamp:number,
       creator:string
     }>(BACKEND_URL + id);
 
   }
-  addPost(title: string, content: string, image:File) {
-    const postData= new FormData();
-    postData.append("title", title),
-    postData.append("content", content),
-    // se llama image ya que accedemos desde back con single("image")
-    postData.append("image", image, title);
+  addPost(title: string, content: string) {
+    console.log(title+content);
+    let postData=  {
+      title:title,
+      content: content,
+      userId: this.patientId
+    }
     this.http.post<{ message: string, post: Post }>(BACKEND_URL, postData)
       .subscribe((responseData) => {
-        this.router.navigate(["/"]);
+        //this.router.navigate(["/"]);
+        this.getPosts(4,1);
       });
 
   }
 
-  updatePost(id: string, title: string, content: string, image: File | string){
-    let postData: Post | FormData;
+  updatePost(id: string, title: string, content: string){
+    let postData: Post ;
     // Si el objeto es un archivo significa que se ha cambiado
-    if(typeof(image)=== 'object'){
-      postData = new FormData();
-      postData.append("id", id);
-      postData.append("title", title);
-      postData.append("content", content);
-      postData.append("image", image, title);
 
-    }else{
       postData=  {
         id:id,
         title:title,
         content: content,
-        imagePath: image,
         creator: null
       }
 
-    }
+
 
     this.http.put(BACKEND_URL + id, postData)
     .subscribe(response =>{

@@ -1,6 +1,7 @@
-const Insole = require("../models/insole");
-const InsoleDailyInfo = require("../models/insoleDailyInfo");
-const InsoleWeeklyInfo = require("../models/insoleWeeklyInfo");
+const InsoleDays = require("../models/insoleDays");
+const InsoleHours = require("../models/insoleHours");
+const InsoleGeneralDailyInfo = require("../models/insoleGeneralDailyInfo");
+
 const ProfileController = require("./profile");
 
 const UNDEFINED = process.env.notdefined;
@@ -10,14 +11,36 @@ const ADMIN = process.env.admin;
 
 exports.addFile = (req, res, next) => {};
 
-exports.addInsoleData = (
+exports.addHourInsoleData = (day, hour, insoleId, meanPressureData, steps) => {
+  //Falta poner que si ya existe esa entrada que se actualize
+  const insole = new InsoleHours({
+    day: day,
+    hour: hour,
+    insoleId: insoleId,
+    meanPressureData: meanPressureData,
+    steps: steps,
+  });
+  // Almaceno los datos en Mongo
+  insole
+    .save()
+    .then((createdInsole) => {
+      console.log(createdInsole);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+exports.addDailyInsoleData = (
   day,
   insoleId,
   meanPressureData,
   maxPressureData,
   steps
 ) => {
-  const insole = new Insole({
+  //Falta poner que revise todas las horas de ese dia, calcule la media y total de pasos
+  //y lo asigne a un dia
+  const insole = new InsoleDays({
     day: day,
     insoleId: insoleId,
     meanPressureData: meanPressureData,
@@ -35,7 +58,7 @@ exports.addInsoleData = (
     });
 };
 
-exports.addDailyData = (
+exports.addGeneralData = (
   day,
   meanOfSteps,
   minSteps,
@@ -43,19 +66,6 @@ exports.addDailyData = (
   meanPressure,
   maxPressureUser
 ) => {};
-exports.addWeeklyData = (
-  day,
-  meanOfSteps,
-  minSteps,
-  maxSteps,
-  meanPressure,
-  maxPressureUser
-) => {};
-
-//hay que poner para que devuelva intervalos de tiempo
-//Datos en epoch
-//let actualDate = new Date();
-//let epochAge = actualDate.setFullYear(actualDate.getFullYear() - age);
 
 ///Last week
 //let date= new Date();
@@ -93,11 +103,11 @@ exports.getOneUserInsoleData = (req, res, next) => {
       //let insoleIds = [profileData.leftInsole, profileData.rightInsole]; { $in: insoleIds }
       //solicito los datos de plantilla izquierda y luego de la derecha
       query.insoleId = profileData.leftInsole;
-      Insole.find(query)
+      InsoleDays.find(query)
         .sort({ day: -1 })
         .then((leftInsoleData) => {
           query.insoleId = profileData.rightInsole;
-          Insole.find(query)
+          InsoleDays.find(query)
             .sort({ day: -1 })
             .then((rightInsoleData) => {
               //Aqui se puede añadir que devuelva lo ultimo que encuentre en caso de no encontrar
@@ -108,6 +118,8 @@ exports.getOneUserInsoleData = (req, res, next) => {
                   rightInsole: rightInsoleData,
                   name: profileData.name,
                   surname: profileData.surname,
+                  leftInsoleId: profileData.leftInsole,
+                  rightInsoleId: profileData.rightInsole,
                 });
               } else {
                 res.status(400).json({
@@ -127,6 +139,54 @@ exports.getOneUserInsoleData = (req, res, next) => {
       });
     }
   });
+};
+
+exports.getOneUserHourData = (req, res, next) => {
+  let customDay;
+  let query = {};
+  let day = parseInt(req.query.day);
+  let leftInsoleId = req.query.leftInsoleId;
+  let rightInsoleId = req.query.rightInsoleId;
+
+  //transformacion a las 00:00:00 de ese dia
+  let date=new Date(day)
+  date.setDate(date.getDate() - 1);
+  day = new Date(date.toDateString()).getTime();
+
+  if (
+    (req.userData.rol !== RESPONSIBLE && req.userData.rol !== ADMIN) ||
+    (req.userData.rol === PATIENT && req.userData.userId !== req.query.id)
+  ) {
+    res.status(500).json({
+      message: "Not authorized to that dashboard",
+    });
+  } else {
+    InsoleHours.find({ insoleId: leftInsoleId, day: day })
+      .sort({ hour: -1 })
+      .then((leftInsoleData) => {
+        InsoleHours.find({ insoleId: rightInsoleId, day: day })
+          .sort({ hour: -1 })
+          .then((rightInsoleData) => {
+            //Aqui se puede añadir que devuelva lo ultimo que encuentre en caso de no encontrar
+            if (leftInsoleData || rightInsoleData) {
+              res.status(200).json({
+                message: "Success",
+                leftInsole: leftInsoleData,
+                rightInsole: rightInsoleData,
+              });
+            } else {
+              res.status(400).json({
+                message: "Error, have data for the selected date",
+              });
+            }
+          })
+          .catch((error) => {
+            res.status(500).json({
+              message: "Fetching insole data failed!",
+            });
+          });
+      });
+  }
 };
 
 exports.compareUsersInsoleData = (req, res, next) => {
@@ -155,29 +215,35 @@ exports.compareUsersInsoleData = (req, res, next) => {
   if (patient1 && patient2) {
     //Busco informacion del primer usuario
     query.insoleId = patient1.leftInsole;
-    Insole.find(query)
+    InsoleDays.find(query)
       .sort({ day: -1 })
       .then((patient1LeftInsoleData) => {
         query.insoleId = patient1.rightInsole;
-        Insole.find(query)
+        InsoleDays.find(query)
           .sort({ day: -1 })
           .then((patient1RightInsoleData) => {
             query.insoleId = patient2.leftInsole;
-            Insole.find(query)
+            InsoleDays.find(query)
               .sort({ day: -1 })
               .then((patient2LeftInsoleData) => {
                 query.insoleId = patient2.rightInsole;
-                Insole.find(query)
+                InsoleDays.find(query)
                   .sort({ day: -1 })
                   .then((patient2RightInsoleData) => {
-                    let patient1Insoles= {leftInsole: patient1LeftInsoleData, rightInsole: patient1RightInsoleData};
-                    let patient2Insoles= {leftInsole: patient2LeftInsoleData, rightInsole: patient2RightInsoleData};
+                    let patient1Insoles = {
+                      leftInsole: patient1LeftInsoleData,
+                      rightInsole: patient1RightInsoleData,
+                    };
+                    let patient2Insoles = {
+                      leftInsole: patient2LeftInsoleData,
+                      rightInsole: patient2RightInsoleData,
+                    };
                     // Si hay algún dato
                     if (patient1Insoles || patient2Insoles) {
                       res.status(200).json({
                         message: "Success",
                         patient1: patient1Insoles,
-                        patient2: patient2Insoles
+                        patient2: patient2Insoles,
                       });
                     } else {
                       res.status(400).json({

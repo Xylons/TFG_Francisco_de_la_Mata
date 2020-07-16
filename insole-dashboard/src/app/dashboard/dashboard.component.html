@@ -1,5 +1,7 @@
 <div class="grid-container">
-  <h1 class="mat-h1">Dashboard</h1>
+  <h1 class="mat-h1" *ngIf="mode === 'single'">Personal Info of {{nameAndSurname}}</h1>
+  <h1 class="mat-h1" *ngIf="mode === 'compare'">Patients Comparison</h1>
+  <h1 class="mat-h1" *ngIf="mode === 'multiple'">General Dashboard</h1>
   <div fxLayout="column" fxLayoutAlign="center none">
     <form [formGroup]="formGroup">
       <div fxFlex="50">

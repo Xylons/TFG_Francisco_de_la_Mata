@@ -26,19 +26,24 @@ export class PostListComponent implements OnInit, OnDestroy {
   isLoading = false;
   //controladores de paginator
   totalPost = 0;
-  postPerPage = 6;
+  postPerPage = 4;
   currentPage = 1;
-  pageSizeOptions = [1, 2, 5, 10];
+  pageSizeOptions = [1, 2, 4];
   userIsAuthenticated = false;
   userId: string;
-
+  patientIdListener:Subscription;
   private postsSub: Subscription;
   //Aqui se usara para que solo pueda crear un gestor
   private authStatusSub: Subscription;
   constructor(public postsService: PostsService, private authService: AuthService) { }
   ngOnInit() {
-    this.isLoading = true;
-    this.postsService.getPosts(this.postPerPage, this.currentPage);
+
+
+      this.postsService.getPosts(this.postPerPage, this.currentPage);
+
+
+    //this.isLoading = true;
+
     this.userId= this.authService.getUserId();
     // Subscribes to the observable
     // subscribe (funcion, error, funcion complete)
