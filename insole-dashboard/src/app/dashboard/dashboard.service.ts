@@ -38,23 +38,7 @@ export class DashboardService {
   private patients = new Subject<{ _id: string; name: string; surname: string; bornDate: number; leftInsole: string; rightInsole: string; linkedAccount: string }[]>();
   private leftDatesArray2 = {};
   private rightDatesArray2 = {};
-  private leftInsoleData: {
-    meanPressureData: number[], maxPressureData: number[], day: number
-    insoleId: string, steps: number
-  }[];
-  private rightInsoleData: {
-    meanPressureData: number[], maxPressureData: number[], day: number
-    insoleId: string, steps: number
-  }[];
 
-  private leftInsoleData2: {
-    meanPressureData: number[], maxPressureData: number[], day: number
-    insoleId: string, steps: number
-  }[];
-  private rightInsoleData2: {
-    meanPressureData: number[], maxPressureData: number[], day: number
-    insoleId: string, steps: number
-  }[];
 
   patient1AllUniqueDates = [];
   patient2AllUniqueDates = [];
@@ -125,9 +109,9 @@ export class DashboardService {
   }
 
   getStepsByDay(leftInsoleId: string, rightInsoleId: string, day: number) {
-    let date=new Date(day);
+    let date = new Date(day);
     date.setDate(date.getDate() - 1);
-    day= date.getTime();
+    day = date.getTime();
     //esto se lanza si elige un dia
     /// `` sirve añadir valores a un string dinamicamente
     const queryParams = `?leftInsoleId=${leftInsoleId}&rightInsoleId=${rightInsoleId}&day=${day}`
@@ -150,41 +134,61 @@ export class DashboardService {
   }
 
   getCompareInsoleData(patient1, patient2, days: number, customDay: number) {
+
     /// `` sirve añadir valores a un string dinamicamente
     const queryParams = `?patient1=${patient1}&patient2=${patient2}&range=${days}&customday=${customDay}`
     // En este no hace falta unscribe ya que se desuscribe solo
-    console.log(BACKEND_URL + "compare" + queryParams);
+    console.log(BACKEND_URL + "compare" );
 
     this.http.get<{
       patient1: {
-        leftInsole: {
-          meanPressureData: number[], maxPressureData: number[], day: number
-          insoleId: string, steps: number
-        }[], rightInsole: {
-          meanPressureData: number[], maxPressureData: number[], day: number
-          insoleId: string, steps: number
-        }[]
+        name: string, surname: string,
+
+          allDatesArray: [],
+          daysAndSteps: {},
+          leftInsole: { insoleId: string, meanByDay: [] },
+          rightInsole: { insoleId: string, meanByDay: [] },
+
       }, patient2: {
-        leftInsole: {
-          meanPressureData: number[], maxPressureData: number[], day: number
-          insoleId: string, steps: number,
-        }[], rightInsole: {
-          meanPressureData: number[], maxPressureData: number[], day: number
-          insoleId: string, steps: number
-        }[]
+        name: string, surname: string,
+
+          allDatesArray: [],
+          daysAndSteps: {},
+          leftInsole: { insoleId: string, meanByDay: [] },
+          rightInsole: { insoleId: string, meanByDay: [] },
+
       }
 
     }>(BACKEND_URL + "compare" + queryParams)
-      .subscribe((patientsData) => {
-        console.log(patientsData);
+      .subscribe((response) => {
 
-        this.leftInsoleData = patientsData.patient1.leftInsole;
-        this.rightInsoleData = patientsData.patient1.rightInsole;
-        this.leftInsoleData2 = patientsData.patient1.leftInsole;
-        this.rightInsoleData2 = patientsData.patient1.rightInsole;
+        let bothDates = [
+          ...response.patient1.allDatesArray,
+          ...response.patient2.allDatesArray,
+        ];
+        let allDatesArray = Array.from(new Set([...bothDates]));
+        this.allDatesArray.next(allDatesArray);
+
+        console.log(response);
+        this.daysAndSteps.next(response.patient1.daysAndSteps);
+        //Mando la informacion diaria de la presion al componente insole
+        this.daysAndSteps2.next(response.patient2.daysAndSteps);
+
+
+
+
+
+        /*this.insoleService.setPressureData(response.patient1.insoleData.leftInsole,
+          response.patient1.insoleData.rightInsole, response.patient1.insoleData.allDatesArray);
+
+
+        /*this.leftInsoleData = response.patient1.insoleData.leftInsole;
+        this.rightInsoleData = response.patient1.insoleData.rightInsole;
+        this.leftInsoleData2 = response.patient2.insoleData.leftInsole;
+        this.rightInsoleData2 = response.patient2.rightInsole;
         //let allCompareUniqueDates = this.getAllUniqueDates(true);
         this.insoleService.setPressureData(this.leftInsoleData,
-          this.rightInsoleData, this.patient1AllUniqueDates, this.patient2AllUniqueDates);
+          this.rightInsoleData, this.patient1AllUniqueDates, this.patient2AllUniqueDates);*/
 
       });
   }

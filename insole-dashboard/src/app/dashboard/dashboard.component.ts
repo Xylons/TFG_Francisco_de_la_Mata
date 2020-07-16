@@ -34,23 +34,33 @@ export class DashboardComponent implements OnInit {
   private allDatesArrayListener: Subscription;
   private nameAndSurnameListener: Subscription;
   private daysAndStepsListener: Subscription;
+  private daysAndSteps2Listener: Subscription;
   nameAndSurname: string;
+  nameAndSurname2: string;
   allDatesArray: any[] = [];
   daysAndSteps = {}
-
+  daysAndSteps2 = {}
 
   //Valores para comparar pacientes
   private patientsListener: Subscription;
   patients: { _id: string, name: string, surname: string, bornDate: number, leftInsole: string, rightInsole: string, linkedAccount: string }[];
-  patient1;
-  patient2;
 
+  patient1Info: {
+    _id: string, name: string, surname: string,
+    bornDate: number, leftInsole: string, rightInsole: string, linkedAccount: string
+  };
+  patient2Info: {
+    _id: string, name: string, surname: string,
+    bornDate: number, leftInsole: string, rightInsole: string, linkedAccount: string
+  };
 
+  selectedPatient1Params;
+   selectedPatient2Params;
   //Valores del primer chart
   lineChartLabels: string[];
-  lineChartData: [{ data: number[], label: string }] = [{ data: [0], label: "" }];
+  lineChartData: { data: number[], label: string }[] = [{ data: [], label: "" }];
   oneLineChartData: { data: number[], label: string } = { data: [], label: "" };
-
+  twoLineChartData: { data: number[], label: string } = { data: [], label: "" };
   cards: Observable<{
     title: string;
     cols: number;
@@ -134,12 +144,20 @@ export class DashboardComponent implements OnInit {
     if (this.mode === 'single') {
       this.dashboardService.getInsoleData(this.userId, this.days, this.selectedDate.getTime());
     }
+    if (this.mode === 'compare') {
+      this.dashboardService.getCompareInsoleData(JSON.stringify(this.selectedPatient1Params), JSON.stringify(this.selectedPatient2Params), this.days, this.selectedDate.getTime());
+
+    }
   }
   onDateChanged(event: MatDatepickerInputEvent<Date>) {
     console.log(event.value);
     this.selectedDate = event.value;
     if (this.mode === 'single') {
       this.dashboardService.getInsoleData(this.userId, this.days, this.selectedDate.getTime());
+    }
+    if (this.mode === 'compare') {
+      this.dashboardService.getCompareInsoleData(JSON.stringify(this.selectedPatient1Params), JSON.stringify(this.selectedPatient2Params), this.days, this.selectedDate.getTime());
+
     }
   }
   ngOnInit() {
@@ -227,7 +245,7 @@ export class DashboardComponent implements OnInit {
 
     if (this.mode === 'single') {
       this.dashboardService.getInsoleData(this.userId, this.days, new Date().getTime());
-
+    }
       this.nameAndSurnameListener = this.dashboardService.getNameAndSurnameListener()
         .subscribe((nameAndSurname) => {
           this.nameAndSurname = nameAndSurname;
@@ -246,9 +264,9 @@ export class DashboardComponent implements OnInit {
           //Hago reverse() para que coincida con los valores de las label
           this.oneLineChartData.data = [];
           //Si son horas no hay que hacer reverse ya que llega correcto
-          if(this.days===1){
+          if (this.days === 1) {
             this.oneLineChartData.data = [...firstCharData];
-          }else{
+          } else {
             this.oneLineChartData.data = [...firstCharData.reverse()];
           }
 
@@ -256,7 +274,9 @@ export class DashboardComponent implements OnInit {
           this.lineChartData = [this.oneLineChartData];
         });
 
-    }
+
+
+
 
     if (this.mode === 'compare') {
       this.dashboardService.getMyPatientsInfo();
@@ -264,6 +284,28 @@ export class DashboardComponent implements OnInit {
         .subscribe((patients) => {
           this.patients = patients;
 
+        });
+
+        this.daysAndSteps2Listener = this.dashboardService.getDaysAndSteps2Listener()
+        .subscribe((daysAndSteps2) => {
+          this.daysAndSteps2 = daysAndSteps2;
+          let firstCharData = []
+          this.allDatesArray.forEach((day) => {
+            firstCharData.push(this.daysAndSteps2[day]);
+          })
+          console.log(daysAndSteps2);
+          //Hago reverse() para que coincida con los valores de las label
+          this.twoLineChartData.data = [];
+          this.twoLineChartData.label = this.nameAndSurname2;
+          //Si son horas no hay que hacer reverse ya que llega correcto
+          if (this.days === 1) {
+            this.twoLineChartData.data = [...firstCharData];
+          } else {
+            this.twoLineChartData.data = [...firstCharData.reverse()];
+          }
+
+          //this.barChartData.push(this.onebarChartData);
+          this.lineChartData = [this.oneLineChartData, this.twoLineChartData];
         });
     }
     this.formGroup.patchValue({
@@ -281,7 +323,7 @@ export class DashboardComponent implements OnInit {
 
           let dayAndMonth;
           if (this.days == 1) {
-            dayAndMonth = allDatesArray[(i-(allDatesArray.length - 1))*-1];
+            dayAndMonth = allDatesArray[(i - (allDatesArray.length - 1)) * -1];
           } else {
             let dateInfo = new Date(parseInt(allDatesArray[i]));
             dayAndMonth = dateInfo.getDate() + "/" + (dateInfo.getMonth() + 1);
@@ -292,40 +334,45 @@ export class DashboardComponent implements OnInit {
 
       });
 
+
   }
 
   selectionChanged(event: MatSelectChange, numberOfPatient: number) {
     console.log(event);
-    let patient1Info = this.formGroup.get('patient1').value;
-    let patient2Info = this.formGroup.get('patient2').value;
+    this.patient1Info = this.formGroup.get('patient1').value;
+    this.patient2Info = this.formGroup.get('patient2').value;
     //comprobacion de usuarios sin plantillas asignadas
-    if (numberOfPatient === 1 && !patient1Info.leftInsole && !patient1Info.rightInsole) {
+    if (numberOfPatient === 1 && !this.patient1Info.leftInsole && !this.patient1Info.rightInsole) {
       this.dialog
         .open(SimpleDialogComponent, {
-          data: 'The user ' + patient1Info.name + ' ' + patient1Info.surname + ' does not have Insoles'
+          data: 'The user ' + this.patient1Info.name + ' ' + this.patient1Info.surname + ' does not have Insoles'
         });
       this.formGroup.get('patient1').patchValue("");
     }
-    else if (numberOfPatient === 2 && !patient2Info.leftInsole && !patient2Info.rightInsole) {
+    else if (numberOfPatient === 2 && !this.patient2Info.leftInsole && !this.patient2Info.rightInsole) {
       this.dialog
         .open(SimpleDialogComponent, {
-          data: 'The user ' + patient2Info.name + ' ' + patient2Info.surname + ' does not have Insoles'
+          data: 'The user ' + this.patient2Info.name + ' ' + this.patient2Info.surname + ' does not have Insoles'
         });
       this.formGroup.get('patient2').patchValue("");
     }
 
-    else if (patient1Info && patient2Info) {
-      if (patient1Info !== patient2Info) {
+    else if (this.patient1Info && this.patient2Info) {
+      if (this.patient1Info !== this.patient2Info) {
+        this.nameAndSurname = this.patient1Info.name + ' ' + this.patient1Info.surname.charAt(0);
+        this.oneLineChartData.label = this.nameAndSurname;
+        this.nameAndSurname2 = this.patient2Info.name + ' ' + this.patient2Info.surname.charAt(0);
         //Hago copia profunda del objeto para modificarlo
-        let sendedPatient1 = JSON.parse(JSON.stringify(patient1Info));
+        let sendedPatient1 = JSON.parse(JSON.stringify(this.patient1Info));
         delete sendedPatient1.__t,
           delete sendedPatient1._id, delete sendedPatient1.name,
           delete sendedPatient1.surname, delete sendedPatient1.bornDate;
-        let sendedPatient2 = JSON.parse(JSON.stringify(patient2Info));
+        let sendedPatient2 = JSON.parse(JSON.stringify(this.patient2Info));
         delete sendedPatient2.__t,
           delete sendedPatient2._id, delete sendedPatient2.name,
           delete sendedPatient2.surname, delete sendedPatient2.bornDate;
-
+        this.selectedPatient1Params= sendedPatient1;
+        this.selectedPatient2Params= sendedPatient1;
         console.log(sendedPatient1);
         this.dashboardService.getCompareInsoleData(JSON.stringify(sendedPatient1), JSON.stringify(sendedPatient2), this.days, this.selectedDate.getTime());
 

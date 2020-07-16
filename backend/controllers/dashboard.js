@@ -115,7 +115,7 @@ exports.getOneUserInsoleData = (req, res, next) => {
                 let insoleData = this.getAllUniqueDates(
                   leftInsoleData,
                   rightInsoleData,
-                  'day'
+                  "day"
                 );
                 res.status(200).json({
                   message: "Success",
@@ -174,11 +174,11 @@ exports.getOneUserHourData = (req, res, next) => {
               let insoleData = this.getAllUniqueDates(
                 leftInsoleData,
                 rightInsoleData,
-                'hour'
+                "hour"
               );
               res.status(200).json({
                 message: "Success",
-                insoleData: insoleData
+                insoleData: insoleData,
               });
             } else {
               res.status(400).json({
@@ -188,7 +188,7 @@ exports.getOneUserHourData = (req, res, next) => {
           })
           .catch((error) => {
             res.status(500).json({
-              message: "Fetching insole data failed!"+error,
+              message: "Fetching insole data failed!" + error,
             });
           });
       });
@@ -201,6 +201,7 @@ exports.compareUsersInsoleData = (req, res, next) => {
   let range = parseInt(req.query.range);
   let patient1 = JSON.parse(req.query.patient1);
   let patient2 = JSON.parse(req.query.patient2);
+  let mode= req.query.mode;
   if (req.query.customday) {
     customDay = parseInt(req.query.customday);
   }
@@ -209,7 +210,15 @@ exports.compareUsersInsoleData = (req, res, next) => {
   limitDay.setDate(limitDay.getDate() - range);
   //transformacion a las 00:00:00 de ese dia
   limitDay = new Date(limitDay.toDateString()).getTime();
-
+  let dayOrHour;
+  let databaseModel;
+  if (range === 1) {
+    dayOrHour = "hour";
+    databaseModel= InsoleHours;
+  } else {
+    dayOrHour = "day";
+    databaseModel= InsoleDays;
+  }
   query.day = { $gte: limitDay, $lt: customDay };
   //Info solo disponible para el responsible
   if (req.userData.rol !== RESPONSIBLE) {
@@ -221,35 +230,44 @@ exports.compareUsersInsoleData = (req, res, next) => {
   if (patient1 && patient2) {
     //Busco informacion del primer usuario
     query.insoleId = patient1.leftInsole;
-    InsoleDays.find(query)
+    databaseModel.find(query)
       .sort({ day: -1 })
       .then((patient1LeftInsoleData) => {
         query.insoleId = patient1.rightInsole;
-        InsoleDays.find(query)
+        databaseModel.find(query)
           .sort({ day: -1 })
           .then((patient1RightInsoleData) => {
             query.insoleId = patient2.leftInsole;
-            InsoleDays.find(query)
+            databaseModel.find(query)
               .sort({ day: -1 })
               .then((patient2LeftInsoleData) => {
                 query.insoleId = patient2.rightInsole;
-                InsoleDays.find(query)
+                databaseModel.find(query)
                   .sort({ day: -1 })
                   .then((patient2RightInsoleData) => {
-                    let patient1Insoles = {
-                      leftInsole: patient1LeftInsoleData,
-                      rightInsole: patient1RightInsoleData,
-                    };
-                    let patient2Insoles = {
-                      leftInsole: patient2LeftInsoleData,
-                      rightInsole: patient2RightInsoleData,
-                    };
+                    let insoleData1;
+                    let insoleData2;
+                    if (patient1LeftInsoleData[0] && patient1RightInsoleData[0]) {
+                      insoleData1 = this.getAllUniqueDates(
+                        patient1LeftInsoleData,
+                        patient1RightInsoleData,
+                        dayOrHour
+                      );
+                    }
+                    if (patient2LeftInsoleData[0] && patient2RightInsoleData[0]) {
+                      insoleData2 = this.getAllUniqueDates(
+                        patient2LeftInsoleData,
+                        patient2RightInsoleData,
+                        dayOrHour
+                      );
+                    }
+                    
                     // Si hay algún dato
-                    if (patient1Insoles || patient2Insoles) {
+                    if (insoleData1 || insoleData2) {
                       res.status(200).json({
                         message: "Success",
-                        patient1: patient1Insoles,
-                        patient2: patient2Insoles,
+                        patient1: insoleData1,
+                        patient2: insoleData2,
                       });
                     } else {
                       res.status(400).json({
@@ -259,7 +277,7 @@ exports.compareUsersInsoleData = (req, res, next) => {
                   })
                   .catch((error) => {
                     res.status(500).json({
-                      message: "Fetching insole data failed!",
+                      message: "Fetching insole data failed! "+ error,
                     });
                   });
               });
@@ -272,63 +290,60 @@ exports.compareUsersInsoleData = (req, res, next) => {
   }
 };
 
-
-
 exports.getAllUniqueDates = (leftInsole, rightInsole, dayOrHour) => {
-  if(leftInsole && rightInsole && dayOrHour){
-  let daysAndStepsTemp = {};
-  let leftDatesArray = [];
-  let rightDatesArray = [];
-  let leftMeanArray = {};
-  let rightMeanArray = {};
-  
-  
+  if (leftInsole && rightInsole && dayOrHour && leftInsole[0] && rightInsole[0]) {
+    let daysAndStepsTemp = {};
+    let leftDatesArray = [];
+    let rightDatesArray = [];
+    let leftMeanArray = {};
+    let rightMeanArray = {};
 
-  let leftInsoleId = leftInsole[0].insoleId;
-  let rightInsoleId = rightInsole[0].insoleId;
-  //Anado los datos un array indicando como indice el dia
-  for (let i = 0; i < leftInsole.length; i++) {
-    leftDatesArray[leftInsole[i][dayOrHour]] = leftInsole[i].steps;
-    leftMeanArray[leftInsole[i][dayOrHour]] = leftInsole[i].meanPressureData;
-    if (daysAndStepsTemp[leftInsole[i][dayOrHour]]) {
-      daysAndStepsTemp[leftInsole[i][dayOrHour]] += leftInsole[i].steps;
-    } else {
-      daysAndStepsTemp[leftInsole[i][dayOrHour]] = leftInsole[i].steps;
+
+    let leftInsoleId = leftInsole[0].insoleId;
+    let rightInsoleId = rightInsole[0].insoleId;
+    //Anado los datos un array indicando como indice el dia
+    for (let i = 0; i < leftInsole.length; i++) {
+      leftDatesArray[leftInsole[i][dayOrHour]] = leftInsole[i].steps;
+      leftMeanArray[leftInsole[i][dayOrHour]] = leftInsole[i].meanPressureData;
+      if (daysAndStepsTemp[leftInsole[i][dayOrHour]]) {
+        daysAndStepsTemp[leftInsole[i][dayOrHour]] += leftInsole[i].steps;
+      } else {
+        daysAndStepsTemp[leftInsole[i][dayOrHour]] = leftInsole[i].steps;
+      }
     }
-  }
-  for (let i = 0; i < rightInsole.length; i++) {
-    rightDatesArray[rightInsole[i][dayOrHour]] = rightInsole[i].steps;
-    rightMeanArray[rightInsole[i][dayOrHour]] = rightInsole[i].meanPressureData;
-    if (daysAndStepsTemp[rightInsole[i][dayOrHour]]) {
-      daysAndStepsTemp[rightInsole[i][dayOrHour]] += rightInsole[i].steps;
-    } else {
-      daysAndStepsTemp[rightInsole[i][dayOrHour]] = rightInsole[i].steps;
+    for (let i = 0; i < rightInsole.length; i++) {
+      rightDatesArray[rightInsole[i][dayOrHour]] = rightInsole[i].steps;
+      rightMeanArray[rightInsole[i][dayOrHour]] =
+        rightInsole[i].meanPressureData;
+      if (daysAndStepsTemp[rightInsole[i][dayOrHour]]) {
+        daysAndStepsTemp[rightInsole[i][dayOrHour]] += rightInsole[i].steps;
+      } else {
+        daysAndStepsTemp[rightInsole[i][dayOrHour]] = rightInsole[i].steps;
+      }
     }
-  }
 
-  //Extraigo las fechas de las dos plantillas y descarto las repetidas con set
-  let bothDates = [
-    ...Object.keys(leftDatesArray),
-    ...Object.keys(rightDatesArray),
-  ];
-  let uniqueDates = Array.from(new Set([...bothDates]));
+    //Extraigo las fechas de las dos plantillas y descarto las repetidas con set
+    let bothDates = [
+      ...Object.keys(leftDatesArray),
+      ...Object.keys(rightDatesArray),
+    ];
+    let uniqueDates = Array.from(new Set([...bothDates]));
 
-  //leftMeanArray= Array.from(...leftMeanArray);
-  //rightMeanArray= Array.from(...rightMeanArray);
-  return {
-    allDatesArray: uniqueDates,
-    daysAndSteps: daysAndStepsTemp,
-    leftInsole: { insoleId: leftInsoleId, meanByDay: leftMeanArray },
-    rightInsole: { insoleId: rightInsoleId, meanByDay:rightMeanArray},
-  };}
-  else{
+    //leftMeanArray= Array.from(...leftMeanArray);
+    //rightMeanArray= Array.from(...rightMeanArray);
+    return {
+      allDatesArray: uniqueDates,
+      daysAndSteps: daysAndStepsTemp,
+      leftInsole: { insoleId: leftInsoleId, meanByDay: leftMeanArray },
+      rightInsole: { insoleId: rightInsoleId, meanByDay: rightMeanArray },
+    };
+  } else {
     return {
       allDatesArray: [],
       daysAndSteps: {},
       leftInsole: { insoleId: 0, meanByDay: [] },
-      rightInsole: { insoleId: 0, meanByDay:[]},
+      rightInsole: { insoleId: 0, meanByDay: [] },
     };
-  
   }
   //    return {allDatesArray: uniqueDates, daysAndSteps: daysAndStepsTemp {day: {daysAndStepsTemp: daysAndStepsTemp, leftInsole:{id:, steps: ,mean: }, rightInsole:{steps: },}}}
 };
