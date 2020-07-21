@@ -11,6 +11,13 @@ import { mimeType } from './mime-type.validator';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 
+//All Genders Icon
+import { faVenusMars } from '@fortawesome/free-solid-svg-icons';
+//Female Icon
+import { faVenus } from '@fortawesome/free-solid-svg-icons';
+//Male Icon
+import { faMars } from '@fortawesome/free-solid-svg-icons';
+
 //import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 //import {default as _rollupMoment, Moment} from 'moment';
@@ -23,6 +30,16 @@ import { AuthService } from 'src/app/auth/auth.service';
   styleUrls: ['./profile-page.component.css']
 })
 export class ProfilePageComponent implements OnInit, OnDestroy {
+
+
+  //icons
+  faVenusMars = faVenusMars;
+  faVenus = faVenus;
+  faMars = faMars;
+
+  genderList = [{ value: 'All', icon: faVenusMars },
+  { value: 'male', icon: faMars }, { value: 'female', icon: faVenus }];
+
   minDate: Date;
   maxDate: Date;
   enteredName = '';
@@ -31,10 +48,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   isLoading = false;
   form: FormGroup;
   imagePreview: string;
+  imageInputText: string= "Upload your image";
   private mode = 'myProfile';
   private userId: string;
   //private token: string;
-  private rol: string;
+  rol: string;
   public profileRol: string;
   //Suscripcion para control de errores
   private authStatusSub: Subscription;
@@ -110,8 +128,19 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
           bornDate: profileData.bornDate,
           contactPhone: profileData.contactPhone,
           typeOfResponsible: profileData.typeOfResponsible,
-        }
 
+         personalId: profileData.personalId,
+        height :profileData.height,
+        weight: profileData.weight,
+        gender : profileData.gender,
+        tinetti : profileData.tinetti,
+        getuptest : profileData.getuptest,
+        mms : profileData.mms,
+        description : profileData.description,
+        leftInsole: profileData.leftInsole,
+        rightInsole: profileData.rightInsole
+        }
+        this.imagePreview=profileData.userImagePath;
         // Controlo que no tenga campos en undefined
         Object.keys(this.profile).forEach(key => {
           this.profile[key] === undefined ? this.profile[key] = "" : null;
@@ -132,9 +161,36 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
           this.form.addControl('contactPhone', new FormControl(null, Validators.minLength(9)));
           this.form.addControl('bornDate', new FormControl({ value: '', disabled: true }));
+          this.form.addControl('personalId', new FormControl(false));
+          this.form.addControl('height', new FormControl(false));
+          this.form.addControl('weight', new FormControl(false));
+          this.form.addControl('selectedGender', new FormControl(false));
+
+          if(this.rol === 'responsible'){
+          this.form.addControl('tinetti', new FormControl(false));
+          this.form.addControl('getuptest',new FormControl(false));
+          this.form.addControl('mms', new FormControl(false));
+          this.form.addControl('description', new FormControl(false));
+          this.form.addControl('leftInsole', new FormControl(false));
+          this.form.addControl('rightInsole', new FormControl(false));
+          this.form.patchValue({
+            'tinetti': this.profile.tinetti,
+            'getuptest': this.profile.getuptest,
+            'mms': this.profile.mms,
+            'description': this.profile.description,
+            'leftInsole': this.profile.leftInsole,
+            'rightInsole': this.profile.rightInsole
+
+          });
+}
           this.form.patchValue({
             'contactPhone': this.profile.contactPhone,
-            'bornDate': new Date(this.profile.bornDate)
+            'bornDate': new Date(this.profile.bornDate),
+            'personalId': this.profile.personalId,
+            'height': this.profile.height,
+            'weight': this.profile.weight,
+            'selectedGender': this.profile.gender,
+
           });
         } else if (this.profileRol === 'responsible') {
           this.form.addControl('typeOfResponsible', new FormControl(null, null));
@@ -157,6 +213,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
       this.imagePreview = (reader.result as string);
     };
+    console.log(this.form.get('image'));
+    this.imageInputText= (<HTMLInputElement>event.target).files[0].name;
     reader.readAsDataURL(file);
   }
 
@@ -167,6 +225,29 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     switch (this.profileRol) {
       case 'patient': {
+        if(this.rol=== 'responsible'){
+          this.profilesService.updateProfile(
+            this.userId,
+            this.form.value.name,
+            this.form.value.surname,
+            this.form.value.phone,
+            this.form.value.image,
+            this.profileRol,
+            this.form.value.contactPhone,
+            this.form.getRawValue().bornDate.getTime(),
+            this.form.value.personalId,
+            this.form.value.height,
+            this.form.value.weight,
+            this.form.value.selectedGender,
+            this.form.value.tinetti,
+            this.form.value.getuptest,
+            this.form.value.mms,
+            this.form.value.description,
+            this.form.value.leftInsole,
+            this.form.value.rightInsole
+          );
+
+        }else{
         this.profilesService.updateProfile(
           this.userId,
           this.form.value.name,
@@ -175,8 +256,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
           this.form.value.image,
           this.profileRol,
           this.form.value.contactPhone,
-          this.form.getRawValue().bornDate.getTime()
-        );
+          this.form.getRawValue().bornDate.getTime(),
+          this.form.value.personalId,
+          this.form.value.height,
+          this.form.value.weight,
+          this.form.value.selectedGender
+        );}
           break;
       }
       case 'responsible': {

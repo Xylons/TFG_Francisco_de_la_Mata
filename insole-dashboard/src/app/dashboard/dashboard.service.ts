@@ -62,7 +62,7 @@ export class DashboardService {
     return this.daysAndSteps.asObservable();
   }
   getDaysAndSteps2Listener() {
-    return this.daysAndSteps.asObservable();
+    return this.daysAndSteps2.asObservable();
   }
 
   getPatientsListener() {
@@ -117,20 +117,22 @@ export class DashboardService {
     const queryParams = `?leftInsoleId=${leftInsoleId}&rightInsoleId=${rightInsoleId}&day=${day}`
     // En este no hace falta unscribe ya que se desuscribe solo
     console.log(BACKEND_URL + "hourdata" + queryParams);
-
-    this.http.get<{
-      insoleData: {
-        allDatesArray: [],
-        daysAndSteps: {},
-        leftInsole: { insoleId: string, meanByDay: [] },
-        rightInsole: { insoleId: string, meanByDay: [] },
-      }
-    }>(BACKEND_URL + "hourdata" + queryParams)
-      .subscribe((response) => {
-        console.log(response);
-        this.allDatesArray.next(response.insoleData.allDatesArray);
-        this.daysAndSteps.next(response.insoleData.daysAndSteps);
-      });
+    console.log(day);
+    if (!Number.isNaN(day)) {
+      this.http.get<{
+        insoleData: {
+          allDatesArray: [],
+          daysAndSteps: {},
+          leftInsole: { insoleId: string, meanByDay: [] },
+          rightInsole: { insoleId: string, meanByDay: [] },
+        }
+      }>(BACKEND_URL + "hourdata" + queryParams)
+        .subscribe((response) => {
+          console.log(response);
+          this.allDatesArray.next(response.insoleData.allDatesArray);
+          this.daysAndSteps.next(response.insoleData.daysAndSteps);
+        });
+    }
   }
 
   getCompareInsoleData(patient1, patient2, days: number, customDay: number) {
@@ -138,24 +140,24 @@ export class DashboardService {
     /// `` sirve añadir valores a un string dinamicamente
     const queryParams = `?patient1=${patient1}&patient2=${patient2}&range=${days}&customday=${customDay}`
     // En este no hace falta unscribe ya que se desuscribe solo
-    console.log(BACKEND_URL + "compare" );
+    console.log(BACKEND_URL + "compare");
 
     this.http.get<{
       patient1: {
         name: string, surname: string,
 
-          allDatesArray: [],
-          daysAndSteps: {},
-          leftInsole: { insoleId: string, meanByDay: [] },
-          rightInsole: { insoleId: string, meanByDay: [] },
+        allDatesArray: [],
+        daysAndSteps: {},
+        leftInsole: { insoleId: string, meanByDay: [] },
+        rightInsole: { insoleId: string, meanByDay: [] },
 
       }, patient2: {
         name: string, surname: string,
 
-          allDatesArray: [],
-          daysAndSteps: {},
-          leftInsole: { insoleId: string, meanByDay: [] },
-          rightInsole: { insoleId: string, meanByDay: [] },
+        allDatesArray: [],
+        daysAndSteps: {},
+        leftInsole: { insoleId: string, meanByDay: [] },
+        rightInsole: { insoleId: string, meanByDay: [] },
 
       }
 
@@ -173,9 +175,20 @@ export class DashboardService {
         this.daysAndSteps.next(response.patient1.daysAndSteps);
         //Mando la informacion diaria de la presion al componente insole
         this.daysAndSteps2.next(response.patient2.daysAndSteps);
-
-
-
+        let allDatesArray1;
+        let allDatesArray2;
+        if (days === 1) {
+          allDatesArray1 = allDatesArray2 = customDay;
+        } else {
+          allDatesArray1 = response.patient1.allDatesArray;
+          allDatesArray2 = response.patient2.allDatesArray;
+        }
+        ///hay que pasar a insole los array de cada plantilla NO EL UNIFICADO
+        //leftInsoleData, rightInsoleData, allUniqueDates, leftInsoleData2?, rightInsoleData2?, allUniqueDates2?
+        this.insoleService.setPressureData(
+          response.patient1.leftInsole, response.patient1.rightInsole,
+          allDatesArray1, response.patient2.leftInsole,
+          response.patient2.rightInsole, allDatesArray2);
 
 
         /*this.insoleService.setPressureData(response.patient1.insoleData.leftInsole,

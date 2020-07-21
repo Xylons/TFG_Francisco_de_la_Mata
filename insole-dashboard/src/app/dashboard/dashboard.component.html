@@ -1,11 +1,14 @@
 <div class="grid-container">
-  <h1 class="mat-h1" *ngIf="mode === 'single'">Personal Info of {{nameAndSurname}}</h1>
+  <h1 class="mat-h1" *ngIf="mode === 'single'">
+    Personal Info of {{ nameAndSurname }}
+  </h1>
   <h1 class="mat-h1" *ngIf="mode === 'compare'">Patients Comparison</h1>
   <h1 class="mat-h1" *ngIf="mode === 'multiple'">General Dashboard</h1>
   <div fxLayout="column" fxLayoutAlign="center none">
     <form [formGroup]="formGroup">
-      <div fxFlex="50">
-        <button
+      <div fxFlex="50" >
+        <button class="button-left"
+
           mat-stroked-button
           [class.mat-raised-button]="days === 1"
           color="primary"
@@ -13,7 +16,7 @@
         >
           1 Day
         </button>
-        <button
+        <button class="button-middle"
           mat-stroked-button
           [class.mat-raised-button]="days === 7"
           color="primary"
@@ -21,7 +24,7 @@
         >
           7 Days
         </button>
-        <button
+        <button class="button-right"
           mat-stroked-button
           [class.mat-raised-button]="days === 30"
           color="primary"
@@ -51,33 +54,28 @@
         ></mat-datepicker>
       </div>
 
-                <mat-form-field class="selector-class" appearance="fill">
-                  <mat-label>Patient 1</mat-label>
-                  <mat-select
-                    (selectionChange)="selectionChanged($event,1)"
-                    formControlName="patient1"
-                  >
-                    <mat-option
-                      *ngFor="let patient of patients"
-                      [value]="patient"
-                      >{{ patient.name+ " " +patient.surname }}</mat-option
-                    >
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field class="selector-class" appearance="fill">
-                  <mat-label>Patient 2</mat-label>
-                  <mat-select
-                    (selectionChange)="selectionChanged($event, 2)"
-                    formControlName="patient2"
-                  >
-                    <mat-option
-                      *ngFor="let patient of patients"
-                      [value]="patient"
-                      >{{ patient.name+ " " +patient.surname }}</mat-option
-                    >
-                  </mat-select>
-                </mat-form-field>
-
+      <mat-form-field class="selector-class wrapper-separation" appearance="fill" *ngIf="mode === 'compare'">
+        <mat-label>Patient 1</mat-label>
+        <mat-select
+          (selectionChange)="selectionChanged($event, 1)"
+          formControlName="patient1"
+        >
+          <mat-option *ngFor="let patient of patients" [value]="patient">{{
+            patient.name + " " + patient.surname
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="selector-class" appearance="fill" *ngIf="mode === 'compare'">
+        <mat-label>Patient 2</mat-label>
+        <mat-select
+          (selectionChange)="selectionChanged($event, 2)"
+          formControlName="patient2"
+        >
+          <mat-option *ngFor="let patient of patients" [value]="patient">{{
+            patient.name + " " + patient.surname
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </form>
   </div>
   <mat-grid-list cols="2" rowHeight="350px">
@@ -86,7 +84,8 @@
       [colspan]="card.cols"
       [rowspan]="card.rows"
     >
-      <mat-card class="dashboard-card">
+      <mat-card class="dashboard-card"
+      [class.comments]="card.title=== 'Comments'">
         <mat-card-header>
           <mat-card-title>
             {{ card.title }}
@@ -103,45 +102,50 @@
           class="dashboard-card-content"
           *ngIf="
             card.title.toLowerCase() !== 'insole'.toLowerCase() &&
-            card.title.toLowerCase() !== 'comments'.toLowerCase()
-            &&
-            card.title.toLowerCase() !== 'insole2'.toLowerCase()
-            ;
+              card.title.toLowerCase() !== 'comments'.toLowerCase() &&
+              card.title.toLowerCase() !== 'insole2'.toLowerCase();
             else insole
           "
-
         >
           <div>
             Card Content Here
             <div class="chart" style="position: relative; min-height: unset;">
               <div id="chart-container">
-                <canvas #myCanvas id="canvas" width=800 height=200 baseChart
-                [chartType]="chartType"
-                [datasets]="lineChartData"
-                [labels]="lineChartLabels"
-                [options]="chartOptions"></canvas>
+                <canvas
+                  #myCanvas
+                  id="canvas"
+                  width="750"
+                  height="150"
+                  baseChart
+                  [chartType]="chartType"
+                  [datasets]="lineChartData"
+                  [labels]="lineChartLabels"
+                  [options]="chartOptions"
+                ></canvas>
               </div>
             </div>
           </div>
         </mat-card-content>
         <ng-template #insole>
-          <mat-card-content class="dashboard-card-content"
-          *ngIf="
-          card.title.toLowerCase() === 'insole'.toLowerCase() ;
-          else comments;
-        "
-        >
+          <mat-card-content
+            class="dashboard-card-content"
+            *ngIf="
+              card.title.toLowerCase() === 'insole'.toLowerCase();
+              else comments
+            "
+          >
             <app-insole></app-insole>
           </mat-card-content>
         </ng-template>
 
-        <ng-template #comments >
-          <mat-card-content class="dashboard-card-content comment-card"
-          *ngIf="
-          card.title.toLowerCase() !== 'insole2'.toLowerCase() ;
-          else secondInsole;
-        "
-        >
+        <ng-template #comments>
+          <mat-card-content
+            class="dashboard-card-content comment-card"
+            *ngIf="
+              card.title.toLowerCase() !== 'insole2'.toLowerCase();
+              else secondInsole
+            "
+          >
             <app-post-create></app-post-create>
             <app-post-list></app-post-list>
           </mat-card-content>

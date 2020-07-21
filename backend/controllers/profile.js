@@ -97,8 +97,21 @@ exports.updateProfile = (req, res, err) => {
           newProfileData["comments"] = profileInfo.comments;
           newProfileData["responsibles"] = profileInfo.responsibles;
           //newProfileData["insoles"] = profileInfo.insoles;
-          newProfileData["leftInsole"] = 1234;
-          newProfileData["rightInsole"] = 1234;
+          //newProfileData["leftInsole"] = 1234;
+          //newProfileData["rightInsole"] = 1234;
+          newProfileData["personalId"] = req.body.personalId;
+          newProfileData["height"] = req.body.height;
+          newProfileData["weight"] = req.body.weight;
+          newProfileData["gender"] = req.body.gender;
+
+          if (requestRol === RESPONSIBLE) {
+            newProfileData["tinetti"] = req.body.tinetti;
+            newProfileData["getuptest"] = req.body.getuptest;
+            newProfileData["mms"] = req.body.mms;
+            newProfileData["description"] = req.body.description;
+            newProfileData["leftInsole"] =  req.body.leftInsole;
+          newProfileData["rightInsole"] =  req.body.rightInsole;
+          }
           profile = this.cleanEmptyFields(newProfileData);
           profile = new PatientProfile(newProfileData);
           break;
@@ -285,6 +298,15 @@ exports.getProfile = (req, res, next) => {
         });
       }
       if (profile) {
+        if(req.userData.rol === PATIENT){
+          // Si el usuario es paciente eliminado los datos que no debe ver
+          delete profile.tinetti;
+          delete profile.getuptest;
+          delete profile.mms;
+          delete profile.description;
+          delete profile.leftInsole;
+          delete profile.rightInsole;
+        }
         res.status(200).json(profile);
       } else {
         res.status(404).json({ message: "Profile not found" });
@@ -483,7 +505,6 @@ exports.getPatients = (req, res, next) => {
         { responsibles: req.userData.userId },
         "name surname bornDate leftInsole rightInsole linkedAccount"
       ).then((patients) => {
-        
         if (patients.length > 0) {
           res.status(200).json({
             message: "All fine",

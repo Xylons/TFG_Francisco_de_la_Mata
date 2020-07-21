@@ -88,6 +88,8 @@ background-color: #f3e5f5;
 .mat-form-field{
   display: block;
   width: 180px;
+  margin-left: 10px;
+    margin-top: 10px;
 }
 
 .mat-expansion-panel{

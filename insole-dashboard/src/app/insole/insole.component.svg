@@ -16,15 +16,15 @@
 
 
 <div  *ngIf="mode">
-<button
+<button class="dayAndHourButton"
         mat-raised-button
         color="accent"
         (click)="onChangeView( true)"
       >
         HOUR
       </button>
-      <button
-        mat-button
+      <button class="dayAndHourButton"
+        mat-stroked-button
         color="primary"
         (click)="onChangeView(false)"
       >
@@ -32,14 +32,14 @@
       </button>
 </div>
 <div  *ngIf="!mode">
-<button
-        mat-button
+<button class="dayAndHourButton"
+        mat-stroked-button
         color="accent"
         (click)="onChangeView(true)"
       >
         HOUR
       </button>
-      <button
+      <button class="dayAndHourButton"
         mat-raised-button
         color="primary"
         (click)="onChangeView(false)"
@@ -114,7 +114,7 @@
 		<circle id="LS30" class="st0" [ngStyle]="{'fill': LsensorsColor[30]}" cx="131.4" cy="656" r="29.7"/>
 		<circle id="LS31" class="st0" [ngStyle]="{'fill': LsensorsColor[31]}" cx="189.3" cy="639.6" r="29.7"/>
 	</g>
-	<g>
+	<!--<g>
 		<path class="st0" d="M272.2,95.5l0.5-0.2h0.8l0.3,0.2l0.2,0.2l0.2,0.3v0.3l-0.2,0.3l-0.2,0.2l-0.3,0.2l-0.7,0.2l-0.3,0.2l-0.2,0.2
 			l-0.2,0.3v0.3l0.2,0.3l0.2,0.2l0.3,0.2h0.8l0.5-0.2"/>
 		<path class="st0" d="M269.2,98.8v-2.3"/>
@@ -279,7 +279,7 @@
 			h2.2"/>
 		<path class="st0" d="M187,668.1h-2"/>
 		<path class="st0" d="M187,665.6l-0.3-0.2l-0.3-0.3l-0.3-0.5v3.5"/>
-	</g>
+	</g>-->
 	<g>
 		<path class="st1" d="M276.9,756.9l7.2-16.6"/>
 		<path class="st1" d="M288.8,704.7l-3.1-18"/>
@@ -441,7 +441,7 @@
 		<circle id="RS30" class="st0" [ngStyle]="{'fill': RsensorsColor[30]}"  cx="569.5" cy="656" r="29.7"/>
 		<circle id="RS31" class="st0" [ngStyle]="{'fill': RsensorsColor[31]}"  cx="511.6" cy="639.6" r="29.7"/>
 	</g>
-	<g>
+	<!--<g>
 		<path class="st0" d="M426.7,98.6l0.5,0.2h0.8l0.3-0.2l0.2-0.2l0.2-0.3v-0.3l-0.2-0.3l-0.2-0.2l-0.3-0.2l-0.7-0.2l-0.3-0.2
 			l-0.2-0.2l-0.2-0.3V96l0.2-0.3l0.2-0.2l0.3-0.2h0.8l0.5,0.2"/>
 		<path class="st0" d="M431.7,96.5v2.3"/>
@@ -606,7 +606,7 @@
 			"/>
 		<path class="st0" d="M515.9,668.1h-2"/>
 		<path class="st0" d="M514.9,668.1v-3.5l-0.3,0.5l-0.3,0.3l-0.3,0.2"/>
-	</g>
+	</g>-->
 	<g>
 		<path class="st1" d="M416.9,740.3l7.2,16.6"/>
 		<path class="st1" d="M415.3,686.7l-3.1,18"/>

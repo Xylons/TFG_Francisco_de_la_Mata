@@ -45,17 +45,17 @@ export class InsoleComponent implements OnInit {
   ngOnInit(): void {
 
     this.leftMeanDayDataListener = this.insoleService.getLMeanDayDataListener()
-      .subscribe((maxData) => {
+      .subscribe((meanDayData) => {
         //this.isLoading = false;
-        this.LmeanDataDay = maxData;
-        //this.onChangeView(true);
+        this.LmeanDataDay = meanDayData;
+        this.onChangeView(true);
       });
 
-      this.rightMeanDayDataListener = this.insoleService.getRMeanDayDataListener()
-      .subscribe((maxData) => {
+    this.rightMeanDayDataListener = this.insoleService.getRMeanDayDataListener()
+      .subscribe((meanDayData) => {
         //this.isLoading = false;
-        this.RmeanDataDay = maxData;
-        //this.onChangeView(true);
+        this.RmeanDataDay = meanDayData;
+        this.onChangeView(true);
       });
 
     this.leftMeanDataListener = this.insoleService.getLmeanDataListener()
@@ -126,7 +126,7 @@ export class InsoleComponent implements OnInit {
     this.insoleService.changeActiveDate(event.value);
   }
 
-  onHourChange(event){
+  onHourChange(event) {
     console.log(event);
     this.insoleService.changeHourData(parseInt(event.value));
   }

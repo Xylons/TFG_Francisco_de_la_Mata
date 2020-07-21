@@ -110,7 +110,18 @@ export class ProfilesService {
       linkedAccount: string,
       bornDate: number,
       contactPhone: string,
-      typeOfResponsible: string
+      typeOfResponsible: string,
+      personalId?: string;
+      height?: number;
+      weight?: number;
+      gender?: string;
+      tinetti?: number;
+      getuptest?: number;
+      mms?: number;
+      description?: string,
+      leftInsole?: number;
+      rightInsole?: number;
+      timestamp?: Date;
     }>(BACKEND_URL + "single/" + id);
 
   }
@@ -128,8 +139,20 @@ export class ProfilesService {
   }*/
 
   updateProfile(id: string, name: string, surname: string, phone: string, userImagePath: File | string,
-    profileRol?: string, cPhoneOrTypeOfRes?: string, bornDate?: number) {
+    profileRol?: string, cPhoneOrTypeOfRes?: string, bornDate?: number,
+    personalId?: string,
+    height?: number,
+    weight?: number,
+    gender?: string,
+    tinetti?: number,
+    getuptest?:number,
+    mms?: number,
+    description?: string,
+    leftInsole?: number,
+    rightInsole?: number
+) {
     let profileData: Profile | FormData;
+    console.log('editInfo');
     // Si el objeto es un archivo significa que se ha cambiado
     if (typeof (userImagePath) === 'object') {
       profileData = new FormData();
@@ -141,6 +164,18 @@ export class ProfilesService {
       if (profileRol === 'patient') {
         profileData.append("bornDate", bornDate.toString());
         profileData.append("contactPhone", cPhoneOrTypeOfRes);
+        profileData.append("personalId", personalId);
+        profileData.append("height", height.toString());
+        profileData.append("weight", weight.toString());
+        profileData.append("gender", gender);
+        profileData.append("tinetti", tinetti.toString());
+        profileData.append("getuptest", getuptest.toString());
+        profileData.append("mms", mms.toString());
+        profileData.append("description", description);
+        profileData.append("leftInsole", leftInsole.toString());
+        profileData.append("rightInsole", rightInsole.toString());
+
+
       } else if (profileRol === 'responsible') {
         profileData.append("typeOfResponsible", cPhoneOrTypeOfRes);
       }
@@ -155,6 +190,17 @@ export class ProfilesService {
       if (profileRol === 'patient') {
         profileData["contactPhone"] = cPhoneOrTypeOfRes;
         profileData["bornDate"] = bornDate;
+        profileData["personalId"] = personalId;
+        profileData["height"] = height;
+        profileData["weight"] = weight;
+        profileData["gender"] = gender;
+        profileData["tinetti"] = tinetti;
+        profileData["getuptest"] = getuptest;
+        profileData["mms"] = mms;
+        profileData["description"] = description;
+        profileData["leftInsole"] = leftInsole;
+        profileData["rightInsole"] = rightInsole;
+
       } else if (profileRol === 'responsible') {
         profileData["typeOfResponsible"] = cPhoneOrTypeOfRes;
       }
@@ -248,9 +294,9 @@ export class ProfilesService {
       .subscribe((response: any) => {
         console.log(response);
         this.router.navigate(["/"]);
-        if(mode){
+        if (mode) {
           this.openSnackBar("Patient Added", "Ok");
-        }else{
+        } else {
           this.openSnackBar("Patient Removed", "Ok");
         }
 

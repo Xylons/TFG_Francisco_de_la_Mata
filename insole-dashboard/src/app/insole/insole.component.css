@@ -9,3 +9,12 @@
 .mat-grid-tile {
   overflow: inherit;
 }
+
+.dayAndHourButton{
+  height: 50px;
+  margin-right: 10px;
+}
+
+.mat-form-field-type-mat-select{
+  margin-top: 20px;
+}

@@ -25,3 +25,11 @@ mat-paginator{
   width: 100%;
   box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
 }
+
+
+.comment-title{
+  color: #673ab7;
+  font-weight: 450;
+  font-size: 1.2em;
+
+}

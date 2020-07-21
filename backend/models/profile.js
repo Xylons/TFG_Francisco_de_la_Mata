@@ -6,7 +6,7 @@ const profileSchema = mongoose.Schema({
     surname: {type: String, require: true, index: true},
     phone: {type: String, require: false},
     //tengo que cambiar por direccion dinamica
-    userImagePath:{type: String, require: false, default: "http://localhost:3000/images/user.png"},
+    userImagePath:{type: String, require: false, default: process.env.IP_BACK+"/images/user.png"},
     linkedAccount:{type: mongoose.Schema.Types.ObjectId, ref: "User", require:true, unique: true},
     __t: { type: String,  default: process.env.notdefined },
 });

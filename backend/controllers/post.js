@@ -8,7 +8,7 @@ const ADMIN = process.env.admin;
 exports.createPost = (req, res, next) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
-      message: "Not authorized to edit the Profile",
+      message: "Not authorized to see the posts",
     });
   } else {
     //const url = req.protocol + "://" + req.get("host");
@@ -44,7 +44,7 @@ exports.createPost = (req, res, next) => {
 exports.updatePost = (req, res, err) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
-      message: "Not authorized to edit the Profile",
+      message: "Not authorized to see the posts",
     });
   } else {
     const post = new Post({
@@ -77,7 +77,7 @@ exports.updatePost = (req, res, err) => {
 exports.getPostsByPage = (req, res, next) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
-      message: "Not authorized to edit the Profile",
+      message: "Not authorized to see the posts",
     });
   } else {
     //req.query muestra los datos que hay anadidos despues de ? y separados por &
@@ -113,7 +113,7 @@ exports.getPostsByPage = (req, res, next) => {
 exports.getPost = (req, res, next) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
-      message: "Not authorized to edit the Profile",
+      message: "Not authorized to see the posts",
     });
   } else {
     Post.findById(req.params.id)
@@ -135,7 +135,7 @@ exports.getPost = (req, res, next) => {
 exports.deletePost = (req, res, next) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
-      message: "Not authorized to edit the Profile",
+      message: "Not authorized to see the posts",
     });
   } else {
     Post.deleteOne({ _id: req.params.id, creator: req.userData.userId })

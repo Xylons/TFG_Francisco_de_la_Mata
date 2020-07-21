@@ -32,3 +32,43 @@ ul{
 .spacer{
   flex: 1 1 auto;
 }
+
+
+.mat-list-item   {
+  display: block !important; /*No esta aplicando*/
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 10px 8px;
+    line-height: 1.625rem;
+
+
+}
+
+
+.mat-icon {
+  float: left;
+  width: 60px;
+    text-align: center;
+    position: relative;
+}
+
+
+/*.mat-drawer{
+
+  transition-property: top,bottom,width;
+  transition-duration: .2s,.2s,.35s;
+  transition-timing-function: linear,linear,ease;
+  height: calc(100vh - 90px);
+  width: 230px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: block;
+  box-shadow: 0 0 45px 0 rgba(0,0,0,.6);
+  margin-top: 80px;
+  margin-left: 20px;
+  border-radius: 5px;
+  transition: .5s cubic-bezier(.685,.0473,.346,1);
+  box-shadow: 0 2px 22px 0 rgba(0,0,0,.1), 0 4px 20px 0 rgba(0,0,0,.15);
+}*/

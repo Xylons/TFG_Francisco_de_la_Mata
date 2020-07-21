@@ -12,5 +12,17 @@ export interface Profile {
   contactPhone?:string;
   type?:string;
   rol?:string;
-  responsibles?:string[]
+  responsibles?:string[];
+  description?: string;
+  personalId?: string;
+  height?: number;
+  weight?: number;
+  gender?: string;
+  tinetti?: number;
+  getuptest?:number;
+  mms?: number;
+  timestamp?: Date;
+  leftInsole?: number;
+  rightInsole?: number;
+  //selectedGender?:string
 }

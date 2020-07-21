@@ -162,7 +162,12 @@ exports.getOneUserHourData = (req, res, next) => {
     res.status(500).json({
       message: "Not authorized to that dashboard",
     });
-  } else {
+  } else if(Number.isNaN(day)){
+    res.status(500).json({
+      message: "Select a correct hour",
+    });
+  
+  }else {
     InsoleHours.find({ insoleId: leftInsoleId, day: day })
       .sort({ hour: -1 })
       .then((leftInsoleData) => {
@@ -199,8 +204,16 @@ exports.compareUsersInsoleData = (req, res, next) => {
   let customDay;
   let query = {};
   let range = parseInt(req.query.range);
+  try{
+
+ 
   let patient1 = JSON.parse(req.query.patient1);
   let patient2 = JSON.parse(req.query.patient2);
+} catch{
+  res.status(500).json({
+    message: "Select the patients please "+ error,
+  });
+}
   let mode= req.query.mode;
   if (req.query.customday) {
     customDay = parseInt(req.query.customday);

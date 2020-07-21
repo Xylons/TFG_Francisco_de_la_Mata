@@ -1,6 +1,7 @@
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <form [formGroup]="form" (submit)="onSaveProfile()" *ngIf="!isLoading">
+
     <mat-form-field>
       <input
         matInput
@@ -23,28 +24,31 @@
         Please enter a user surname
       </mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <input
-        matInput
-        type="text"
-        formControlName="phone"
-        placeholder="User phone"
-      />
-      <mat-error *ngIf="form.get('phone').invalid">
-        Please enter a phone
-      </mat-error>
-    </mat-form-field>
-    <div>
-      <button mat-stroked-button type="button" (click)="filePicker.click()">
-        Select User Image
-      </button>
-      <input
-        type="file"
-        accept="image/*"
-        #filePicker
-        (change)="onImagePicked($event)"
-      />
+    <div fxLayout="row" fxLayoutAlign="space-around center">
+      <mat-form-field>
+        <input
+          matInput
+          type="text"
+          formControlName="phone"
+          placeholder="User phone"
+        />
+        <mat-error *ngIf="form.get('phone').invalid">
+          Please enter a phone
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="profileRol === 'patient'">
+        <input
+          matInput
+          type="text"
+          formControlName="contactPhone"
+          placeholder="Contact phone"
+        />
+        <mat-error *ngIf="form.get('contactPhone').invalid">
+          Please enter a phone
+        </mat-error>
+      </mat-form-field>
     </div>
+
     <div
       class="image-preview"
       *ngIf="imagePreview !== '' && imagePreview && form.get('image').valid"
@@ -52,38 +56,150 @@
       <img [src]="imagePreview" [alt]="form.value.name" />
     </div>
 
-    <mat-form-field *ngIf="profileRol === 'patient'"
-    >
+    <div fxLayout="row" fxLayoutAlign="space-around center">
+      <div class="file-field" fxFlex>
+        <button mat-stroked-button type="button" (click)="filePicker.click()">
+          <span>Choose file</span>
+          <input
+            type="file"
+            accept="image/*"
+            #filePicker
+            (change)="onImagePicked($event)"
+          />
+        </button>
+        <div class="file-path-wrapper" fxFlex>
+          <input
+            matInput
+            disabled=true
+            class="file-path validate"
+            type="text"
+            placeholder="{{ imageInputText }}"
+          />
+        </div>
+      </div>
+    </div>
+
+    <mat-form-field *ngIf="profileRol === 'patient'">
       <mat-label>Born Date</mat-label>
-      <input matInput [min]="minDate" [max]="maxDate" formControlName="bornDate" [matDatepicker]="picker"  />
+      <input
+        matInput
+        [min]="minDate"
+        [max]="maxDate"
+        formControlName="bornDate"
+        [matDatepicker]="picker"
+      />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker touchUi
-       startView='multi-year'
-
-       #picker disabled="false"></mat-datepicker>
+      <mat-datepicker
+        touchUi
+        startView="multi-year"
+        #picker
+        disabled="false"
+      ></mat-datepicker>
     </mat-form-field>
-
 
 
     <mat-form-field *ngIf="profileRol === 'patient'">
       <input
-      matInput
-      type="text"
-      formControlName="contactPhone"
-      placeholder="Contact phone"
-      >
-      <mat-error *ngIf="form.get('contactPhone').invalid"> Please enter a phone </mat-error>
+        matInput
+        type="text"
+        formControlName="personalId"
+        placeholder="Enter the personal Id"
+      />
+
+    </mat-form-field>
+
+    <mat-form-field *ngIf="profileRol === 'patient'">
+      <input
+        matInput
+        type="text"
+        formControlName="height"
+        placeholder="Height"
+      />
+    </mat-form-field>
+
+    <mat-form-field *ngIf="profileRol === 'patient'">
+      <input
+        matInput
+        type="text"
+        formControlName="weight"
+        placeholder="Weight"
+      />
+    </mat-form-field>
+
+    <mat-radio-group
+    aria-labelledby="gender-label"
+    class="radio-group"
+    formControlName="selectedGender"
+  >
+    <mat-radio-button
+      class="radio-button"
+      *ngFor="let gender of genderList"
+      [value]="gender.value"
+    >
+      <fa-icon class="user-icon" [icon]="gender.icon"></fa-icon>
+    </mat-radio-button>
+  </mat-radio-group>
+
+    <mat-form-field *ngIf="profileRol === 'patient' && rol=== 'responsible'">
+      <input
+        matInput
+        type="text"
+        formControlName="tinetti"
+        placeholder="Enter the value of tinneti test"
+      />
+    </mat-form-field>
+    <mat-form-field *ngIf="profileRol === 'patient' && rol=== 'responsible'">
+      <input
+        matInput
+        type="text"
+        formControlName="getuptest"
+        placeholder="Enter the value of Get Up And Go test"
+      />
+    </mat-form-field>
+    <mat-form-field *ngIf="profileRol === 'patient' && rol=== 'responsible'">
+      <input
+        matInput
+        type="text"
+        formControlName="mms"
+        placeholder="Enter the value of Mini-Mental test"
+      />
+    </mat-form-field>
+    <mat-form-field *ngIf="profileRol === 'patient' && rol=== 'responsible'">
+      <input
+        matInput
+        type="text"
+        formControlName="description"
+        placeholder="Enter Patient description"
+      />
+    </mat-form-field>
+
+    <mat-form-field *ngIf="profileRol === 'patient' && rol=== 'responsible'">
+      <input
+        matInput
+        type="text"
+        formControlName="leftInsole"
+        placeholder="Left Insole Number"
+      />
+    </mat-form-field>
+    <mat-form-field *ngIf="profileRol === 'patient' && rol=== 'responsible'">
+      <input
+        matInput
+        type="text"
+        formControlName="rightInsole"
+        placeholder="Right Insole Number"
+      />
     </mat-form-field>
 
     <mat-form-field *ngIf="profileRol === 'responsible'">
       <input
-      matInput
-      type="text"
-      formControlName="typeOfResponsible"
-      placeholder="Responsible Type"
-      >
-
+        matInput
+        type="text"
+        formControlName="typeOfResponsible"
+        placeholder="Responsible Type"
+      />
     </mat-form-field>
+
+
 
     <!-- <mat-form-field>
       <textarea
@@ -94,9 +210,11 @@
       > </textarea>
       <mat-error *ngIf="form.get('content').invalid"> Please enter a profile content </mat-error>
     </mat-form-field>-->
-    <button mat-raised-button color="primary" type="submit">
-      Save profile
-    </button>
+    <div class="boton">
+      <button mat-raised-button color="primary" type="submit">
+        Save profile
+      </button>
+    </div>
   </form>
 </mat-card>
 

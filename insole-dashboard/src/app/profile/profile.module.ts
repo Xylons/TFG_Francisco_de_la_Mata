@@ -24,6 +24,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FiltersBarModule } from '../filters-bar/filters-bar.module';
 import { PostListComponent } from '../post/post-list/post-list.component';
 import { PostModule } from '../post/post.module';
+import {MatInputModule} from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 
 //Formatos de fecha-- no usados de momento
 //import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
@@ -49,6 +51,8 @@ import { PostModule } from '../post/post.module';
     MatDividerModule,
     FontAwesomeModule,
     FiltersBarModule,
+    MatInputModule,
+    MatRadioModule,
 
     ],
 

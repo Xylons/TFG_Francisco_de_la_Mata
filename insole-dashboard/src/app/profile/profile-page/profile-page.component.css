@@ -21,3 +21,40 @@ input[type="file"]{
 .image-preview img {
   height: 100%;
 }
+
+.mat-card {
+  margin: auto;
+  /*width: 60% ;*/
+}
+
+.mat-card-actions {
+  text-align: right;
+  margin-bottom: 0;
+}
+.mat-form-field {
+  /*text-align: center;*/
+  margin: 5px;
+  /*width: 80%;*/
+}
+
+mat-form-field{
+  width: 100%;
+}
+
+.boton{
+  text-align: right;
+}
+
+.file-field{
+  position:relative;
+}
+
+.mat-stroked-button{
+  float: left;
+}
+
+.file-path-wrapper{
+  vertical-align: middle;
+    margin-top: 8px;
+    margin-left: 8px;
+}

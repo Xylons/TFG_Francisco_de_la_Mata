@@ -3,6 +3,7 @@ import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 //import * as Chart from 'chart.js'
 import { Chart } from "chart.js";
+import { ChartOptions } from 'chart.js';
 import { InsoleService } from '../insole/insole.service';
 import { DashboardService } from './dashboard.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -104,7 +105,21 @@ export class DashboardComponent implements OnInit {
         yAxes: [{
           ticks: {
             beginAtZero: true,
-            stepSize: 1
+            stepSize: 1,
+
+          },
+
+          scaleLabel: {
+            display: true,
+            labelString: 'Steps'
+          }
+        }],
+        xAxes: [{
+
+
+          scaleLabel: {
+            display: true,
+            labelString: 'Hours or days'
           }
         }]
       },
@@ -372,7 +387,7 @@ export class DashboardComponent implements OnInit {
           delete sendedPatient2._id, delete sendedPatient2.name,
           delete sendedPatient2.surname, delete sendedPatient2.bornDate;
         this.selectedPatient1Params= sendedPatient1;
-        this.selectedPatient2Params= sendedPatient1;
+        this.selectedPatient2Params= sendedPatient2;
         console.log(sendedPatient1);
         this.dashboardService.getCompareInsoleData(JSON.stringify(sendedPatient1), JSON.stringify(sendedPatient2), this.days, this.selectedDate.getTime());
 
