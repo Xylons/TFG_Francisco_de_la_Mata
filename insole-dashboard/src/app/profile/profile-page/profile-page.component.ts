@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from "@angular/core";
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-
+import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
 //Servicio
 import { ProfilesService } from '../profiles.service';
 import { Profile } from '../profile.model';
 
 //Validator personalizado
 import { mimeType } from './mime-type.validator';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 
 //All Genders Icon
@@ -17,7 +17,9 @@ import { faVenusMars } from '@fortawesome/free-solid-svg-icons';
 import { faVenus } from '@fortawesome/free-solid-svg-icons';
 //Male Icon
 import { faMars } from '@fortawesome/free-solid-svg-icons';
-
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { startWith, map } from 'rxjs/operators';
 //import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 //import {default as _rollupMoment, Moment} from 'moment';
@@ -56,6 +58,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   public profileRol: string;
   //Suscripcion para control de errores
   private authStatusSub: Subscription;
+  // Variables para chiplist
+
+
 
   constructor(
     public profilesService: ProfilesService,
@@ -70,6 +75,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     console.log(currentYear);
     let epochTime = date.getTime();
     let serializedDate = date.toISOString();
+    this.filteredPatologies = this.patologiesCtrl.valueChanges.pipe(
+      startWith(null),
+      map((patologie: string | null) => patologie ? this._filter(patologie) : this.patologiesList.slice()));
   }
 
   //route contiene información sobre nuestras rutas
@@ -138,7 +146,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         mms : profileData.mms,
         description : profileData.description,
         leftInsole: profileData.leftInsole,
-        rightInsole: profileData.rightInsole
+        rightInsole: profileData.rightInsole,
+        patologies: profileData.patologies
         }
         this.imagePreview=profileData.userImagePath;
         // Controlo que no tenga campos en undefined
@@ -173,15 +182,18 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
           this.form.addControl('description', new FormControl(false));
           this.form.addControl('leftInsole', new FormControl(false));
           this.form.addControl('rightInsole', new FormControl(false));
+          this.form.addControl('patologies', new FormControl(false));
           this.form.patchValue({
             'tinetti': this.profile.tinetti,
             'getuptest': this.profile.getuptest,
             'mms': this.profile.mms,
             'description': this.profile.description,
             'leftInsole': this.profile.leftInsole,
-            'rightInsole': this.profile.rightInsole
+            'rightInsole': this.profile.rightInsole,
+            'patologies': this.profile.patologies
 
           });
+          this.patologies= this.profile.patologies;
 }
           this.form.patchValue({
             'contactPhone': this.profile.contactPhone,
@@ -244,7 +256,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
             this.form.value.mms,
             this.form.value.description,
             this.form.value.leftInsole,
-            this.form.value.rightInsole
+            this.form.value.rightInsole,
+            this.form.value.patologies
           );
 
         }else{
@@ -291,5 +304,57 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.authStatusSub.unsubscribe();
+  }
+
+  visible = true;
+  selectable = true;
+  removable = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  patologiesCtrl = new FormControl();
+  filteredPatologies: Observable<string[]>;
+  patologies: string[] ;
+  patologiesList: string[] = ['Parkinson', 'Dementia', 'Diabetes', 'Cardiopathy', 'Foot Issues'];
+
+
+  @ViewChild('patologiesInput') patologiesInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+
+
+
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our patologie
+    if ((value || '').trim()) {
+      this.patologies.push(value.trim());
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+
+    this.patologiesCtrl.setValue(null);
+  }
+
+  remove(patologie: string): void {
+    const index = this.patologies.indexOf(patologie);
+
+    if (index >= 0) {
+      this.patologies.splice(index, 1);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.patologies.push(event.option.viewValue);
+    this.patologiesInput.nativeElement.value = '';
+    this.patologiesCtrl.setValue(null);
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.patologiesList.filter(patologie => patologie.toLowerCase().indexOf(filterValue) === 0);
   }
 }

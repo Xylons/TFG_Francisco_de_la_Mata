@@ -112,6 +112,7 @@ export class InsoleComponent implements OnInit {
     let max = 4096;
     //normalizo los valores entre 0 y 100
     let valN = Math.round(((val - min) / (max - min)) * 100);
+    console.log(valN);
     if (valN > 100) {
       valN = 100;
     }

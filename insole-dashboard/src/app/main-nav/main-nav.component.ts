@@ -24,14 +24,20 @@ export class MainNavComponent {
 
   constructor(private breakpointObserver: BreakpointObserver, private authService: AuthService) {}
 
-
+  userName: string;
+  userImage: string;
+  rol: string;
 
   ngOnInit() {
     this.userIsAuthenticated= this.authService.getIsAuth();
+    this.userName= this.authService.getName();
+    this.userImage = this.authService.getImage();
+    this.rol= this.authService.getRolLogged();
     this.authListenerSubs = this.authService
     .getAuthStatusListener()
     .subscribe(isAuthenticated => {
       this.userIsAuthenticated= isAuthenticated;
+
     });
   }
 

@@ -20,14 +20,16 @@ const extractFile = require("../middleware/file");
 // Obtener datos de un solo perfil
 router.get("/single", checkAuth, DashboardController.getOneUserInsoleData);
 
-
+// Obtener datos de un perfil por horas
 router.get("/hourdata", checkAuth, DashboardController.getOneUserHourData);
 
-router.get("/single", checkAuth, DashboardController.getOneUserInsoleData);
+
 
 // Obtener datos de dos perfiles
 router.get("/compare", checkAuth, DashboardController.compareUsersInsoleData);
 
+// Obtener los datos de todos los pacientes
+router.get("/all", checkAuth, DashboardController.getAllDailyData);
 
 
 module.exports = router;

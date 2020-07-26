@@ -122,6 +122,7 @@ export class ProfilesService {
       leftInsole?: number;
       rightInsole?: number;
       timestamp?: Date;
+      patologies: string[];
     }>(BACKEND_URL + "single/" + id);
 
   }
@@ -149,7 +150,8 @@ export class ProfilesService {
     mms?: number,
     description?: string,
     leftInsole?: number,
-    rightInsole?: number
+    rightInsole?: number,
+    patologies?: string[]
 ) {
     let profileData: Profile | FormData;
     console.log('editInfo');
@@ -174,6 +176,7 @@ export class ProfilesService {
         profileData.append("description", description);
         profileData.append("leftInsole", leftInsole.toString());
         profileData.append("rightInsole", rightInsole.toString());
+        profileData.append("patologies", patologies.toString());
 
 
       } else if (profileRol === 'responsible') {
@@ -200,6 +203,7 @@ export class ProfilesService {
         profileData["description"] = description;
         profileData["leftInsole"] = leftInsole;
         profileData["rightInsole"] = rightInsole;
+        profileData["patologies"] = patologies;
 
       } else if (profileRol === 'responsible') {
         profileData["typeOfResponsible"] = cPhoneOrTypeOfRes;

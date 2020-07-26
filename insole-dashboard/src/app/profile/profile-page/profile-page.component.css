@@ -58,3 +58,23 @@ mat-form-field{
     margin-top: 8px;
     margin-left: 8px;
 }
+.radio-group {
+
+  flex-direction: row;
+  margin: 23px 20px;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+
+}
+
+::ng-deep .mat-form-field-wrapper{
+  width: 90%;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.margin-auto{
+  margin-top: auto;
+}

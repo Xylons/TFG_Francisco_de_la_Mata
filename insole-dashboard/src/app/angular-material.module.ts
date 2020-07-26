@@ -17,6 +17,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSliderModule } from '@angular/material/slider';
+import {MatDividerModule} from '@angular/material/divider';
 
 
 // Al poner exports solo realiza el import automaticamente
@@ -38,7 +39,8 @@ import { MatSliderModule } from '@angular/material/slider';
     MatTooltipModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatSliderModule
+    MatSliderModule,
+    MatDividerModule
     ]
 })
 export class AngularMaterialModule { }

@@ -117,12 +117,25 @@ exports.getOneUserInsoleData = (req, res, next) => {
                   rightInsoleData,
                   "day"
                 );
-                res.status(200).json({
-                  message: "Success",
-                  insoleData: insoleData,
-                  name: profileData.name,
-                  surname: profileData.surname,
-                });
+                if (req.userData.rol !== PATIENT) {
+                  res.status(200).json({
+                    message: "Success",
+                    insoleData: insoleData,
+                    name: profileData.name,
+                    surname: profileData.surname,
+                    tinetti: profileData.tinetti,
+                    getuptest: profileData.getuptest,
+                    mms: profileData.mms,
+                    description: profileData.description
+                  });
+                } else {
+                  res.status(200).json({
+                    message: "Success",
+                    insoleData: insoleData,
+                    name: profileData.name,
+                    surname: profileData.surname,
+                  });
+                }
               } else {
                 res.status(400).json({
                   message: "Error, have data for the selected date",
@@ -162,12 +175,11 @@ exports.getOneUserHourData = (req, res, next) => {
     res.status(500).json({
       message: "Not authorized to that dashboard",
     });
-  } else if(Number.isNaN(day)){
+  } else if (Number.isNaN(day)) {
     res.status(500).json({
       message: "Select a correct hour",
     });
-  
-  }else {
+  } else {
     InsoleHours.find({ insoleId: leftInsoleId, day: day })
       .sort({ hour: -1 })
       .then((leftInsoleData) => {
@@ -204,17 +216,15 @@ exports.compareUsersInsoleData = (req, res, next) => {
   let customDay;
   let query = {};
   let range = parseInt(req.query.range);
-  try{
-
- 
-  let patient1 = JSON.parse(req.query.patient1);
-  let patient2 = JSON.parse(req.query.patient2);
-} catch{
-  res.status(500).json({
-    message: "Select the patients please "+ error,
-  });
-}
-  let mode= req.query.mode;
+  try {
+    let patient1 = JSON.parse(req.query.patient1);
+    let patient2 = JSON.parse(req.query.patient2);
+  } catch {
+    res.status(500).json({
+      message: "Select the patients please " + error,
+    });
+  }
+  let mode = req.query.mode;
   if (req.query.customday) {
     customDay = parseInt(req.query.customday);
   }
@@ -227,10 +237,10 @@ exports.compareUsersInsoleData = (req, res, next) => {
   let databaseModel;
   if (range === 1) {
     dayOrHour = "hour";
-    databaseModel= InsoleHours;
+    databaseModel = InsoleHours;
   } else {
     dayOrHour = "day";
-    databaseModel= InsoleDays;
+    databaseModel = InsoleDays;
   }
   query.day = { $gte: limitDay, $lt: customDay };
   //Info solo disponible para el responsible
@@ -243,38 +253,48 @@ exports.compareUsersInsoleData = (req, res, next) => {
   if (patient1 && patient2) {
     //Busco informacion del primer usuario
     query.insoleId = patient1.leftInsole;
-    databaseModel.find(query)
+    databaseModel
+      .find(query)
       .sort({ day: -1 })
       .then((patient1LeftInsoleData) => {
         query.insoleId = patient1.rightInsole;
-        databaseModel.find(query)
+        databaseModel
+          .find(query)
           .sort({ day: -1 })
           .then((patient1RightInsoleData) => {
             query.insoleId = patient2.leftInsole;
-            databaseModel.find(query)
+            databaseModel
+              .find(query)
               .sort({ day: -1 })
               .then((patient2LeftInsoleData) => {
                 query.insoleId = patient2.rightInsole;
-                databaseModel.find(query)
+                databaseModel
+                  .find(query)
                   .sort({ day: -1 })
                   .then((patient2RightInsoleData) => {
                     let insoleData1;
                     let insoleData2;
-                    if (patient1LeftInsoleData[0] && patient1RightInsoleData[0]) {
+                    if (
+                      patient1LeftInsoleData[0] &&
+                      patient1RightInsoleData[0]
+                    ) {
                       insoleData1 = this.getAllUniqueDates(
                         patient1LeftInsoleData,
                         patient1RightInsoleData,
                         dayOrHour
                       );
                     }
-                    if (patient2LeftInsoleData[0] && patient2RightInsoleData[0]) {
+                    if (
+                      patient2LeftInsoleData[0] &&
+                      patient2RightInsoleData[0]
+                    ) {
                       insoleData2 = this.getAllUniqueDates(
                         patient2LeftInsoleData,
                         patient2RightInsoleData,
                         dayOrHour
                       );
                     }
-                    
+
                     // Si hay algún dato
                     if (insoleData1 || insoleData2) {
                       res.status(200).json({
@@ -290,7 +310,7 @@ exports.compareUsersInsoleData = (req, res, next) => {
                   })
                   .catch((error) => {
                     res.status(500).json({
-                      message: "Fetching insole data failed! "+ error,
+                      message: "Fetching insole data failed! " + error,
                     });
                   });
               });
@@ -303,14 +323,75 @@ exports.compareUsersInsoleData = (req, res, next) => {
   }
 };
 
+exports.getAllDailyData = (req, res, next) => {
+  let customDay;
+  let query = {};
+  let day = parseInt(req.query.day);
+  let leftInsoleId = req.query.leftInsoleId;
+  let rightInsoleId = req.query.rightInsoleId;
+
+  //transformacion a las 00:00:00 de ese dia
+  let date = new Date(day);
+  //date.setDate(date.getDate() - 1);
+  day = new Date(date.toDateString()).getTime();
+
+  if (
+    (req.userData.rol !== RESPONSIBLE && req.userData.rol !== ADMIN) ||
+    (req.userData.rol === PATIENT && req.userData.userId !== req.query.id)
+  ) {
+    res.status(500).json({
+      message: "Not authorized to that dashboard",
+    });
+  } else if (Number.isNaN(day)) {
+    res.status(500).json({
+      message: "Select a correct hour",
+    });
+  } else {
+    InsoleHours.find({ insoleId: leftInsoleId, day: day })
+      .sort({ hour: -1 })
+      .then((leftInsoleData) => {
+        InsoleHours.find({ insoleId: rightInsoleId, day: day })
+          .sort({ hour: -1 })
+          .then((rightInsoleData) => {
+            //Aqui se puede añadir que devuelva lo ultimo que encuentre en caso de no encontrar
+            if (leftInsoleData && rightInsoleData) {
+              let insoleData = this.getAllUniqueDates(
+                leftInsoleData,
+                rightInsoleData,
+                "hour"
+              );
+              res.status(200).json({
+                message: "Success",
+                insoleData: insoleData,
+              });
+            } else {
+              res.status(400).json({
+                message: "Error, have data for the selected date",
+              });
+            }
+          })
+          .catch((error) => {
+            res.status(500).json({
+              message: "Fetching insole data failed!" + error,
+            });
+          });
+      });
+  }
+};
+
 exports.getAllUniqueDates = (leftInsole, rightInsole, dayOrHour) => {
-  if (leftInsole && rightInsole && dayOrHour && leftInsole[0] && rightInsole[0]) {
+  if (
+    leftInsole &&
+    rightInsole &&
+    dayOrHour &&
+    leftInsole[0] &&
+    rightInsole[0]
+  ) {
     let daysAndStepsTemp = {};
     let leftDatesArray = [];
     let rightDatesArray = [];
     let leftMeanArray = {};
     let rightMeanArray = {};
-
 
     let leftInsoleId = leftInsole[0].insoleId;
     let rightInsoleId = rightInsole[0].insoleId;

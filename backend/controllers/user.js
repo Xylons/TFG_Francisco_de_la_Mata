@@ -75,8 +75,8 @@ exports.userLogin = (req, res, next) => {
         expiresIn: 3600,
         userId: fechedUser._id,
         name: profileInfo.name,
-        surname: profileInfo.userImagePath,
-        image: profileInfo.surname,
+        surname: profileInfo.surname,
+        image: profileInfo.userImagePath,
         rol: profileInfo.__t,
       });
       });

@@ -1,4 +1,5 @@
 <mat-sidenav-container class="sidenav-container">
+<!--*ngIf="userIsAuthenticated"-->
   <mat-sidenav
     #drawer
     class="sidenav"
@@ -37,9 +38,14 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span><a routerLink="/">SteByS</a></span>
+      <span><a routerLink="/"><img class="app-logo" src="http://localhost:3000/images/LogoHorizontalBlancoPeque.png" alt="SteByS Logo"></a></span>
+
+
       <span class="spacer"></span>
       <ul>
+        <li *ngIf="userIsAuthenticated" ><span  >Welcome {{ userName }}</span> </li>
+        <mat-divider *ngIf="userIsAuthenticated" [vertical]="true"></mat-divider>
+        <!--<div><img src="{{ userImage}}" alt="Avatar"></div>-->
         <li *ngIf="userIsAuthenticated">
           <a mat-button routerLink="profile" routerLinkActive="mat-accent">
             Profile</a

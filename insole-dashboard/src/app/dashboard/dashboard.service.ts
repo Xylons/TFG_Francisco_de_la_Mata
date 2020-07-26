@@ -27,6 +27,11 @@ export class DashboardService {
   private allCompareDatesArray = new Subject<string[]>();
 
   private nameAndSurname = new Subject<string>();
+  private descriptionData = new Subject<{name: string,
+    surname:string, mms: number,
+    getuptest: number, tinetti: number,
+    description: string
+  }>();
   private stepsByHour = new Subject<{ steps: [], hours: [] }>();
 
   private leftDatesArray = {};
@@ -68,6 +73,9 @@ export class DashboardService {
   getPatientsListener() {
     return this.patients.asObservable();
   }
+  getDescriptionDataListener() {
+    return this.descriptionData.asObservable();
+  }
   constructor(private http: HttpClient, private router: Router, private insoleService: InsoleService,
     private postService: PostsService) {
     console.log(this.router.url);
@@ -86,11 +94,16 @@ export class DashboardService {
 
     this.http.get<{
       name: string, surname: string,
+      mms?: number,
+      getuptest?:number,
+      tinetti?: number,
+      description?: string,
       insoleData: {
         allDatesArray: [],
         daysAndSteps: {},
         leftInsole: { insoleId: string, meanByDay: [] },
         rightInsole: { insoleId: string, meanByDay: [] },
+
       }
     }>(BACKEND_URL + "single" + queryParams)
       .subscribe((response) => {
@@ -98,7 +111,16 @@ export class DashboardService {
         this.nameAndSurname.next(response.name + " " + response.surname.charAt(0));
         this.allDatesArray.next(response.insoleData.allDatesArray);
         this.daysAndSteps.next(response.insoleData.daysAndSteps);
-
+        if(response.mms || response.tinetti || response.getuptest){
+          this.descriptionData.next({
+            name: response.name,
+            surname: response.surname,
+            mms: response.mms,
+            tinetti: response.tinetti,
+            getuptest: response.getuptest,
+            description: response.description
+          })
+        }
         //Mando la informacion diaria de la presion al componente insole
         this.insoleService.setPressureData(response.insoleData.leftInsole,
           response.insoleData.rightInsole, response.insoleData.allDatesArray);

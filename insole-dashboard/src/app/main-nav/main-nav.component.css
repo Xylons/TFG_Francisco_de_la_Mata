@@ -53,13 +53,13 @@ ul{
 }
 
 
-/*.mat-drawer{
+.mat-drawer{
 
   transition-property: top,bottom,width;
   transition-duration: .2s,.2s,.35s;
   transition-timing-function: linear,linear,ease;
   height: calc(100vh - 90px);
-  width: 230px;
+  width: 200px;
   position: fixed;
   top: 0;
   left: 0;
@@ -71,4 +71,21 @@ ul{
   border-radius: 5px;
   transition: .5s cubic-bezier(.685,.0473,.346,1);
   box-shadow: 0 2px 22px 0 rgba(0,0,0,.1), 0 4px 20px 0 rgba(0,0,0,.15);
-}*/
+}
+
+ .mat-drawer-content {
+  margin-left: 0px !important;
+}
+.app-logo{
+  height: 50px;
+  margin-top: 7px;
+}
+
+.mat-divider-vertical {
+  border-top: 0;
+  border-right-width: 3px;
+  border-right-style: solid;
+  background-color: white;
+  margin-left: 10px;
+  margin-right: 10px;
+}

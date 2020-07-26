@@ -13,7 +13,7 @@ background-color: #f3e5f5;
   margin-bottom: 10px;
   z-index: 1;
   position: fixed;
-    width: 67%;
+    width: 79%;
     top:64px;
     padding: 8px;
 
@@ -109,5 +109,6 @@ background-color: #f3e5f5;
   overflow: inherit;
 }
 
-
-
+.middle-input{
+  width: 10%;
+}

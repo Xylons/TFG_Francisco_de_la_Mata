@@ -1,6 +1,7 @@
 .mat-card {
   margin: auto;
   width: 60% ;
+  margin-left: 145px;
 }
 
 .mat-card-actions {

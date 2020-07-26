@@ -42,10 +42,10 @@ exports.getBasicInfo = (id) => {
   return Profile.findOne({ linkedAccount: id }, "name surname userImagePath");
 };
 
-exports.getInsoleInfo = (id) => {
+exports.getInsoleInfo = (id) => { 
   return PatientProfile.findOne(
     { linkedAccount: id },
-    "name surname leftInsole rightInsole"
+    "name surname leftInsole rightInsole tinetti getuptest mms description"
   );
 };
 exports.updateProfile = (req, res, err) => {
@@ -91,7 +91,7 @@ exports.updateProfile = (req, res, err) => {
           }
           profileModel = PatientProfile;
           newProfileData["bornDate"] = req.body.bornDate;
-          newProfileData["patologies"] = req.body.patologies;
+          
           //newProfileData["patologies"] = ["parkinson"];
           newProfileData["contactPhone"] = req.body.contactPhone;
           newProfileData["comments"] = profileInfo.comments;
@@ -105,6 +105,7 @@ exports.updateProfile = (req, res, err) => {
           newProfileData["gender"] = req.body.gender;
 
           if (requestRol === RESPONSIBLE) {
+            newProfileData["patologies"] = req.body.patologies;
             newProfileData["tinetti"] = req.body.tinetti;
             newProfileData["getuptest"] = req.body.getuptest;
             newProfileData["mms"] = req.body.mms;
@@ -306,6 +307,7 @@ exports.getProfile = (req, res, next) => {
           delete profile.description;
           delete profile.leftInsole;
           delete profile.rightInsole;
+          delete profile.patologies;
         }
         res.status(200).json(profile);
       } else {
@@ -537,7 +539,7 @@ exports.getPatients = (req, res, next) => {
     }*/
   }
 };
-// Aqui se puede cambiar el rol de los usuarios undefined
+// Aqui se puede cambiar el responsable de un paciente
 exports.editResponsible = (req, res, err) => {
   //
   if (req.userData.rol !== RESPONSIBLE) {

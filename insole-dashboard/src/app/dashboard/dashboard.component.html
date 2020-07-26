@@ -78,6 +78,11 @@
       </mat-form-field>
     </form>
   </div>
+  <mat-card *ngIf="mode === 'single' && rol === 'responsible'">
+    <mat-card-title>{{name }} {{surname}} </mat-card-title>
+    <mat-card-subtitle> MMS: {{mms}} TINETTI: {{tinetti}} GET UP AND GO: {{tinetti}}</mat-card-subtitle>
+    <mat-card-content> DESCRIPTION: {{description}}</mat-card-content>
+</mat-card>
   <mat-grid-list cols="2" rowHeight="350px">
     <mat-grid-tile
       *ngFor="let card of cards | async"
@@ -127,7 +132,11 @@
           </div>
         </mat-card-content>
         <ng-template #insole>
-          <mat-card-content
+          <mat-card-content style="max-height: 80%;position: relative;
+          height: 0;
+          width: 100%;
+          padding: 0;
+          padding-bottom: 100%; "
             class="dashboard-card-content"
             *ngIf="
               card.title.toLowerCase() === 'insole'.toLowerCase();

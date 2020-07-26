@@ -4,8 +4,8 @@ const profile = require("./profile");
 const profileResponsibleSchema = profile.discriminator(
   "responsible",
   new mongoose.Schema({
-    patients: [{ type: String }],
-    typeOfResponsible: { type: String, require: true }
+    //patients: [{ type: String }],
+    typeOfResponsible: { type: String }
   })
 );
 

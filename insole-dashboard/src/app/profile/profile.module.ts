@@ -26,6 +26,8 @@ import { PostListComponent } from '../post/post-list/post-list.component';
 import { PostModule } from '../post/post.module';
 import {MatInputModule} from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatChipsModule} from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 //Formatos de fecha-- no usados de momento
 //import {MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS} from '@angular/material-moment-adapter';
@@ -53,7 +55,8 @@ import { MatRadioModule } from '@angular/material/radio';
     FiltersBarModule,
     MatInputModule,
     MatRadioModule,
-
+    MatChipsModule,
+    MatAutocompleteModule
     ],
 
 })

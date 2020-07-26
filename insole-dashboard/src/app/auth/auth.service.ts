@@ -61,13 +61,14 @@ export class AuthService {
     return this.sendedStatusListener.asObservable();
   }
   getName() {
-    return this.name;
+
+    return localStorage.getItem('name');
   }
   getSurname() {
     return this.surname;
   }
   getImage() {
-    return this.image;
+    return localStorage.getItem('userImage');
   }
   setImage(newImage: string) {
     this.image = newImage;
@@ -133,7 +134,7 @@ export class AuthService {
           const now = new Date();
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           console.log(expirationDate);
-          this.saveAuthData(token, expirationDate, this.userId, this.rolLogged);
+          this.saveAuthData(token, expirationDate, this.userId, this.rolLogged, this.name, this.image);
           console.log(response);
           this.router.navigate(["/"]);
         }
@@ -181,11 +182,13 @@ export class AuthService {
     }, duration * 1000);
   }
 
-  private saveAuthData(token: string, expirationDate: Date, userId: string, rol: string) {
+  private saveAuthData(token: string, expirationDate: Date, userId: string, rol: string, name: string, userImage: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
     localStorage.setItem('rol', rol);
+    localStorage.setItem('name', name);
+    localStorage.setItem('userImage', userImage);
   }
 
   private clearAuthData() {
@@ -193,6 +196,8 @@ export class AuthService {
     localStorage.removeItem('expiration');
     localStorage.removeItem('userId');
     localStorage.removeItem('rol');
+    localStorage.removeItem('name');
+    localStorage.removeItem('userImage');
   }
 
   private getAuthData() {
@@ -237,7 +242,7 @@ export class AuthService {
           const now = new Date();
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           console.log(expirationDate);
-          this.saveAuthData(token, expirationDate, this.userId, this.rolLogged);
+          this.saveAuthData(token, expirationDate, this.userId, this.rolLogged, this.name, this.image);
           console.log(response);
           this.router.navigate(["/"]);
         }
@@ -247,6 +252,7 @@ export class AuthService {
       });
 
   }
+
   recover(email: string) {
     const emailData = {
       email: email,

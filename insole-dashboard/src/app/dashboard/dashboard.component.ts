@@ -30,8 +30,9 @@ export class DashboardComponent implements OnInit {
   days: number = 1;
   selectedDate: Date = new Date();
   mode: string;
-
+  rol: string;
   //valores para un unico paciente
+  private descriptionDataListener: Subscription;
   private allDatesArrayListener: Subscription;
   private nameAndSurnameListener: Subscription;
   private daysAndStepsListener: Subscription;
@@ -39,8 +40,24 @@ export class DashboardComponent implements OnInit {
   nameAndSurname: string;
   nameAndSurname2: string;
   allDatesArray: any[] = [];
-  daysAndSteps = {}
-  daysAndSteps2 = {}
+  daysAndSteps = {};
+  daysAndSteps2 = {};
+  // Datos para descripcion
+  name: string;
+  surname: string;
+  description:string;
+  mms: number;
+  getuptest: number;
+  tinetti: number;
+
+  name2: string;
+  surname2: string;
+  description2:string;
+  mms2: number;
+  getuptest2: number;
+  tinetti2: number;
+
+
 
   //Valores para comparar pacientes
   private patientsListener: Subscription;
@@ -82,6 +99,7 @@ export class DashboardComponent implements OnInit {
     private dashboardService: DashboardService,
     public route: ActivatedRoute,
     private authService: AuthService, formBuilder: FormBuilder, public dialog: MatDialog) {
+      this.rol= authService.getRolLogged();
     this.formGroup = formBuilder.group({
       datePicked: '',
       patient1: '',
@@ -89,12 +107,12 @@ export class DashboardComponent implements OnInit {
     });
     this.chartData = [{
       data: [3, 1, 4, 2, 5],
-      label: 'Anthracnose',
+      label: 'Test',
       fill: false
     },
     {
       data: [8, 4, 1, 5, 2],
-      label: 'Anthe',
+      label: 'Test',
       fill: false
     },
     ];
@@ -184,7 +202,7 @@ export class DashboardComponent implements OnInit {
     // Si la segunda parte de la url es compare es para comparar,
     //si no tiene nada es dashboard general
     this.route.url.subscribe((url) => {
-      if (url[1].path === "compare") {
+      if (url[1] && url[1].path === "compare") {
         let changed = this.mode !== undefined && this.mode !== 'compare';
 
         this.mode = 'compare';
@@ -200,7 +218,7 @@ export class DashboardComponent implements OnInit {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.userId = paramMap.get('userId');
 
-      if (this.userId !== 'compare') {
+      if (this.userId && this.userId!== 'compare') {
 
         this.mode = 'single';
         this.dashboardService.setUserId(this.userId);
@@ -266,6 +284,16 @@ export class DashboardComponent implements OnInit {
           this.nameAndSurname = nameAndSurname;
           this.oneLineChartData.label = nameAndSurname;
 
+        });
+
+        this.descriptionDataListener = this.dashboardService.getDescriptionDataListener()
+        .subscribe((descriptionData) => {
+          this.name= descriptionData.name;
+          this.surname= descriptionData.surname;
+          this.mms= descriptionData.mms;
+          this.getuptest= descriptionData.getuptest;
+          this.tinetti= descriptionData.tinetti;
+          this.description= descriptionData.description;
         });
 
       this.daysAndStepsListener = this.dashboardService.getDaysAndStepsListener()
