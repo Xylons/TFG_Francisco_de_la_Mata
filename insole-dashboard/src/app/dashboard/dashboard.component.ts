@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
   private nameAndSurnameListener: Subscription;
   private daysAndStepsListener: Subscription;
   private daysAndSteps2Listener: Subscription;
+  private infoFormAllUsersListener: Subscription;
   nameAndSurname: string;
   nameAndSurname2: string;
   allDatesArray: any[] = [];
@@ -181,6 +182,9 @@ export class DashboardComponent implements OnInit {
       this.dashboardService.getCompareInsoleData(JSON.stringify(this.selectedPatient1Params), JSON.stringify(this.selectedPatient2Params), this.days, this.selectedDate.getTime());
 
     }
+    if(this.mode === 'multiple'){
+      this.dashboardService.getAllInsoleData(this.days, this.selectedDate.getTime());
+    }
   }
   onDateChanged(event: MatDatepickerInputEvent<Date>) {
     console.log(event.value);
@@ -190,6 +194,10 @@ export class DashboardComponent implements OnInit {
     }
     if (this.mode === 'compare') {
       this.dashboardService.getCompareInsoleData(JSON.stringify(this.selectedPatient1Params), JSON.stringify(this.selectedPatient2Params), this.days, this.selectedDate.getTime());
+
+    }
+    if(this.mode === 'multiple'){
+      this.dashboardService.getAllInsoleData(this.days, this.selectedDate.getTime());
 
     }
   }
@@ -263,13 +271,13 @@ export class DashboardComponent implements OnInit {
         if (this.mode === 'multiple') {
           if (matches) {
             return [
-              { title: 'Evolution', cols: 1, rows: 1 },
+              { title: 'All Users Data', cols: 1, rows: 1 },
 
             ];
           }
 
           return [
-            { title: 'Evolution', cols: 2, rows: 1 },
+            { title: 'All Users Data', cols: 2, rows: 2 },
 
           ];
         }
@@ -347,9 +355,17 @@ export class DashboardComponent implements OnInit {
             this.twoLineChartData.data = [...firstCharData.reverse()];
           }
 
-          //this.barChartData.push(this.onebarChartData);
           this.lineChartData = [this.oneLineChartData, this.twoLineChartData];
         });
+    }
+    if(this.mode==='multiple'){
+      this.infoFormAllUsersListener = this.dashboardService.getInfoFormAllUsersListener()
+        .subscribe((allUsersInfo) => {
+          this.barChartData=allUsersInfo.allData;
+          this.barChartLabels=allUsersInfo.allLabels;
+        });
+      this.dashboardService.getAllInsoleData(this.days, this.selectedDate.getTime());
+
     }
     this.formGroup.patchValue({
       'datePicked': new Date()
@@ -436,7 +452,29 @@ export class DashboardComponent implements OnInit {
     scaleShowVerticalLines: false,
     responsive: true,
     maintainAspectRatio: false,
-    scales: { xAxes: [{}], yAxes: [{ ticks: { beginAtZero: true } }] },
+
+     scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          stepSize: 200,
+
+        },
+
+        scaleLabel: {
+          display: true,
+          labelString: 'Steps'
+        }
+      }],
+      xAxes: [{
+
+
+        scaleLabel: {
+          display: true,
+          labelString: 'Days'
+        }
+      }]
+    },
     plugins: {
       datalabels: {
         anchor: 'end',
@@ -445,14 +483,14 @@ export class DashboardComponent implements OnInit {
     }
 
   };
-  //public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   public barChartType = 'bar';
   public barChartLegend = true;
 
-  /* public barChartData = [
+   public barChartData = [
      { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
      { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
-   ];*/
+   ];
 
   ///INSOLE svg
 

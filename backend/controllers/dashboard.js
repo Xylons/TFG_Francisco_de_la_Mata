@@ -11,14 +11,26 @@ const ADMIN = process.env.admin;
 
 exports.addFile = (req, res, next) => {};
 
-exports.addHourInsoleData = (day, hour, insoleId, meanPressureData, steps) => {
+exports.addAllInsoleData = (
+  day,
+  meanOfSteps0,
+  meanOfSteps60,
+  meanOfSteps70,
+  meanOfSteps80,
+  meanOfSteps90,
+  minSteps,
+  maxSteps
+) => {
   //Falta poner que si ya existe esa entrada que se actualize
-  const insole = new InsoleHours({
+  const insole = new InsoleGeneralDailyInfo({
     day: day,
-    hour: hour,
-    insoleId: insoleId,
-    meanPressureData: meanPressureData,
-    steps: steps,
+    meanOfSteps0: meanOfSteps0,
+    meanOfSteps60: meanOfSteps60,
+    meanOfSteps70: meanOfSteps70,
+    meanOfSteps80: meanOfSteps80,
+    meanOfSteps90: meanOfSteps90,
+    minSteps: minSteps,
+    maxSteps: maxSteps,
   });
   // Almaceno los datos en Mongo
   insole
@@ -31,7 +43,7 @@ exports.addHourInsoleData = (day, hour, insoleId, meanPressureData, steps) => {
     });
 };
 
-exports.addDailyInsoleData = (
+exports.addHourInsoleData = exports.addDailyInsoleData = (
   day,
   insoleId,
   meanPressureData,
@@ -126,7 +138,7 @@ exports.getOneUserInsoleData = (req, res, next) => {
                     tinetti: profileData.tinetti,
                     getuptest: profileData.getuptest,
                     mms: profileData.mms,
-                    description: profileData.description
+                    description: profileData.description,
                   });
                 } else {
                   res.status(200).json({
@@ -219,12 +231,115 @@ exports.compareUsersInsoleData = (req, res, next) => {
   try {
     let patient1 = JSON.parse(req.query.patient1);
     let patient2 = JSON.parse(req.query.patient2);
+
+    let mode = req.query.mode;
+    if (req.query.customday) {
+      customDay = parseInt(req.query.customday);
+    }
+    let limitDay = new Date(customDay);
+    //Resto los dias a la fecha indicada
+    limitDay.setDate(limitDay.getDate() - range);
+    //transformacion a las 00:00:00 de ese dia
+    limitDay = new Date(limitDay.toDateString()).getTime();
+    let dayOrHour;
+    let databaseModel;
+    if (range === 1) {
+      dayOrHour = "hour";
+      databaseModel = InsoleHours;
+    } else {
+      dayOrHour = "day";
+      databaseModel = InsoleDays;
+    }
+    query.day = { $gte: limitDay, $lt: customDay };
+    //Info solo disponible para el responsible
+    if (req.userData.rol !== RESPONSIBLE) {
+      res.status(500).json({
+        message: "Not authorized to that dashboard",
+      });
+    }
+
+    if (patient1 && patient2) {
+      //Busco informacion del primer usuario
+      query.insoleId = patient1.leftInsole;
+      databaseModel
+        .find(query)
+        .sort({ day: -1 })
+        .then((patient1LeftInsoleData) => {
+          query.insoleId = patient1.rightInsole;
+          databaseModel
+            .find(query)
+            .sort({ day: -1 })
+            .then((patient1RightInsoleData) => {
+              query.insoleId = patient2.leftInsole;
+              databaseModel
+                .find(query)
+                .sort({ day: -1 })
+                .then((patient2LeftInsoleData) => {
+                  query.insoleId = patient2.rightInsole;
+                  databaseModel
+                    .find(query)
+                    .sort({ day: -1 })
+                    .then((patient2RightInsoleData) => {
+                      let insoleData1;
+                      let insoleData2;
+                      if (
+                        patient1LeftInsoleData[0] &&
+                        patient1RightInsoleData[0]
+                      ) {
+                        insoleData1 = this.getAllUniqueDates(
+                          patient1LeftInsoleData,
+                          patient1RightInsoleData,
+                          dayOrHour
+                        );
+                      }
+                      if (
+                        patient2LeftInsoleData[0] &&
+                        patient2RightInsoleData[0]
+                      ) {
+                        insoleData2 = this.getAllUniqueDates(
+                          patient2LeftInsoleData,
+                          patient2RightInsoleData,
+                          dayOrHour
+                        );
+                      }
+
+                      // Si hay algún dato
+                      if (insoleData1 || insoleData2) {
+                        res.status(200).json({
+                          message: "Success",
+                          patient1: insoleData1,
+                          patient2: insoleData2,
+                        });
+                      } else {
+                        res.status(400).json({
+                          message: "Error, have data for the selected date",
+                        });
+                      }
+                    })
+                    .catch((error) => {
+                      res.status(500).json({
+                        message: "Fetching insole data failed! " + error,
+                      });
+                    });
+                });
+            });
+        });
+    } else {
+      res.status(500).json({
+        message: "The user doesnt have assigned Insoles",
+      });
+    }
   } catch {
     res.status(500).json({
       message: "Select the patients please " + error,
     });
   }
-  let mode = req.query.mode;
+};
+
+exports.getAllDailyData = (req, res, next) => {
+  let customDay;
+  let query = {};
+  let range = parseInt(req.query.range);
   if (req.query.customday) {
     customDay = parseInt(req.query.customday);
   }
@@ -233,150 +348,28 @@ exports.compareUsersInsoleData = (req, res, next) => {
   limitDay.setDate(limitDay.getDate() - range);
   //transformacion a las 00:00:00 de ese dia
   limitDay = new Date(limitDay.toDateString()).getTime();
-  let dayOrHour;
-  let databaseModel;
-  if (range === 1) {
-    dayOrHour = "hour";
-    databaseModel = InsoleHours;
-  } else {
-    dayOrHour = "day";
-    databaseModel = InsoleDays;
-  }
+
+  console.log(req.userData.userId);
   query.day = { $gte: limitDay, $lt: customDay };
-  //Info solo disponible para el responsible
-  if (req.userData.rol !== RESPONSIBLE) {
+  if (req.userData.rol !== RESPONSIBLE && req.userData.rol !== ADMIN) {
     res.status(500).json({
       message: "Not authorized to that dashboard",
     });
   }
 
-  if (patient1 && patient2) {
-    //Busco informacion del primer usuario
-    query.insoleId = patient1.leftInsole;
-    databaseModel
-      .find(query)
-      .sort({ day: -1 })
-      .then((patient1LeftInsoleData) => {
-        query.insoleId = patient1.rightInsole;
-        databaseModel
-          .find(query)
-          .sort({ day: -1 })
-          .then((patient1RightInsoleData) => {
-            query.insoleId = patient2.leftInsole;
-            databaseModel
-              .find(query)
-              .sort({ day: -1 })
-              .then((patient2LeftInsoleData) => {
-                query.insoleId = patient2.rightInsole;
-                databaseModel
-                  .find(query)
-                  .sort({ day: -1 })
-                  .then((patient2RightInsoleData) => {
-                    let insoleData1;
-                    let insoleData2;
-                    if (
-                      patient1LeftInsoleData[0] &&
-                      patient1RightInsoleData[0]
-                    ) {
-                      insoleData1 = this.getAllUniqueDates(
-                        patient1LeftInsoleData,
-                        patient1RightInsoleData,
-                        dayOrHour
-                      );
-                    }
-                    if (
-                      patient2LeftInsoleData[0] &&
-                      patient2RightInsoleData[0]
-                    ) {
-                      insoleData2 = this.getAllUniqueDates(
-                        patient2LeftInsoleData,
-                        patient2RightInsoleData,
-                        dayOrHour
-                      );
-                    }
-
-                    // Si hay algún dato
-                    if (insoleData1 || insoleData2) {
-                      res.status(200).json({
-                        message: "Success",
-                        patient1: insoleData1,
-                        patient2: insoleData2,
-                      });
-                    } else {
-                      res.status(400).json({
-                        message: "Error, have data for the selected date",
-                      });
-                    }
-                  })
-                  .catch((error) => {
-                    res.status(500).json({
-                      message: "Fetching insole data failed! " + error,
-                    });
-                  });
-              });
-          });
+  InsoleGeneralDailyInfo.find(query)
+    .sort({ day: -1 })
+    .then((allUserData) => {
+      res.status(200).json({
+        message: "Success",
+        allUserData: allUserData,
       });
-  } else {
-    res.status(500).json({
-      message: "The user doesnt have assigned Insoles",
-    });
-  }
-};
-
-exports.getAllDailyData = (req, res, next) => {
-  let customDay;
-  let query = {};
-  let day = parseInt(req.query.day);
-  let leftInsoleId = req.query.leftInsoleId;
-  let rightInsoleId = req.query.rightInsoleId;
-
-  //transformacion a las 00:00:00 de ese dia
-  let date = new Date(day);
-  //date.setDate(date.getDate() - 1);
-  day = new Date(date.toDateString()).getTime();
-
-  if (
-    (req.userData.rol !== RESPONSIBLE && req.userData.rol !== ADMIN) ||
-    (req.userData.rol === PATIENT && req.userData.userId !== req.query.id)
-  ) {
-    res.status(500).json({
-      message: "Not authorized to that dashboard",
-    });
-  } else if (Number.isNaN(day)) {
-    res.status(500).json({
-      message: "Select a correct hour",
-    });
-  } else {
-    InsoleHours.find({ insoleId: leftInsoleId, day: day })
-      .sort({ hour: -1 })
-      .then((leftInsoleData) => {
-        InsoleHours.find({ insoleId: rightInsoleId, day: day })
-          .sort({ hour: -1 })
-          .then((rightInsoleData) => {
-            //Aqui se puede añadir que devuelva lo ultimo que encuentre en caso de no encontrar
-            if (leftInsoleData && rightInsoleData) {
-              let insoleData = this.getAllUniqueDates(
-                leftInsoleData,
-                rightInsoleData,
-                "hour"
-              );
-              res.status(200).json({
-                message: "Success",
-                insoleData: insoleData,
-              });
-            } else {
-              res.status(400).json({
-                message: "Error, have data for the selected date",
-              });
-            }
-          })
-          .catch((error) => {
-            res.status(500).json({
-              message: "Fetching insole data failed!" + error,
-            });
-          });
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Fetching insole data failed!",
       });
-  }
+    });
 };
 
 exports.getAllUniqueDates = (leftInsole, rightInsole, dayOrHour) => {

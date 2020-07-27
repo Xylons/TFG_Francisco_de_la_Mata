@@ -56,7 +56,9 @@ exports.readCSV =async function getCSVdata() {
       };
       console.log(`Parsed ${rowCount} rows`+ sensorsSum + "   ---------   "+ maxValues+ " steps " + steps)
       //DashboardController.addDailyInsoleData(1594245600000, "1234", sensorsSum,maxValues,steps, new Date().getHours());
-      DashboardController.addHourInsoleData(1594245600000, 12, "1234", sensorsSum,steps, );
+      //DashboardController.addHourInsoleData(1594245600000, 12, "1234", sensorsSum,steps, );
+      DashboardController.addAllInsoleData(1594418400000, 800, 600, 
+        1400, 550,750, ["patient", 200], ["patient1", 2000]);
     });
 
   /*const table = data.split("\n").slice(1);

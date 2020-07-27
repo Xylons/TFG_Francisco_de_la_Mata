@@ -13,4 +13,4 @@ const insoleGeneralInfoSchema = mongoose.Schema({
   
 });
 
-module.exports = mongoose.model('InsoleGen', insoleGeneralInfoSchema);
+module.exports = mongoose.model('InsoleGeneralDailyInfo', insoleGeneralInfoSchema);

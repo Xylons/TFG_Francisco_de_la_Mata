@@ -25,10 +25,12 @@ export class DashboardService {
   private allDatesArray = new Subject<string[]>();
   private allDatesArray2 = new Subject<string[]>();
   private allCompareDatesArray = new Subject<string[]>();
+  private infoFormAllUsers = new Subject<{allData: any[], allLabels: any[]}>();
 
   private nameAndSurname = new Subject<string>();
-  private descriptionData = new Subject<{name: string,
-    surname:string, mms: number,
+  private descriptionData = new Subject<{
+    name: string,
+    surname: string, mms: number,
     getuptest: number, tinetti: number,
     description: string
   }>();
@@ -76,6 +78,9 @@ export class DashboardService {
   getDescriptionDataListener() {
     return this.descriptionData.asObservable();
   }
+  getInfoFormAllUsersListener(){
+    return this.infoFormAllUsers.asObservable();
+  }
   constructor(private http: HttpClient, private router: Router, private insoleService: InsoleService,
     private commentService: CommentsService) {
     console.log(this.router.url);
@@ -95,7 +100,7 @@ export class DashboardService {
     this.http.get<{
       name: string, surname: string,
       mms?: number,
-      getuptest?:number,
+      getuptest?: number,
       tinetti?: number,
       description?: string,
       insoleData: {
@@ -111,7 +116,7 @@ export class DashboardService {
         this.nameAndSurname.next(response.name + " " + response.surname.charAt(0));
         this.allDatesArray.next(response.insoleData.allDatesArray);
         this.daysAndSteps.next(response.insoleData.daysAndSteps);
-        if(response.mms || response.tinetti || response.getuptest){
+        if (response.mms || response.tinetti || response.getuptest) {
           this.descriptionData.next({
             name: response.name,
             surname: response.surname,
@@ -250,5 +255,53 @@ export class DashboardService {
       });
   }
 
+  getAllInsoleData(days: number, customDay: number) {
+    /// `` sirve añadir valores a un string dinamicamente
+    const queryParams = `?range=${days}&customday=${customDay}`
+    // En este no hace falta unscribe ya que se desuscribe solo
+
+
+    this.http.get<{
+      message: string, allUserData: [{
+        day: number, meanOfSteps0: number,
+        meanOfSteps60: number, meanOfSteps70: number, meanOfSteps80: number, meanOfSteps90: number,
+      }]
+    }>(BACKEND_URL + "all" + queryParams)
+      .subscribe((response) => {
+        console.log(response);
+
+        let allUserData = response.allUserData;
+        let dataLabels = [];
+        let meanOfSteps0Ojbect: { data: number[], label: string }= {data: [], label:"Pacientes -60"};
+        let meanOfSteps60Ojbect: { data: number[], label: string }= {data: [], label:"Pacientes +60"};
+        let meanOfSteps70Ojbect: { data: number[], label: string }= {data: [], label:"Pacientes +70"};
+        let meanOfSteps80Ojbect: { data: number[], label: string }= {data: [], label:"Pacientes +80"};
+        let meanOfSteps90Ojbect: { data: number[], label: string }= {data: [], label:"Pacientes +90"};
+
+        allUserData.forEach(dataPerDay => {
+          let dateInfo = new Date(dataPerDay.day);
+          let dayAndMonth = dateInfo.getDate() + "/" + (dateInfo.getMonth() + 1);
+          dataLabels.push(dayAndMonth);
+          meanOfSteps0Ojbect.data.push(dataPerDay.meanOfSteps0);
+          meanOfSteps60Ojbect.data.push(dataPerDay.meanOfSteps60);
+          meanOfSteps70Ojbect.data.push(dataPerDay.meanOfSteps70);
+          meanOfSteps80Ojbect.data.push(dataPerDay.meanOfSteps80);
+          meanOfSteps90Ojbect.data.push(dataPerDay.meanOfSteps90);
+
+        });
+        let allData=[meanOfSteps0Ojbect,meanOfSteps60Ojbect,meanOfSteps70Ojbect,meanOfSteps80Ojbect,meanOfSteps90Ojbect];
+        this.infoFormAllUsers.next({allData: allData, allLabels: dataLabels})
+
+        /* this.allDatesArray.next(response.allDatesArray);
+         this.daysAndSteps.next(response.insoleData.daysAndSteps);
+         //Mando la informacion diaria de la presion al componente insole
+         this.insoleService.setPressureData(response.insoleData.leftInsole,
+           response.insoleData.rightInsole, response.insoleData.allDatesArray);
+         if (days === 1) {
+           this.getStepsByDay(response.insoleData.leftInsole.insoleId, response.insoleData.rightInsole.insoleId, customDay)
+         }*/
+      });
+
+  }
 
 }
