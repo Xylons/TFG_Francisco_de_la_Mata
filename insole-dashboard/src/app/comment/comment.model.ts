@@ -1,5 +1,5 @@
-//El timestamp es necesario para la recepcion pero no para enviar post
-export interface Post {
+//El timestamp es necesario para la recepcion pero no para enviar comment
+export interface Comment {
   id: string;
   title: string;
   content: string;

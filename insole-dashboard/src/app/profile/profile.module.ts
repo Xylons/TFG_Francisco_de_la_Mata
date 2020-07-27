@@ -22,8 +22,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 // FontAwesome
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FiltersBarModule } from '../filters-bar/filters-bar.module';
-import { PostListComponent } from '../post/post-list/post-list.component';
-import { PostModule } from '../post/post.module';
+import { CommentListComponent } from '../comment/comment-list/comment-list.component';
+import { CommentModule } from '../comment/comment.module';
 import {MatInputModule} from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatChipsModule} from '@angular/material/chips';

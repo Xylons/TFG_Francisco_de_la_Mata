@@ -3,8 +3,8 @@ import { FormGroup, FormControl, Validators, FormGroupDirective } from '@angular
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 //Servicio
-import { PostsService } from '../posts.service';
-import { Post } from '../post.model';
+import { CommentsService } from '../comments.service';
+import { Comment } from '../comment.model';
 
 //Validator personalizado
 import {mimeType} from './mime-type.validator';
@@ -18,25 +18,25 @@ import { AuthService } from 'src/app/auth/auth.service';
 
 
 @Component({
-  selector: 'app-post-create',
-  templateUrl: './post-create.component.html',
-  styleUrls: ['./post-create.component.css']
+  selector: 'app-comment-create',
+  templateUrl: './comment-create.component.html',
+  styleUrls: ['./comment-create.component.css']
 })
-export class PostCreateComponent implements OnInit, OnDestroy {
+export class CommentCreateComponent implements OnInit, OnDestroy {
 
   enteredTitle = '';
   enteredContent = '';
-  post: Post;
+  comment: Comment;
   isLoading = false;
   form: FormGroup;
   private mode = 'create';
-  private postId: string;
+  private commentId: string;
 
   //Suscripcion para control de errores
   private authStatusSub: Subscription;
   @ViewChild('formDirective') formDirective;
   constructor(
-    public postsService: PostsService,
+    public commentsService: CommentsService,
     public route: ActivatedRoute,
     private authService: AuthService,
      ) { }
@@ -63,28 +63,28 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     });
     //Suscripción para detectar cambios en route
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
-      // revisa si existe el parametro postId definidio en app-routing
-      if (paramMap.has('postId')) {
+      // revisa si existe el parametro commentId definidio en app-routing
+      if (paramMap.has('commentId')) {
         this.mode = 'edit';
-        this.postId = paramMap.get('postId')
+        this.commentId = paramMap.get('commentId')
         this.isLoading = true;
-        this.postsService.getPost(this.postId).subscribe(postData => {
+        this.commentsService.getComment(this.commentId).subscribe(commentData => {
           this.isLoading = false;
           // hay que cambiar null luego
-          this.post = {
-            id: postData._id,
-            title: postData.title,
-            content: postData.content,
-            creator: postData.creator
+          this.comment = {
+            id: commentData._id,
+            title: commentData.title,
+            content: commentData.content,
+            creator: commentData.creator
           }
           this.form.setValue({
-            'title': this.post.title,
-            'content': this.post.content,
+            'title': this.comment.title,
+            'content': this.comment.content,
           });
         });
       } else {
         this.mode = 'create';
-        this.postId = null;
+        this.commentId = null;
       }
 
     });
@@ -92,17 +92,17 @@ export class PostCreateComponent implements OnInit, OnDestroy {
 
 
 
-  onSavePost() {
+  onSaveComment() {
     if (this.form.invalid) {
       return;
     }
     //this.isLoading = true;
     if (this.mode === 'create') {
-      this.postsService.addPost(this.form.value.title, this.form.value.content);
+      this.commentsService.addComment(this.form.value.title, this.form.value.content);
 
     } else {
-      this.postsService.updatePost(
-        this.postId,
+      this.commentsService.updateComment(
+        this.commentId,
         this.form.value.title,
         this.form.value.content,
 

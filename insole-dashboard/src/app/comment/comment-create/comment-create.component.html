@@ -2,7 +2,7 @@
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <form
     [formGroup]="form"
-    (submit)="onSavePost()"
+    (submit)="onSaveComment()"
     #formDirective="ngForm"
     *ngIf="!isLoading"
   >
@@ -14,7 +14,7 @@
         placeholder="Comment Title"
       />
       <mat-error *ngIf="form.get('title').invalid">
-        Please enter a post title
+        Please enter a comment title
       </mat-error>
     </mat-form-field>
     <!--
@@ -36,7 +36,7 @@
       >
       </textarea>
       <mat-error *ngIf="form.get('content').invalid">
-        Please enter a post content
+        Please enter a comment content
       </mat-error>
     </mat-form-field>
     <div class="submit-button">
@@ -47,4 +47,3 @@
   </form>
 </mat-card>
 
-<!--<p> {{ newPost }}</p>-->

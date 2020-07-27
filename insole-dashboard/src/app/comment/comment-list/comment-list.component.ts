@@ -1,45 +1,40 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 //Subscrition
 import { Subscription } from 'rxjs';
-//Inferfaz de Post
-import { Post } from '../post.model';
+//Inferfaz de Comment
+import { Comment } from '../comment.model';
 //Servicio
-import { PostsService } from '../posts.service';
+import { CommentsService } from '../comments.service';
 import { PageEvent } from '@angular/material/paginator';
 import { AuthService } from 'src/app/auth/auth.service';
 
 
 @Component({
-  selector: 'app-post-list',
-  templateUrl: './post-list.component.html',
-  styleUrls: ['./post-list.component.css']
+  selector: 'app-comment-list',
+  templateUrl: './comment-list.component.html',
+  styleUrls: ['./comment-list.component.css']
 })
-export class PostListComponent implements OnInit, OnDestroy {
+export class CommentListComponent implements OnInit, OnDestroy {
 
-  /* posts = [
-    { title: ' hola', content: "adfasfsfasf" },
-    { title: ' aasdasda', content: "awqwwsf" },
-    { title: ' aaaaaaa', content: "adfqqqqqq" }
 
-  ] */
-  posts: Post[] = [];
+  comments: Comment[] = [];
   isLoading = false;
   //controladores de paginator
-  totalPost = 0;
-  postPerPage = 4;
+  totalComment = 0;
+  commentPerPage = 4;
   currentPage = 1;
   pageSizeOptions = [1, 2, 4];
   userIsAuthenticated = false;
   userId: string;
   patientIdListener:Subscription;
-  private postsSub: Subscription;
+  private commentsSub: Subscription;
   //Aqui se usara para que solo pueda crear un gestor
   private authStatusSub: Subscription;
-  constructor(public postsService: PostsService, private authService: AuthService) { }
+  constructor(public commentsService: CommentsService, private authService: AuthService) { }
   ngOnInit() {
 
 
-      this.postsService.getPosts(this.postPerPage, this.currentPage);
+      this.commentsService.getComments(this.commentPerPage, this.currentPage);
 
 
     //this.isLoading = true;
@@ -47,11 +42,11 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.userId= this.authService.getUserId();
     // Subscribes to the observable
     // subscribe (funcion, error, funcion complete)
-    this.postsSub = this.postsService.getPostUpdatedListener()
-      .subscribe((postData: { posts: Post[], postCount: number }) => {
+    this.commentsSub = this.commentsService.getCommentUpdatedListener()
+      .subscribe((commentData: { comments: Comment[], commentCount: number }) => {
         this.isLoading = false;
-        this.posts = postData.posts;
-        this.totalPost = postData.postCount;
+        this.comments = commentData.comments;
+        this.totalComment = commentData.commentCount;
       });
 
     this.userIsAuthenticated = this.authService.getIsAuth();
@@ -63,19 +58,19 @@ export class PostListComponent implements OnInit, OnDestroy {
   onChangePage(pageData: PageEvent) {
     this.isLoading = true;
     this.currentPage = pageData.pageIndex + 1;
-    this.postPerPage = pageData.pageSize;
-    this.postsService.getPosts(this.postPerPage, this.currentPage);
+    this.commentPerPage = pageData.pageSize;
+    this.commentsService.getComments(this.commentPerPage, this.currentPage);
   }
 
   ngOnDestroy() {
-    this.postsSub.unsubscribe();
+    this.commentsSub.unsubscribe();
     this.authStatusSub.unsubscribe();
   }
-  onDelete(postId: string) {
+  onDelete(commentId: string) {
     this.isLoading = true;
     // Cada vez que se elimina se actualiza
-    this.postsService.deletePost(postId).subscribe(() => {
-      this.postsService.getPosts(this.postPerPage, this.currentPage);
+    this.commentsService.deleteComment(commentId).subscribe(() => {
+      this.commentsService.getComments(this.commentPerPage, this.currentPage);
     },()=>{
       // si falla se quita el spinner
       this.isLoading=false;

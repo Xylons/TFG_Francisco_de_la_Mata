@@ -1,83 +1,83 @@
-const Post = require("../models/post");
+const Comment = require("../models/comment");
 
 const UNDEFINED = process.env.notdefined;
 const PATIENT = process.env.patient;
 const RESPONSIBLE = process.env.responsible;
 const ADMIN = process.env.admin;
 
-exports.createPost = (req, res, next) => {
+exports.createComment = (req, res, next) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
       message: "Not authorized to see the posts",
     });
   } else {
     //const url = req.protocol + "://" + req.get("host");
-    const post = new Post({
+    const comment = new Comment({
       title: req.body.title,
       content: req.body.content,
       creator: req.userData.userId,
       userId: req.body.userId,
     });
     // Almaceno los datos en Mongo
-    post
+    comment
       .save()
-      .then((createdPost) => {
-        /// con ...createdPost hago una copia de el objeto creadedPost y añado el id luego
+      .then((createdComment) => {
+        /// con ...createdComment hago una copia de el objeto creadedComment y añado el id luego
         // igual hay que poner al final _doc
-        console.log(createdPost);
+        console.log(createdComment);
         res.status(201).json({
-          message: "Post Added",
-          post: {
-            ...createdPost,
-            id: createdPost._id,
+          message: "Comment Added",
+          comment: {
+            ...createdComment,
+            id: createdComment._id,
           },
         });
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Creting a post failed",
+          message: "Creting a comment failed",
         });
       });
   }
 };
 
-exports.updatePost = (req, res, err) => {
+exports.updateComment = (req, res, err) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
-      message: "Not authorized to see the posts",
+      message: "Not authorized to see the comments",
     });
   } else {
-    const post = new Post({
+    const comment = new Comment({
       _id: req.body.id,
       title: req.body.title,
       content: req.body.content,
       creator: req.userData.userId,
     });
-    Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post)
+    Comment.updateOne({ _id: req.params.id, creator: req.userData.userId }, comment)
       .then((result) => {
-        // Si modifica algun post
+        // Si modifica algun comment
         if (result.n > 0) {
           res.status(200).json({
-            message: "Post Update Sucessfull",
+            message: "Comment Update Sucessfull",
           });
         } else {
           res.status(401).json({
-            message: "Not authorized to edit the post",
+            message: "Not authorized to edit the comment",
           });
         }
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Couldn't update post",
+          message: "Couldn't update comment",
         });
       });
   }
 };
 
-exports.getPostsByPage = (req, res, next) => {
+exports.getCommentsByPage = (req, res, next) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
-      message: "Not authorized to see the posts",
+      message: "Not authorized to see the comments",
     });
   } else {
     //req.query muestra los datos que hay anadidos despues de ? y separados por &
@@ -85,73 +85,73 @@ exports.getPostsByPage = (req, res, next) => {
     console.log(req.query);
     const pageSize = +req.query.pagesize;
     const currentPage = +req.query.page;
-    const postQuery = Post.find({ userId: req.query.userId });
-    let fechedPosts;
+    const commentQuery = Comment.find({ userId: req.query.userId });
+    let fechedComments;
     if (pageSize && currentPage) {
-      postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
+      commentQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
     }
-    postQuery.sort({ timestamp: -1 })
+    commentQuery.sort({ timestamp: -1 })
       .then((documents) => {
-        fechedPosts = documents;
-        return Post.countDocuments({ userId: req.query.userId });
+        fechedComments = documents;
+        return Comment.countDocuments({ userId: req.query.userId });
       })
       .then((count) => {
         res.status(200).json({
           message: "All fine",
-          posts: fechedPosts,
-          maxPosts: count,
+          comments: fechedComments,
+          maxComments: count,
         });
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Fetching posts failed!",
+          message: "Fetching comments failed!"+error,
         });
       });
   }
 };
 
-exports.getPost = (req, res, next) => {
+exports.getComment = (req, res, next) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
-      message: "Not authorized to see the posts",
+      message: "Not authorized to see the comments",
     });
   } else {
-    Post.findById(req.params.id)
-      .then((post) => {
-        if (post) {
-          res.status(200).json(post);
+    Comment.findById(req.params.id)
+      .then((comment) => {
+        if (comment) {
+          res.status(200).json(comment);
         } else {
-          res.status(404).json({ message: "Post not found" });
+          res.status(404).json({ message: "Comment not found" });
         }
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Fetching post failed!",
+          message: "Fetching comment failed!",
         });
       });
   }
 };
 
-exports.deletePost = (req, res, next) => {
+exports.deleteComment = (req, res, next) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
-      message: "Not authorized to see the posts",
+      message: "Not authorized to see the comments",
     });
   } else {
-    Post.deleteOne({ _id: req.params.id, creator: req.userData.userId })
+    Comment.deleteOne({ _id: req.params.id, creator: req.userData.userId })
       .then((result) => {
-        // Si elimina algun post
+        // Si elimina algun comment
         if (result.n > 0) {
-          res.status(200).json({ message: "Post deleted!" });
+          res.status(200).json({ message: "Comment deleted!" });
         } else {
           res
             .status(401)
-            .json({ message: "No authorized to delete this post" });
+            .json({ message: "No authorized to delete this comment" });
         }
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Post deletion failed!",
+          message: "Comment deletion failed!",
         });
       });
   }

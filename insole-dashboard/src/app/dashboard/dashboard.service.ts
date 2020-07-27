@@ -10,7 +10,7 @@ import { FormGroup } from '@angular/forms';
 //Observable
 import { Subject } from 'rxjs';
 import { InsoleService } from '../insole/insole.service';
-import { PostsService } from '../post/posts.service';
+import { CommentsService } from '../comment/comments.service';
 
 
 const BACKEND_URL = environment.apiURL + "/dashboard/"
@@ -77,13 +77,13 @@ export class DashboardService {
     return this.descriptionData.asObservable();
   }
   constructor(private http: HttpClient, private router: Router, private insoleService: InsoleService,
-    private postService: PostsService) {
+    private commentService: CommentsService) {
     console.log(this.router.url);
   }
 
   setUserId(userId: string) {
     console.log(userId);
-    this.postService.setPatientId(userId);
+    this.commentService.setPatientId(userId);
     this.userId.next(userId);
   }
   getInsoleData(id: string, days: number, customDay: number) {

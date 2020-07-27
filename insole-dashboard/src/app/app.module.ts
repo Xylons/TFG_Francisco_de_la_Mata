@@ -7,7 +7,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from './app-routing.module';
-import { PostModule } from './post/post.module';
+import { CommentModule } from './comment/comment.module';
 import { ProfileModule } from './profile/profile.module';
 
 //Interceptors
@@ -53,7 +53,7 @@ import { SecondInsoleComponent } from './insole/second-insole.component';
     BrowserAnimationsModule,
     HttpClientModule,
     AngularMaterialModule,
-    PostModule,
+    CommentModule,
     ProfileModule,
     LayoutModule,
     ChartsModule,

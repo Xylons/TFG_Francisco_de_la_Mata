@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Router, ParamMap, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { Post } from './post.model';
+import { Comment } from './comment.model';
 
 // Uso variables de entorno para obtener la direccion API
 import{ environment } from '../../environments/environment';
@@ -12,16 +12,16 @@ import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators'
 import { DashboardService } from '../dashboard/dashboard.service';
 
-const BACKEND_URL = environment.apiURL + "/posts/"
+const BACKEND_URL = environment.apiURL + "/comments/"
 
 //This adds the service in the provide list at app.module.ts
 @Injectable({ providedIn: 'root' })
 
-export class PostsService {
-  private posts: Post[] = [];
-  private postsUpdated = new Subject<{posts:Post[], postCount: number}>();
+export class CommentsService {
+  private comments: Comment[] = [];
+  private commentsUpdated = new Subject<{comments:Comment[], commentCount: number}>();
   userIdListener:Subscription;
-  //Objeto para suscribir el post component con el id que recibe de dashboard
+  //Objeto para suscribir el comment component con el id que recibe de dashboard
   recieveduserIdListener=new Subject<string>();
 
   private patientId:string;
@@ -38,33 +38,33 @@ export class PostsService {
   getRecUserIdListener(){
     return this.recieveduserIdListener.asObservable();
   }
-  getPosts(postPerPage: number, currentPage: number) {
+  getComments(commentPerPage: number, currentPage: number) {
     /// `` sirve añadir valores a un string dinamicamente
-    const queryParams= `?pagesize=${postPerPage}&page=${currentPage}&userId=${this.patientId}`
+    const queryParams= `?pagesize=${commentPerPage}&page=${currentPage}&userId=${this.patientId}`
     // En este no hace falta unscribe ya que se desuscribe solo
-    this.http.get<{ message: string, posts: any , maxPosts: number}>(BACKEND_URL+ queryParams)
-      .pipe(map((postData) => {
-        return {posts: postData.posts.map(post => {
+    this.http.get<{ message: string, comments: any , maxComments: number}>(BACKEND_URL+ queryParams)
+      .pipe(map((commentData) => {
+        return {comments: commentData.comments.map(comment => {
           return {
-            title: post.title,
-            content: post.content,
-            id: post._id,
-            tiemstamp: post.timestamp,
-            creator: post.creator
+            title: comment.title,
+            content: comment.content,
+            id: comment._id,
+            tiemstamp: comment.timestamp,
+            creator: comment.creator
           };
-        }), maxPosts: postData.maxPosts};
+        }), maxComments: commentData.maxComments};
 
       }))
-      .subscribe((transformedPostData) => {
-        console.log(transformedPostData);
-        this.posts = transformedPostData.posts;
-        this.postsUpdated.next({posts:[...this.posts], postCount: transformedPostData.maxPosts});
+      .subscribe((transformedCommentData) => {
+        console.log(transformedCommentData);
+        this.comments = transformedCommentData.comments;
+        this.commentsUpdated.next({comments:[...this.comments], commentCount: transformedCommentData.maxComments});
       });
   }
-  getPostUpdatedListener() {
-    return this.postsUpdated.asObservable();
+  getCommentUpdatedListener() {
+    return this.commentsUpdated.asObservable();
   }
-  getPost(id: string){
+  getComment(id: string){
     return this.http.get<{
       _id: string,
       title: string,
@@ -74,26 +74,26 @@ export class PostsService {
     }>(BACKEND_URL + id);
 
   }
-  addPost(title: string, content: string) {
+  addComment(title: string, content: string) {
     console.log(title+content);
-    let postData=  {
+    let commentData=  {
       title:title,
       content: content,
       userId: this.patientId
     }
-    this.http.post<{ message: string, post: Post }>(BACKEND_URL, postData)
+    this.http.post<{ message: string, comment: Comment }>(BACKEND_URL, commentData)
       .subscribe((responseData) => {
         //this.router.navigate(["/"]);
-        this.getPosts(4,1);
+        this.getComments(4,1);
       });
 
   }
 
-  updatePost(id: string, title: string, content: string){
-    let postData: Post ;
+  updateComment(id: string, title: string, content: string){
+    let commentData: Comment ;
     // Si el objeto es un archivo significa que se ha cambiado
 
-      postData=  {
+    commentData=  {
         id:id,
         title:title,
         content: content,
@@ -102,13 +102,13 @@ export class PostsService {
 
 
 
-    this.http.put(BACKEND_URL + id, postData)
+    this.http.put(BACKEND_URL + id, commentData)
     .subscribe(response =>{
       this.router.navigate(["/"]);
     });
   }
-  deletePost(postId: string) {
-    return this.http.delete(BACKEND_URL + postId);
+  deleteComment(commentId: string) {
+    return this.http.delete(BACKEND_URL + commentId);
   }
 
 }

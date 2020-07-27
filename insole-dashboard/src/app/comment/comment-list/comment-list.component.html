@@ -1,0 +1,20 @@
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion multi="true" *ngIf="comments.length > 0 && !isLoading" >
+  <mat-expansion-panel *ngFor="let comment of comments">
+    <mat-expansion-panel-header class="comment-title">
+      <p>{{ comment.title}}</p>
+    </mat-expansion-panel-header>
+    <!--<div class="comment-image">
+      <img [src]="comment.imagePath" [alt]="comment.title">
+    </div>-->
+    <p>{{ comment.content}}</p>
+    <mat-action-row *ngIf="userIsAuthenticated && userId === comment.creator">
+      <a mat-button color="accent" [routerLink]="['/edit/',comment.id]">EDIT</a>
+      <button mat-button color="warn" (click)="onDelete(comment.id)">DELETE</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-paginator [length]= "totalComment" [pageSize]="commentPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangePage($event)" *ngIf="comments.length > 0"></mat-paginator>
+<p class="info-text mat-body-2" *ngIf="comments.length <= 0  && !isLoading">
+  No existen comment
+</p>

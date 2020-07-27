@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
-import { PostCreateComponent } from './post-create/post-create.component';
-import { PostListComponent } from './post-list/post-list.component';
+import { CommentCreateComponent } from './comment-create/comment-create.component';
+import { CommentListComponent } from './comment-list/comment-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AngularMaterialModule } from '../angular-material.module';
 //Common permite usar ngIf
@@ -11,8 +11,8 @@ import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
-    PostCreateComponent,
-    PostListComponent
+    CommentCreateComponent,
+    CommentListComponent
   ],
   imports: [
     CommonModule,
@@ -20,9 +20,9 @@ import { RouterModule } from '@angular/router';
     AngularMaterialModule,
     RouterModule],
   exports: [
-    PostCreateComponent,
-    PostListComponent
+    CommentCreateComponent,
+    CommentListComponent
   ],
 })
-export class PostModule { }
+export class CommentModule { }
 

@@ -2,7 +2,7 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const postsRoutes = require("./routes/posts");
+const commentsRoutes = require("./routes/comments");
 const profilesRoutes = require("./routes/profiles");
 const userRoutes = require("./routes/user");
 const dashboardRoutes = require("./routes/dashboard");
@@ -71,7 +71,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/posts", postsRoutes);
+app.use("/api/comments", commentsRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/profile", profilesRoutes);
 app.use("/api/dashboard", dashboardRoutes);
