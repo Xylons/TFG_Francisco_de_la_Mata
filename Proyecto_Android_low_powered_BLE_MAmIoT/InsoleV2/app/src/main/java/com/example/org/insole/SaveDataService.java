@@ -33,13 +33,14 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class SaveDataService extends Service {
 
-    private static final int TIME_BEFORE_SENDING_DATA = 60000; //30min
+    private static final int TIME_BEFORE_SENDING_DATA = 3600000; //60min
 
     private NotificationManager mNM;
     private Timer uploadTimerTask;
@@ -122,7 +123,17 @@ public class SaveDataService extends Service {
         registerReceiver(mRInsoleUpdateReceiver,rightInsoleIntentFilter);
         uploadTimerTask = new Timer("uploadTimerTask");
 
-        uploadTimerTask.scheduleAtFixedRate(new UploadTimerTask(), 0, TIME_BEFORE_SENDING_DATA);
+        Calendar calendar = Calendar.getInstance();
+        int minutesLeft=59- calendar.get(Calendar.MINUTE);
+        int secondsLeft=60- calendar.get(Calendar.SECOND);
+
+        //Convierto el tiempo restante hasta la hora en punto a milisegundos
+        int timeleft= minutesLeft *3600 + secondsLeft*60 *1000;
+
+        Log.e("SaveDataTimerTask", "Time : " + calendar.getTime() + " new  " +timeleft );
+
+        // inicio un contador que empieza cuando sea la siguiente hora en punto y despues se actualizara cada hora
+        uploadTimerTask.scheduleAtFixedRate(new UploadTimerTask(), timeleft, TIME_BEFORE_SENDING_DATA);
     }
 
     private BroadcastReceiver mRInsoleUpdateReceiver = new BroadcastReceiver() {
@@ -230,7 +241,8 @@ public class SaveDataService extends Service {
 
                 JSONObject body = new JSONObject();
                 body.put("date", new Date() );
-                body.put("id", "1234");
+                body.put("lid", "1234");
+                body.put("rid", "1234");
 
                 JSONArray dataR = new JSONArray();
                 for (int[] leftSensor : copyLeftSensors) {

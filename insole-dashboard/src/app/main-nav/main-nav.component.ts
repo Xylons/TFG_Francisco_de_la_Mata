@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 export class MainNavComponent {
   userIsAuthenticated=false;
   private authListenerSubs: Subscription;
+  private nameListenerSubs: Subscription;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -37,6 +38,12 @@ export class MainNavComponent {
     .getAuthStatusListener()
     .subscribe(isAuthenticated => {
       this.userIsAuthenticated= isAuthenticated;
+
+    });
+    this.nameListenerSubs = this.authService
+    .getNameListener()
+    .subscribe(name => {
+      this.userName= name;
 
     });
   }

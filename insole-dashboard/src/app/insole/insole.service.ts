@@ -11,7 +11,7 @@ import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 
 
-const BACKEND_URL = environment.apiURL + "/dashboard/"
+const BACKEND_URL = environment.apiURL + "/dashboard/";
 
 @Injectable({
   providedIn: 'root'
@@ -82,8 +82,8 @@ export class InsoleService {
 
   constructor(private http: HttpClient, private router: Router) {
     this.changed = false;
-    for(let i=0; i< this.emptyArray.length; i++ ){
-      this.emptyArray[i]=0;
+    for (let i = 0; i < this.emptyArray.length; i++) {
+      this.emptyArray[i] = 0;
     }
 
   }
@@ -116,6 +116,11 @@ export class InsoleService {
       console.log("Pressure recieved in Insole Service");
       this.LAllMeanDays = leftInsoleData;
       this.RAllMeanDays = rightInsoleData;
+
+
+      if (typeof allUniqueDates !== "object") {
+        allUniqueDates = [allUniqueDates.toString()]
+      }
       allUniqueDates.sort().reverse();
       this.allDatesArray.next(allUniqueDates);
 
@@ -133,6 +138,9 @@ export class InsoleService {
       if (leftInsoleData2 && rightInsoleData2 && allUniqueDates2) {
         this.LAllMeanDays2 = leftInsoleData2;
         this.RAllMeanDays2 = rightInsoleData2;
+        if (typeof allUniqueDates2 !== "object") {
+          allUniqueDates2 = [allUniqueDates2.toString()]
+        }
         allUniqueDates2.sort().reverse();
         this.allDatesArray2.next(allUniqueDates2);
 
@@ -157,22 +165,23 @@ export class InsoleService {
     const queryParams = `?leftInsoleId=${leftInsoleId}&rightInsoleId=${rightInsoleId}&day=${day}`
     // En este no hace falta unscribe ya que se desuscribe solo
     console.log(BACKEND_URL + "hourdata" + queryParams);
-    if(!Number.isNaN(day)){
-    this.http.get<{
-      insoleData: {
-        allDatesArray: [], daysAndSteps: {},
-        leftInsole: { insoleId: string, meanByDay: [] },
-        rightInsole: { insoleId: string, meanByDay: [] }
-      }
-    }>(BACKEND_URL + "hourdata" + queryParams)
-      .subscribe((response) => {
-        //esto servira para extraer el maximo el minimo de horas
-        this.LAllMeanByHours = response.insoleData.leftInsole.meanByDay;
-        this.RAllMeanByHours = response.insoleData.rightInsole.meanByDay;
+    if (!Number.isNaN(day)) {
+      this.http.get<{
+        insoleData: {
+          allDatesArray: [], daysAndSteps: {},
+          leftInsole: { insoleId: string, meanByDay: [] },
+          rightInsole: { insoleId: string, meanByDay: [] }
+        }
+      }>(BACKEND_URL + "hourdata" + queryParams)
+        .subscribe((response) => {
+          //esto servira para extraer el maximo el minimo de horas
+          this.LAllMeanByHours = response.insoleData.leftInsole.meanByDay;
+          this.RAllMeanByHours = response.insoleData.rightInsole.meanByDay;
 
-        this.LmeanDayData.next(this.LAllMeanByHours[0]);
-        this.RmeanDayData.next(this.RAllMeanByHours[0]);
-      });}
+          this.LmeanDayData.next(this.LAllMeanByHours[0]);
+          this.RmeanDayData.next(this.RAllMeanByHours[0]);
+        });
+    }
   }
 
 
@@ -186,17 +195,34 @@ export class InsoleService {
 
   }
 
-  changeHourData(hour: number) {
-    try {
-      if (this.LAllMeanByHours[hour] && this.RAllMeanByHours[hour]) {
-        this.LmeanDayData.next(this.LAllMeanByHours[hour]);
-        this.RmeanDayData.next(this.RAllMeanByHours[hour]);
-      }
-      else {
+  changeHourData(hour: number, insoleUser?: number) {
 
-        this.LmeanDayData.next(this.emptyArray);
-        this.RmeanDayData.next(this.emptyArray);
+    try {
+      if (insoleUser === 1) {
+
+
+        if (this.LAllMeanByHours[hour] && this.RAllMeanByHours[hour]) {
+          this.LmeanDayData.next(this.LAllMeanByHours[hour]);
+          this.RmeanDayData.next(this.RAllMeanByHours[hour]);
+        }
+        else {
+
+          this.LmeanDayData.next(this.emptyArray);
+          this.RmeanDayData.next(this.emptyArray);
+        }
+      } else {
+
+        if (this.LAllMeanByHours2[hour] && this.RAllMeanByHours2[hour]) {
+          this.LmeanDayData2.next(this.LAllMeanByHours2[hour]);
+          this.RmeanDayData2.next(this.RAllMeanByHours2[hour]);
+        }
+        else {
+
+          this.LmeanDayData2.next(this.emptyArray);
+          this.RmeanDayData2.next(this.emptyArray);
+        }
       }
+
     } catch{
 
       this.LmeanDayData.next(this.emptyArray);

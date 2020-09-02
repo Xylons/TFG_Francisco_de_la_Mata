@@ -2,7 +2,7 @@ const Profile = require("../models/profile");
 const AdminProfile = require("../models/profileAdmin");
 const ResponsibleProfile = require("../models/profileResponsible");
 const PatientProfile = require("../models/profilePatient");
-//const UserController = require("./user");
+const UserController = require("./user");
 //const async = require('async');
 
 const UNDEFINED = process.env.notdefined;
@@ -86,7 +86,7 @@ exports.updateProfile = (req, res, err) => {
       let diferentUser = req.userData.userId !== req.body.userId;
       switch (profileInfo.__t) {
         case PATIENT:
-          if (diferentUser && requestRol === PATIENT) {
+          if (diferentUser && requestRol === PATIENT  ) {
             throw new Error("Authorization Error");
           }
           profileModel = PatientProfile;
@@ -105,7 +105,8 @@ exports.updateProfile = (req, res, err) => {
           newProfileData["gender"] = req.body.gender;
 
           if (requestRol === RESPONSIBLE) {
-            newProfileData["patologies"] = req.body.patologies;
+            //Almaceno los valores de patologias eliminando repetidos
+            newProfileData["patologies"] = Array.from(new Set([...req.body.patologies]));
             newProfileData["tinetti"] = req.body.tinetti;
             newProfileData["getuptest"] = req.body.getuptest;
             newProfileData["mms"] = req.body.mms;
@@ -124,7 +125,7 @@ exports.updateProfile = (req, res, err) => {
           newProfileData["typeOfResponsible"] = req.body.typeOfResponsible;
           newProfileData["patients"] = req.body.patients;
           profile = this.cleanEmptyFields(newProfileData);
-          profile = new ResponsibleProfile(newProfileData);
+          profile = new ResponsibleProfile(profile);
 
           break;
         case ADMIN:
@@ -133,19 +134,19 @@ exports.updateProfile = (req, res, err) => {
           }
           profileModel = AdminProfile;
           newProfileData["authorizedUsers"] = req.body.authorizedUsers;
-          profile = this.cleanEmptyFields(profile);
-          profile = new AdminProfile(newProfileData);
+          profile = this.cleanEmptyFields(newProfileData);
+          profile = new AdminProfile(profile);
 
           break;
         default:
           profileModel = Profile;
-          profile = this.cleanEmptyFields(profile);
-          profile = new Profile({ newProfileData });
+          profile = this.cleanEmptyFields(newProfileData);
+          profile = new Profile(profile);
           break;
       }
     } catch (e) {
       res.status(401).json({
-        message: "Not authorized to edit the Profile",
+        message: "Not authorized to edit the Profile" +e,
       });
     }
     profileModel
@@ -165,7 +166,7 @@ exports.updateProfile = (req, res, err) => {
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Couldn't update profile",
+          message: "Couldn't update profile" +error,
         });
       });
   });
@@ -340,7 +341,7 @@ exports.deleteProfile = (req, res, next) => {
       })
       .catch((error) => {
         res.status(500).json({
-          message: "Profile deletion failed!",
+          message: "Profile deletion failed! " +error,
         });
       });
   }
@@ -362,7 +363,8 @@ exports.filteredSearch = (req, res, next) => {
   console.log(req.query.age);
   if (req.query.age !== "") {
     //Desactivado temporamente
-    // query.bornDate = { $lt : req.query.age };
+    query.bornDate = { $gte : req.query.age };
+    console.log(query.bornDate);
     //Cuadno tenga 2 será query.bornDate: { $gte:req.query.Minage, $lte: req.query.Maxage }
   }
   //No es necesario para usuario
@@ -378,7 +380,7 @@ exports.filteredSearch = (req, res, next) => {
     query.responsibles = req.userData.userId;
   }
   if (req.query.patologies !== "" && req.query.patologies !== "All") {
-    query.patologies = req.query.patologies;
+    query.patologies = {$in: req.query.patologies.split(",")};
   }
   if (req.query.searchfield) {
     let name = { $regex: req.query.searchfield, $options: "i" };
@@ -459,10 +461,12 @@ exports.getSearchParams = (req, res, next) => {
           maxAge = Math.trunc(datediff / (1000 * 60 * 60 * 24 * 365));
           //Query para extraer la edad minima
           PatientProfile.findOne({ bornDate: { $exists: true } }, "bornDate")
-            .sort({ bornDate: -1 })
+            .sort({ 'bornDate': -1 })
             .then((minDate) => {
               let datediff = new Date() - new Date(minDate.bornDate);
               minAge = Math.trunc(datediff / (1000 * 60 * 60 * 24 * 365));
+              console.log(maxAge + " Min");
+              console.log(minAge + " Max");
               ///Query para extraer patologias
               PatientProfile.distinct("patologies").then((patologies) => {
                 res.status(200).json({
@@ -574,4 +578,10 @@ exports.editResponsible = (req, res, err) => {
       });
     }
   }
+};
+
+
+exports.getAgeByInsole = (insoleid) => {
+   //query.$or = [{ name: name }, { surname: surname }];
+  return Profile.findOne({ $or: [{ leftInsole: insoleid }, { rightInsole: insoleid }] }, "bornDate leftInsole rightInsole");
 };

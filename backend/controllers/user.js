@@ -234,7 +234,7 @@ function decodeResetToken(token) {
 }
 
 exports.deleteProfile = (id) => {
-    Profile.deleteOne({ _id: id })
+    User.deleteOne({ _id: id })
       .then((result) => {
         // Si elimina algun profile
         if (result.n > 0) {

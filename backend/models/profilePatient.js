@@ -7,8 +7,8 @@ const profile = require("./profile");
 const profilePatientSchema = profile.discriminator(
   "patient",
   new mongoose.Schema({
-    bornDate: { type: Number },
-    patologies: [{ type: String }],
+    bornDate: { type: Number, default: 0 },
+    patologies: [{ type: String, lowercase: true }],
     description: { type: String },
     responsibles: [{ type: String }],
     leftInsole:{ type: String },

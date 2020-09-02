@@ -29,6 +29,7 @@ export class AuthService {
   private rolLogged: string;
   // Datos extraidos del perfil
   private name: string;
+  private nameListener = new Subject<string>();
   private surname: string;
   private image: string;
 
@@ -64,6 +65,9 @@ export class AuthService {
 
     return localStorage.getItem('name');
   }
+  getNameListener() {
+    return this.nameListener.asObservable();
+  }
   getSurname() {
     return this.surname;
   }
@@ -89,6 +93,7 @@ export class AuthService {
         this.router.navigate(["auth/login"]);
       }, error => {
         this.authStatusListener.next(false);
+        this.nameListener.next("");
       });
 
   }
@@ -125,6 +130,7 @@ export class AuthService {
           const expiresInDuration = response.expiresIn;
           this.rolLogged = response.rol;
           this.name = response.name;
+          this.nameListener.next(this.name);
           this.surname = response.surname;
           this.image = response.image;
           this.setAuthTimer(expiresInDuration);
@@ -141,6 +147,7 @@ export class AuthService {
 
       }, error => {
         this.authStatusListener.next(false);
+        this.nameListener.next("");
       });
   }
 
@@ -158,6 +165,8 @@ export class AuthService {
       this.isAuthenticated = true;
       this.userId = authInformation.userId;
       this.rolLogged = authInformation.rolLogged;
+      this.name= authInformation.name;
+      this.nameListener.next(this.name);
       // Divido ya que get.time() devuelve en milisegundos
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
@@ -168,6 +177,7 @@ export class AuthService {
     this.token = null;
     this.isAuthenticated = false;
     this.authStatusListener.next(false);
+    this.nameListener.next("");
     this.userId = null;
     this.rolLogged = null;
     clearTimeout(this.tokenTimer);
@@ -205,6 +215,7 @@ export class AuthService {
     const expirationDate = localStorage.getItem("expiration");
     const userId = localStorage.getItem("userId");
     const rol = localStorage.getItem("rol");
+    const roname = localStorage.getItem("name");
     if (!token || !expirationDate) {
       return;
     }
@@ -213,7 +224,8 @@ export class AuthService {
       token: token,
       expirationDate: new Date(expirationDate),
       userId: userId,
-      rolLogged: rol
+      rolLogged: rol,
+      name: name
     }
   }
 

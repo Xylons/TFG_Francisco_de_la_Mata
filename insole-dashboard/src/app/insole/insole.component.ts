@@ -4,6 +4,9 @@ import { convertActionBinding } from '@angular/compiler/src/compiler_util/expres
 import { Subscription } from 'rxjs';
 import { MatSelectChange } from '@angular/material/select';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { environment } from '../../environments/environment';
+
+
 
 
 @Component({
@@ -12,6 +15,7 @@ import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
   styleUrls: ['./insole.component.css']
 })
 export class InsoleComponent implements OnInit {
+  SERVERURL = environment.serverURL;
   LsensorsColor = new Array<string>(32);
   RsensorsColor = new Array<string>(32);
 
@@ -32,7 +36,7 @@ export class InsoleComponent implements OnInit {
   public activeDateListener: Subscription;
   allDatesArray: any[] = [];
   public activeDate: number;
-
+  insoleUser: number= 1;
   formGroup: FormGroup;
   dates = new FormControl();
 
@@ -73,6 +77,7 @@ export class InsoleComponent implements OnInit {
       });
     this.allDatesArrayListener = this.insoleService.getAllDatesArrayListener()
       .subscribe((allDatesArray) => {
+        console.log(allDatesArray);
         this.allDatesArray = [];
         for (let i = 0; i < allDatesArray.length; i++) {
           let dateInfo = {
@@ -112,7 +117,7 @@ export class InsoleComponent implements OnInit {
     let max = 4096;
     //normalizo los valores entre 0 y 100
     let valN = Math.round(((val - min) / (max - min)) * 100);
-    console.log(valN);
+    //console.log(valN);
     if (valN > 100) {
       valN = 100;
     }
@@ -129,7 +134,7 @@ export class InsoleComponent implements OnInit {
 
   onHourChange(event) {
     console.log(event);
-    this.insoleService.changeHourData(parseInt(event.value));
+    this.insoleService.changeHourData(parseInt(event.value), this.insoleUser);
   }
   onChangeView(mode: boolean) {
 

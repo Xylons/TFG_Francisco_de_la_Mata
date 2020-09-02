@@ -1,12 +1,15 @@
 <mat-sidenav-container class="sidenav-container">
 <!--*ngIf="userIsAuthenticated"-->
+
+
+
   <mat-sidenav
     #drawer
     class="sidenav"
     fixedInViewport
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
-    [opened]="(isHandset$ | async) === false"
+    [opened]="((isHandset$ | async) === false) && userIsAuthenticated"
   >
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
@@ -28,16 +31,20 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
+
     <mat-toolbar color="primary">
+      <div *ngIf="userIsAuthenticated">
       <button
         type="button"
         aria-label="Toggle sidenav"
         mat-icon-button
-        (click)="drawer.toggle()"
         *ngIf="isHandset$ | async"
+        (click)="drawer.toggle()"
+
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
+    </div>
       <span><a routerLink="/"><img class="app-logo" src="http://localhost:3000/images/LogoHorizontalBlancoPeque.png" alt="SteByS Logo"></a></span>
 
 

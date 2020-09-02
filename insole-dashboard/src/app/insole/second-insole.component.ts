@@ -12,10 +12,13 @@ import { InsoleComponent } from './insole.component';
   templateUrl: './insole.component.svg',
   styleUrls: ['./insole.component.css']
 })
-export class SecondInsoleComponent extends InsoleComponent{
 
+export class SecondInsoleComponent extends InsoleComponent {
+  insoleUser: number= 2;
 
   ngOnInit(): void {
+
+
 //hay que poner nginit especifico
 this.leftMeanDayDataListener = this.insoleService.getLMeanDayDataListener2()
       .subscribe((meanDayData) => {

@@ -41,7 +41,6 @@ export class ProfilesService {
     // En este no hace falta unscribe ya que se desuscribe solo
     this.http.get<{ message: string, profiles: any, maxProfiles: number }>(BACKEND_URL + queryParams)
       .pipe(map((profilesData) => {
-
         return {
 
           profiles: profilesData.profiles.map(profile => {
@@ -164,19 +163,20 @@ export class ProfilesService {
       profileData.append("phone", phone);
       profileData.append("image", userImagePath, name);
       if (profileRol === 'patient') {
-        profileData.append("bornDate", bornDate.toString());
+        (bornDate) ? bornDate.toString() : "";
+        profileData.append("bornDate", (bornDate) ? bornDate.toString() : "");
         profileData.append("contactPhone", cPhoneOrTypeOfRes);
         profileData.append("personalId", personalId);
-        profileData.append("height", height.toString());
-        profileData.append("weight", weight.toString());
+        profileData.append("height", (height) ? height.toString() : "");
+        profileData.append("weight", (weight) ? weight.toString() : "");
         profileData.append("gender", gender);
-        profileData.append("tinetti", tinetti.toString());
-        profileData.append("getuptest", getuptest.toString());
-        profileData.append("mms", mms.toString());
+        profileData.append("tinetti", (tinetti) ? tinetti.toString() : "");
+        profileData.append("getuptest", (getuptest) ? getuptest.toString() : "");
+        profileData.append("mms", (mms) ? mms.toString() : "");
         profileData.append("description", description);
-        profileData.append("leftInsole", leftInsole.toString());
-        profileData.append("rightInsole", rightInsole.toString());
-        profileData.append("patologies", patologies.toString());
+        profileData.append("leftInsole", (leftInsole) ? leftInsole.toString() : "");
+        profileData.append("rightInsole", (rightInsole) ? rightInsole.toString() : "");
+        profileData.append("patologies", (patologies) ? patologies.toString() : "");
 
 
       } else if (profileRol === 'responsible') {
@@ -219,9 +219,9 @@ export class ProfilesService {
   }
 
   deleteProfile(userId: string) {
-    return this.http.delete(BACKEND_URL + userId);
+     return this.http.delete(BACKEND_URL + userId);
   }
-  changeUserRol(userId: string, newRol: string) {
+  changeUserRol(userId: string, newRol: string, profileCount: number) {
     this.dialog
       .open(ConfirmDialogComponent, {
         data: 'Change this user to ' + newRol + '?'
@@ -236,6 +236,8 @@ export class ProfilesService {
             });
         } else {
           this.router.navigate(["/"]);
+          console.log("adasda");
+          this.profilesUpdated.next({ profiles: [...this.profiles], profileCount: profileCount });
           return confirmed;
         }
 
@@ -284,7 +286,8 @@ export class ProfilesService {
   ageToEpochDate(age) {
     //Datos en epoch
     let actualDate = new Date();
-    let epochAge = actualDate.setFullYear(actualDate.getFullYear() - age);
+    console.log(actualDate);
+    let epochAge = actualDate.setFullYear(actualDate.getFullYear() - age-1);
     return epochAge;
   }
 

@@ -56,7 +56,6 @@ exports.addHourInsoleData = exports.addDailyInsoleData = (
     day: day,
     insoleId: insoleId,
     meanPressureData: meanPressureData,
-    maxPressureData: maxPressureData,
     steps: steps,
   });
   // Almaceno los datos en Mongo
@@ -127,7 +126,9 @@ exports.getOneUserInsoleData = (req, res, next) => {
                 let insoleData = this.getAllUniqueDates(
                   leftInsoleData,
                   rightInsoleData,
-                  "day"
+                  "day",
+                  profileData.leftInsole,
+                  profileData.rightInsole
                 );
                 if (req.userData.rol !== PATIENT) {
                   res.status(200).json({
@@ -203,7 +204,9 @@ exports.getOneUserHourData = (req, res, next) => {
               let insoleData = this.getAllUniqueDates(
                 leftInsoleData,
                 rightInsoleData,
-                "hour"
+                "hour",
+                leftInsoleId,
+                rightInsoleId
               );
               res.status(200).json({
                 message: "Success",
@@ -289,7 +292,9 @@ exports.compareUsersInsoleData = (req, res, next) => {
                         insoleData1 = this.getAllUniqueDates(
                           patient1LeftInsoleData,
                           patient1RightInsoleData,
-                          dayOrHour
+                          dayOrHour,
+                          patient1.leftInsole,
+                          patient1.rightInsole
                         );
                       }
                       if (
@@ -299,7 +304,9 @@ exports.compareUsersInsoleData = (req, res, next) => {
                         insoleData2 = this.getAllUniqueDates(
                           patient2LeftInsoleData,
                           patient2RightInsoleData,
-                          dayOrHour
+                          dayOrHour,
+                          patient2.leftInsole,
+                          patient2.rightInsole
                         );
                       }
 
@@ -372,7 +379,13 @@ exports.getAllDailyData = (req, res, next) => {
     });
 };
 
-exports.getAllUniqueDates = (leftInsole, rightInsole, dayOrHour) => {
+exports.getAllUniqueDates = (
+  leftInsole,
+  rightInsole,
+  dayOrHour,
+  recievedLeftInsoleId,
+  recievedRightInsoleId
+) => {
   if (
     leftInsole &&
     rightInsole &&
@@ -428,8 +441,8 @@ exports.getAllUniqueDates = (leftInsole, rightInsole, dayOrHour) => {
     return {
       allDatesArray: [],
       daysAndSteps: {},
-      leftInsole: { insoleId: 0, meanByDay: [] },
-      rightInsole: { insoleId: 0, meanByDay: [] },
+      leftInsole: { insoleId: recievedLeftInsoleId, meanByDay: [] },
+      rightInsole: { insoleId: recievedRightInsoleId, meanByDay: [] },
     };
   }
   //    return {allDatesArray: uniqueDates, daysAndSteps: daysAndStepsTemp {day: {daysAndStepsTemp: daysAndStepsTemp, leftInsole:{id:, steps: ,mean: }, rightInsole:{steps: },}}}

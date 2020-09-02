@@ -1,16 +1,15 @@
-
 mat-form-field,
-textarea{
+textarea {
   width: 100%;
 }
 
-mat-spinner{
-  margin:auto;
+mat-spinner {
+  margin: auto;
 }
 
-input[type="file"]{
+input[type="file"] {
   visibility: hidden;
-  display:none;
+  display: none;
 }
 
 .image-preview {
@@ -37,44 +36,46 @@ input[type="file"]{
   /*width: 80%;*/
 }
 
-mat-form-field{
+mat-form-field {
   width: 100%;
 }
 
-.boton{
+.boton {
   text-align: right;
 }
 
-.file-field{
-  position:relative;
+.file-field {
+  position: relative;
 }
 
-.mat-stroked-button{
+.mat-stroked-button {
   float: left;
 }
 
-.file-path-wrapper{
+.file-path-wrapper {
   vertical-align: middle;
-    margin-top: 8px;
-    margin-left: 8px;
+  margin-top: 8px;
+  margin-left: 8px;
 }
 .radio-group {
-
   flex-direction: row;
   margin: 23px 20px;
 }
 
 .mat-radio-button ~ .mat-radio-button {
   margin-left: 16px;
-
 }
 
-::ng-deep .mat-form-field-wrapper{
+::ng-deep .mat-form-field-wrapper {
   width: 90%;
   margin-left: 10px;
   margin-right: 10px;
 }
 
-.margin-auto{
+.margin-auto {
   margin-top: auto;
+}
+
+.mat-standard-chip {
+  text-transform: capitalize;
 }

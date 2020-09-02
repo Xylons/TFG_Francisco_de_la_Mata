@@ -2,7 +2,7 @@ const mongoose =require('mongoose');
 
 const insoleGeneralInfoSchema = mongoose.Schema({
     day: {type: Number, require: true},
-    insoleId:{type: String, require: true, index: true},
+    //insoleId:{type: String, require: true, index: true},
     meanOfSteps0: {type: Number, require: true},
     meanOfSteps60: {type: Number, require: true},
     meanOfSteps70: {type: Number, require: true},

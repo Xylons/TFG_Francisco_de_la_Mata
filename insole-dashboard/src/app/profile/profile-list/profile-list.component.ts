@@ -74,7 +74,8 @@ export class ProfileListComponent implements OnInit, OnDestroy {
     this.profilesSub = this.profilesService.getProfileUpdatedListener()
       .subscribe((profileData: { profiles: Profile[], profileCount: number }) => {
         this.isLoading = false;
-        this.profiles = profileData.profiles;
+        this.profiles = JSON.parse(JSON.stringify(profileData.profiles));
+
         this.totalProfiles = profileData.profileCount;
       });
     // Ahora mismo no hace nada pero servira para controlar cuando existan roles
@@ -84,6 +85,7 @@ export class ProfileListComponent implements OnInit, OnDestroy {
       this.userIsAuthenticated = isAuthenticated;
     });
     this.rol = this.authService.getRolLogged();
+    console.log(this.rol)
 
     if(this.rol !== 'patient' && this.rol !== 'undefined'){
     this.searchForm= this.filtersService.getSearchForm();
@@ -125,8 +127,9 @@ export class ProfileListComponent implements OnInit, OnDestroy {
   }
 
   onChangeUserRol(userId: string, newRol: string) {
-    this.profilesService.changeUserRol(userId, newRol);
+    this.profilesService.changeUserRol(userId, newRol, this.totalProfiles );
   }
+
   onChangePage(pageData: PageEvent) {
     this.isLoading = true;
     this.currentPage = pageData.pageIndex + 1;
@@ -175,10 +178,12 @@ export class ProfileListComponent implements OnInit, OnDestroy {
       })
       .afterClosed()
       .subscribe((confirmed: Boolean) => {
+        console.log("asdasd");
         if (confirmed) {
           this.profilesService.deleteProfile(userId).subscribe(() => {
-            this.profilesService.openSnackBar("User removed", "Ok");
+
             this.profilesService.getProfiles(this.profilesPerPage, this.currentPage);
+            this.profilesService.openSnackBar("User removed", "Ok");
           }, () => {
             // si falla se quita el spinner
             this.isLoading = false;

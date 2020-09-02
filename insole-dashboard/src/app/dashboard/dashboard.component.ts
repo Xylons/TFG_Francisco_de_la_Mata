@@ -124,7 +124,7 @@ export class DashboardComponent implements OnInit {
         yAxes: [{
           ticks: {
             beginAtZero: true,
-            stepSize: 1,
+            stepSize: 100,
 
           },
 
