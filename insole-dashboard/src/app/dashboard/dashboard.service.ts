@@ -204,8 +204,11 @@ export class DashboardService {
         this.daysAndSteps2.next(response.patient2.daysAndSteps);
         let allDatesArray1;
         let allDatesArray2;
+        let date = new Date(customDay);
+        date.setDate(date.getDate() - 1);
+        let newDay = date.getTime();
         if (days === 1) {
-          allDatesArray1 = allDatesArray2 = customDay;
+          allDatesArray1 = allDatesArray2 = newDay;
         } else {
           allDatesArray1 = response.patient1.allDatesArray;
           allDatesArray2 = response.patient2.allDatesArray;
