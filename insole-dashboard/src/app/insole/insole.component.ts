@@ -30,6 +30,21 @@ export class InsoleComponent implements OnInit {
   public leftMeanDayDataListener: Subscription;
   public rightMeanDayDataListener: Subscription;
 
+  LAllMeanByHours: [];
+  RAllMeanByHours: [];
+
+  LAllMeanByDays: [];
+  RAllMeanByDays: [];
+
+  insolesId:{leftInsoleId: string, rightInsoleId: string};
+
+  public leftAllMeanByHoursListener: Subscription;
+  public rightAllMeanByHoursListener: Subscription;
+  public leftAllMeanByDaysListener: Subscription;
+  public rightAllMeanByDaysListener: Subscription;
+  public insolesIdListener: Subscription;
+
+
   mode = false;
 
   public allDatesArrayListener: Subscription;
@@ -39,6 +54,7 @@ export class InsoleComponent implements OnInit {
   insoleUser: number= 1;
   formGroup: FormGroup;
   dates = new FormControl();
+  emptyArray = new Array<number>(32);
 
   constructor(public insoleService: InsoleService, formBuilder: FormBuilder) {
     this.formGroup = formBuilder.group({
@@ -47,6 +63,36 @@ export class InsoleComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    for (let i = 0; i < this.emptyArray.length; i++) {
+      this.emptyArray[i] = 0;
+    }
+
+    this.insolesIdListener = this.insoleService.getLInsolesIdListener()
+      .subscribe((insolesId) => {
+        this.insolesId = insolesId;
+    });
+
+    this.leftAllMeanByDaysListener = this.insoleService.getLAllMeanByDaysListener()
+      .subscribe((LAllMeanByDays) => {
+        this.LAllMeanByDays = LAllMeanByDays;
+      });
+
+      this.rightAllMeanByDaysListener = this.insoleService.getRAllMeanByDaysListener()
+      .subscribe((RAllMeanByDays) => {
+        this.RAllMeanByDays = RAllMeanByDays;
+      });
+
+      this.leftAllMeanByHoursListener = this.insoleService.getLAllMeanByHoursListener()
+      .subscribe((LAllMeanByHours) => {
+        this.LAllMeanByHours = LAllMeanByHours;
+      });
+
+      this.rightAllMeanByHoursListener = this.insoleService.getRAllMeanByHoursListener()
+      .subscribe((RAllMeanByHours) => {
+        this.RAllMeanByHours = RAllMeanByHours;
+      });
+
 
     this.leftMeanDayDataListener = this.insoleService.getLMeanDayDataListener()
       .subscribe((meanDayData) => {
@@ -99,8 +145,47 @@ export class InsoleComponent implements OnInit {
 
   }
 
-  // Metodo para cambiar valores despues de cambiar el filtro
 
+  changeActiveDate(date: number) {
+
+    this.LmeanData = this.LAllMeanByDays[date];
+    this.RmeanData =  this.RAllMeanByDays[date];
+
+    this.onChangeView(false);
+
+    //LLamar a solicitar datos por hora
+    this.insoleService.getDataByHours(this.insolesId.leftInsoleId,
+       this.insolesId.rightInsoleId, date, this.insoleUser);
+
+  }
+
+
+  changeHourData(hour: number, insoleUser?: number) {
+
+    try {
+
+        if (this.LAllMeanByHours[hour] && this.RAllMeanByHours[hour]) {
+          this.LmeanDataDay = this.LAllMeanByHours[hour];
+          this.RmeanDataDay = this.RAllMeanByHours[hour];
+          this.onChangeView(true);
+
+        }
+        else {
+          this.LmeanDataDay = this.emptyArray;
+          this.RmeanDataDay = this.emptyArray;
+          this.onChangeView(true);
+        }
+
+
+    } catch{
+
+      this.LmeanDataDay = this.emptyArray;
+      this.RmeanDataDay = this.emptyArray;
+      this.onChangeView(true);
+    }
+  }
+
+  // Metodo para cambiar valores despues de cambiar el filtro
 
 
   hsv2rgb(value) {
@@ -129,12 +214,12 @@ export class InsoleComponent implements OnInit {
 
   selectionDayChanged(event: MatSelectChange) {
     console.log(event.value);
-    this.insoleService.changeActiveDate(event.value);
+    this.changeActiveDate(event.value);
   }
 
   onHourChange(event) {
     console.log(event);
-    this.insoleService.changeHourData(parseInt(event.value), this.insoleUser);
+    this.changeHourData(parseInt(event.value), this.insoleUser);
   }
   onChangeView(mode: boolean) {
 

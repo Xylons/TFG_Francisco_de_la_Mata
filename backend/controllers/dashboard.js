@@ -338,7 +338,7 @@ exports.compareUsersInsoleData = (req, res, next) => {
     }
   } catch {
     res.status(500).json({
-      message: "Select the patients please " + error,
+      message: "Select the patients please ",
     });
   }
 };

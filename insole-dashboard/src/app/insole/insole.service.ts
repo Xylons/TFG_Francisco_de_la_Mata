@@ -28,11 +28,7 @@ export class InsoleService {
   private RmeanDayData = new Subject<number[]>();
 
 
-  private LAllMeanDays;
-  private RAllMeanDays;
 
-  private LAllMeanByHours;
-  private RAllMeanByHours;
 
   private allDatesArray = new Subject<string[]>();
   private activeDate = new Subject<number>();
@@ -48,15 +44,69 @@ export class InsoleService {
   private RmeanDayData2 = new Subject<number[]>();
 
 
-  private LAllMeanDays2;
-  private RAllMeanDays2;
 
-  private LAllMeanByHours2;
-  private RAllMeanByHours2;
 
   private allDatesArray2 = new Subject<string[]>();
 
+  ///
+  private lAllMeanByHours2 = new Subject<[]>();
+  private rAllMeanByHours2 = new Subject<[]>();
+
+  private lAllMeanByDays2 = new Subject<[]>();
+  private rAllMeanByDays2 = new Subject<[]>();
+
+
+  private lAllMeanByHours = new Subject<[]>();
+  private rAllMeanByHours = new Subject<[]>();
+
+  private lAllMeanByDays = new Subject<[]>();
+  private rAllMeanByDays = new Subject<[]>();
+
+
   private emptyArray = new Array<number>(32);
+
+
+
+  getLAllMeanByHoursListener() {
+    return this.lAllMeanByHours.asObservable();
+  }
+  getRAllMeanByHoursListener() {
+    return this.rAllMeanByHours.asObservable();
+  }
+
+  getLAllMeanByDaysListener() {
+    return this.lAllMeanByDays.asObservable();
+  }
+  getRAllMeanByDaysListener() {
+    return this.rAllMeanByDays.asObservable();
+  }
+
+
+  getLAllMeanByHoursListener2() {
+    return this.lAllMeanByHours2.asObservable();
+  }
+  getRAllMeanByHoursListener2() {
+    return this.rAllMeanByHours2.asObservable();
+  }
+
+  getLAllMeanByDaysListener2() {
+    return this.lAllMeanByDays2.asObservable();
+  }
+  getRAllMeanByDaysListener2() {
+    return this.rAllMeanByDays2.asObservable();
+  }
+
+
+  private insolesId = new Subject<{leftInsoleId: string, rightInsoleId: string}>();
+  private insolesId2 = new Subject<{leftInsoleId: string, rightInsoleId: string}>();
+
+
+  getLInsolesIdListener() {
+    return this.insolesId.asObservable();
+  }
+  getLInsolesIdListener2() {
+    return this.insolesId2.asObservable();
+  }
 
   getLmeanDataListener2() {
     return this.LmeanData2.asObservable();
@@ -114,9 +164,9 @@ export class InsoleService {
   setPressureData(leftInsoleData, rightInsoleData, allUniqueDates, leftInsoleData2?, rightInsoleData2?, allUniqueDates2?) {
     try {
       console.log("Pressure recieved in Insole Service");
-      this.LAllMeanDays = leftInsoleData;
-      this.RAllMeanDays = rightInsoleData;
 
+      this.lAllMeanByDays.next(leftInsoleData.meanByDay);
+      this.rAllMeanByDays.next(rightInsoleData.meanByDay);
 
       if (typeof allUniqueDates !== "object") {
         allUniqueDates = [allUniqueDates.toString()]
@@ -130,14 +180,15 @@ export class InsoleService {
 
         this.activeDate.next(parseInt(allUniqueDates[0]));
       }
-      this.leftInsoleId = leftInsoleData.insoleId;
-      this.rightInsoleId = rightInsoleData.insoleId;
 
-      this.getDataByHours(leftInsoleData.insoleId, rightInsoleData.insoleId, parseInt(allUniqueDates[0]));
+
+      this.insolesId.next({leftInsoleId: leftInsoleData.insoleId, rightInsoleId: rightInsoleData.insoleId});
+
+      this.getDataByHours(leftInsoleData.insoleId, rightInsoleData.insoleId, parseInt(allUniqueDates[0]), 1);
 
       if (leftInsoleData2 && rightInsoleData2 && allUniqueDates2) {
-        this.LAllMeanDays2 = leftInsoleData2;
-        this.RAllMeanDays2 = rightInsoleData2;
+        this.lAllMeanByDays2.next(leftInsoleData2.meanByDay);
+        this.rAllMeanByDays2.next(rightInsoleData2.meanByDay);
         if (typeof allUniqueDates2 !== "object") {
           allUniqueDates2 = [allUniqueDates2.toString()]
         }
@@ -149,17 +200,17 @@ export class InsoleService {
           this.RmeanData2.next(rightInsoleData2.meanByDay[allUniqueDates[0]]);
 
         }
-        this.leftInsoleId2 = leftInsoleData2.insoleId;
-        this.rightInsoleId2 = rightInsoleData2.insoleId;
 
-        this.getDataByHours(leftInsoleData2.insoleId, rightInsoleData2.insoleId, parseInt(allUniqueDates2[0]));
+        this.insolesId2.next({leftInsoleId: leftInsoleData2.insoleId, rightInsoleId: rightInsoleData2.insoleId});
+
+        this.getDataByHours(leftInsoleData2.insoleId, rightInsoleData2.insoleId, parseInt(allUniqueDates2[0]), 2);
       }
     } catch (error) {
 
     }
 
   }
-  getDataByHours(leftInsoleId: string, rightInsoleId: string, day: number) {
+  getDataByHours(leftInsoleId: string, rightInsoleId: string, day: number, insoleUser: number) {
     //esto se lanza si elige un dia
     /// `` sirve añadir valores a un string dinamicamente
     const queryParams = `?leftInsoleId=${leftInsoleId}&rightInsoleId=${rightInsoleId}&day=${day}`
@@ -174,61 +225,34 @@ export class InsoleService {
         }
       }>(BACKEND_URL + "hourdata" + queryParams)
         .subscribe((response) => {
+          if(insoleUser===1){
           //esto servira para extraer el maximo el minimo de horas
-          this.LAllMeanByHours = response.insoleData.leftInsole.meanByDay;
-          this.RAllMeanByHours = response.insoleData.rightInsole.meanByDay;
-
-          this.LmeanDayData.next(this.LAllMeanByHours[0]);
-          this.RmeanDayData.next(this.RAllMeanByHours[0]);
+          this.lAllMeanByHours.next(response.insoleData.leftInsole.meanByDay);
+          this.rAllMeanByHours.next(response.insoleData.rightInsole.meanByDay);
+          let firstValueLAllMeanByHours ;
+          let firstValueRAllMeanByHours ;
+          firstValueLAllMeanByHours= response.insoleData.leftInsole.meanByDay;
+          firstValueRAllMeanByHours= response.insoleData.rightInsole.meanByDay;
+          this.LmeanDayData.next(firstValueLAllMeanByHours[0]);
+          this.RmeanDayData.next(firstValueRAllMeanByHours[0]);
+        }else{
+          this.lAllMeanByHours2.next(response.insoleData.leftInsole.meanByDay);
+          this.rAllMeanByHours2.next(response.insoleData.rightInsole.meanByDay);
+          let firstValueLAllMeanByHours ;
+          let firstValueRAllMeanByHours ;
+          firstValueLAllMeanByHours= response.insoleData.leftInsole.meanByDay;
+          firstValueRAllMeanByHours= response.insoleData.rightInsole.meanByDay;
+          this.LmeanDayData2.next(firstValueLAllMeanByHours[0]);
+          this.RmeanDayData2.next(firstValueRAllMeanByHours[0]);
+        }
         });
     }
   }
 
 
 
-  changeActiveDate(date: number) {
-    this.LmeanData.next(this.LAllMeanDays[date]);
-    this.RmeanData.next(this.RAllMeanDays[date]);
-
-    //LLamar a solicitar datos por hora
-    this.getDataByHours(this.leftInsoleId, this.rightInsoleId, date);
-
-  }
-
-  changeHourData(hour: number, insoleUser?: number) {
-
-    try {
-      if (insoleUser === 1) {
 
 
-        if (this.LAllMeanByHours[hour] && this.RAllMeanByHours[hour]) {
-          this.LmeanDayData.next(this.LAllMeanByHours[hour]);
-          this.RmeanDayData.next(this.RAllMeanByHours[hour]);
-        }
-        else {
-
-          this.LmeanDayData.next(this.emptyArray);
-          this.RmeanDayData.next(this.emptyArray);
-        }
-      } else {
-
-        if (this.LAllMeanByHours2[hour] && this.RAllMeanByHours2[hour]) {
-          this.LmeanDayData2.next(this.LAllMeanByHours2[hour]);
-          this.RmeanDayData2.next(this.RAllMeanByHours2[hour]);
-        }
-        else {
-
-          this.LmeanDayData2.next(this.emptyArray);
-          this.RmeanDayData2.next(this.emptyArray);
-        }
-      }
-
-    } catch{
-
-      this.LmeanDayData.next(this.emptyArray);
-      this.RmeanDayData.next(this.emptyArray);
-    }
-  }
 
 
 }
