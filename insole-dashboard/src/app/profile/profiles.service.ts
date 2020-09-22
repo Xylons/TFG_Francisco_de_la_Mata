@@ -145,13 +145,13 @@ export class ProfilesService {
     weight?: number,
     gender?: string,
     tinetti?: number,
-    getuptest?:number,
+    getuptest?: number,
     mms?: number,
     description?: string,
     leftInsole?: number,
     rightInsole?: number,
     patologies?: string[]
-) {
+  ) {
     let profileData: Profile | FormData;
     console.log('editInfo');
     // Si el objeto es un archivo significa que se ha cambiado
@@ -219,7 +219,7 @@ export class ProfilesService {
   }
 
   deleteProfile(userId: string) {
-     return this.http.delete(BACKEND_URL + userId);
+    return this.http.delete(BACKEND_URL + userId);
   }
   changeUserRol(userId: string, newRol: string, profileCount: number) {
     this.dialog
@@ -250,7 +250,9 @@ export class ProfilesService {
     if (searchFilters.datePicked !== "") {
       searchFilters.datePicked = searchFilters.datePicked.getTime();
     }
-    searchFilters.age = this.ageToEpochDate(searchFilters.age)
+    if (searchFilters.age !== "") {
+      searchFilters.age = this.ageToEpochDate(searchFilters.age)
+    }
     console.log(searchFilters);
     const queryParams = `/?pagesize=${profilesPerPage}&page=${currentPage}` +
       `&searchfield=${searchFilters.searchField}&mypatients=${searchFilters.myPatients}` +
@@ -287,7 +289,7 @@ export class ProfilesService {
     //Datos en epoch
     let actualDate = new Date();
     console.log(actualDate);
-    let epochAge = actualDate.setFullYear(actualDate.getFullYear() - age-1);
+    let epochAge = actualDate.setFullYear(actualDate.getFullYear() - age - 1);
     return epochAge;
   }
 

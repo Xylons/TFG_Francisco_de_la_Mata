@@ -78,7 +78,12 @@ export class ProfileListComponent implements OnInit, OnDestroy {
 
         this.totalProfiles = profileData.profileCount;
       });
-    // Ahora mismo no hace nada pero servira para controlar cuando existan roles
+      this.minAgeSub = this.filtersService.getMinAgeListener()
+      .subscribe(minAge => {
+        this.minAge = minAge;
+
+      });
+
     this.userIsAuthenticated = this.authService.getIsAuth();
 
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(isAuthenticated => {
@@ -88,17 +93,16 @@ export class ProfileListComponent implements OnInit, OnDestroy {
     console.log(this.rol)
 
     if(this.rol !== 'patient' && this.rol !== 'undefined'){
+      setTimeout(() => {
     this.searchForm= this.filtersService.getSearchForm();
-    this.minAgeSub = this.filtersService.getMinAgeListener()
-        .subscribe(minAge => {
-          this.minAge = minAge;
-        });
+
     /// Estoy hay que solucionar, envia dos peticiones con cada cambio
     this.searchForm.valueChanges.subscribe(changes => {
       // do what you need with the form fields here
       // you can access a form field via changes.fieldName
       this.onFiltersChanged(changes);
-  });}
+  });}, 2000);
+}
 
   }
 
@@ -107,22 +111,27 @@ export class ProfileListComponent implements OnInit, OnDestroy {
     let allArray=['All'];
     console.log(changes);
     this.withFilters=false;
+    if(changes.age=== this.minAge){
+      changes.age="";
+    }
     // Controlo que no tenga campos en undefined
     Object.keys(changes).forEach(key => {
       if(changes[key] !== "" && changes[key]!== allArray
-      && changes[key]!== false && changes[key]!==this.minAge){
+      && changes[key]!== false && changes[key]!==this.minAge
+      && changes[key] !==  this.minAge){
          this.withFilters= true ;
         }
 
     });
     console.log(this.withFilters);
+    console.log(changes);
     if(this.withFilters){
       this.profilesService.searchWithFilters(changes, this.profilesPerPage, this.currentPage);
     }else{
       this.profilesService.getProfiles(this.profilesPerPage, this.currentPage);
     }
 
-    console.log(changes);
+
 
   }
 

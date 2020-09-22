@@ -15,15 +15,17 @@
     <mat-nav-list>
       <a
         mat-list-item class='my-mat-item'
-        *ngIf="userIsAuthenticated"
+        *ngIf="userIsAuthenticated && rol === 'responsible'"
         routerLink="dashboard"
         routerLinkActive="mat-accent"
         >  <mat-icon aria-hidden="false" aria-label="Example home icon">dashboard</mat-icon>Dashboard</a>
-      <a *ngIf="userIsAuthenticated" mat-list-item routerLink="/" routerLinkActive="mat-accent"
+      <a *ngIf="userIsAuthenticated && rol !== 'admin'" mat-list-item routerLink="/" routerLinkActive="mat-accent"
       ><mat-icon aria-hidden="false" aria-label="Example home icon">group</mat-icon>  Patients  </a>
+      <a *ngIf="userIsAuthenticated && rol === 'admin'" mat-list-item routerLink="/" routerLinkActive="mat-accent"
+      ><mat-icon aria-hidden="false" aria-label="Example home icon">group</mat-icon>  Users  </a>
       <a
         mat-list-item
-        *ngIf="userIsAuthenticated"
+        *ngIf="userIsAuthenticated && rol === 'responsible'"
         routerLink="dashboard/compare"
         routerLinkActive="mat-accent"
         > <mat-icon aria-hidden="false" aria-label="Example home icon">compare</mat-icon>Compare</a>

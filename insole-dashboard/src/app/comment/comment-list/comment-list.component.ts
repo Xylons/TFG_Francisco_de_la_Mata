@@ -26,6 +26,7 @@ export class CommentListComponent implements OnInit, OnDestroy {
   pageSizeOptions = [1, 2, 4];
   userIsAuthenticated = false;
   userId: string;
+  rol: string;
   patientIdListener:Subscription;
   private commentsSub: Subscription;
   //Aqui se usara para que solo pueda crear un gestor
@@ -38,7 +39,7 @@ export class CommentListComponent implements OnInit, OnDestroy {
 
 
     //this.isLoading = true;
-
+    this.rol= this.authService.getRolLogged();
     this.userId= this.authService.getUserId();
     // Subscribes to the observable
     // subscribe (funcion, error, funcion complete)

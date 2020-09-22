@@ -373,7 +373,7 @@ exports.filteredSearch = (req, res, next) => {
   }*/
   //Falta anadir
   if (req.query.gender !== "All" && req.query.gender !== "") {
-    query.gender = req.query.gender;
+    query.gender = req.query.gender.toLowerCase();
   }
 
   if (req.query.mypatients === "true" && req.userData.rol !== ADMIN) {

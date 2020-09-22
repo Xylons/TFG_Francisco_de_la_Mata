@@ -15,6 +15,10 @@
   </mat-expansion-panel>
 </mat-accordion>
 <mat-paginator [length]= "totalComment" [pageSize]="commentPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangePage($event)" *ngIf="comments.length > 0"></mat-paginator>
-<p class="info-text mat-body-2" *ngIf="comments.length <= 0  && !isLoading">
-  No existen comment
+<p class="info-text mat-body-2" *ngIf="comments.length <= 0  && !isLoading && rol !== 'patient'">
+  There is no comments
+</p>
+
+<p class="info-text mat-body-2" *ngIf="rol === 'patient' ||  rol == 'undefined'">
+  You are not allowed to see the comments
 </p>

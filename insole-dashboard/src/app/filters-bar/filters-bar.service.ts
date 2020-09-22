@@ -21,6 +21,7 @@ export class FiltersBarService {
   public patologies: string[];
   public maxAge= new Subject<number>();
   public minAge= new Subject<number>();
+
   public patologiesList = new Subject<string[]>();
   private searchForm: FormGroup;
   private typeOfBar= 'profiles';
@@ -29,6 +30,7 @@ export class FiltersBarService {
   getMinAgeListener(){
     return this.minAge.asObservable();
   }
+
   getMaxAgeListener(){
     return this.maxAge.asObservable();
   }
@@ -43,9 +45,11 @@ export class FiltersBarService {
     this.typeOfBar= type;
   }
   setSearchForm(form: FormGroup){
+
     this.searchForm= form;
   }
   getSearchForm(){
+    console.log(this.searchForm);
     return this.searchForm;
   }
   findParams(){

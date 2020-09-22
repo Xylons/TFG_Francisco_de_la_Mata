@@ -66,6 +66,7 @@ export class FiltersBarComponent implements OnInit {
       datePicked: '',
     });
     //Guardo el formGroup en service
+    console.log("activa");
     this.filtersService.setSearchForm(this.formGroup);
     //controlo que los pacientes o undefined no puedan hacer peticiones de los campos de busqueda
     // esto tambien se controla en back
@@ -78,6 +79,7 @@ export class FiltersBarComponent implements OnInit {
       this.minAgeSub = this.filtersService.getMinAgeListener()
         .subscribe(minAge => {
           this.minAge = minAge;
+          this.formGroup.patchValue({age: minAge});
         });
       this.patologiesListSub = this.filtersService.getPatologiesListListener()
         .subscribe(patologiesList => {

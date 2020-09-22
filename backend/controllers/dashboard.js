@@ -101,7 +101,7 @@ exports.getOneUserInsoleData = (req, res, next) => {
   console.log(req.userData.userId);
   query.day = { $gte: limitDay, $lt: customDay };
   if (
-    (req.userData.rol !== RESPONSIBLE && req.userData.rol !== ADMIN) ||
+    (req.userData.rol !== RESPONSIBLE && req.userData.rol !== ADMIN) &&
     (req.userData.rol === PATIENT && req.userData.userId !== req.query.id)
   ) {
     res.status(500).json({
@@ -182,8 +182,8 @@ exports.getOneUserHourData = (req, res, next) => {
   day = new Date(date.toDateString()).getTime();
 
   if (
-    (req.userData.rol !== RESPONSIBLE && req.userData.rol !== ADMIN) ||
-    (req.userData.rol === PATIENT && req.userData.userId !== req.query.id)
+    (req.userData.rol !== RESPONSIBLE && req.userData.rol !== ADMIN && req.userData.rol !== PATIENT)  /*&&
+    ( && req.userData.userId !== req.query.id)*/
   ) {
     res.status(500).json({
       message: "Not authorized to that dashboard",
@@ -358,7 +358,8 @@ exports.getAllDailyData = (req, res, next) => {
 
   console.log(req.userData.userId);
   query.day = { $gte: limitDay, $lt: customDay };
-  if (req.userData.rol !== RESPONSIBLE && req.userData.rol !== ADMIN) {
+  if (req.userData.rol !== RESPONSIBLE && req.userData.rol !== ADMIN && req.userData.rol !== PATIENT) {
+    
     res.status(500).json({
       message: "Not authorized to that dashboard",
     });

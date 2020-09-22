@@ -44,7 +44,7 @@ exports.createComment = (req, res, next) => {
 exports.updateComment = (req, res, err) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
-      message: "Not authorized to see the comments",
+      message: "Not authorized to update the comments",
     });
   } else {
     const comment = new Comment({
@@ -76,8 +76,13 @@ exports.updateComment = (req, res, err) => {
 
 exports.getCommentsByPage = (req, res, next) => {
   if (req.userData.rol !== RESPONSIBLE) {
-    res.status(401).json({
+   /* res.status(401).json({
       message: "Not authorized to see the comments",
+    });*/
+    res.status(200).json({
+      message: "Requested but cant see the comments",
+      comments: [],
+      maxComments: 0,
     });
   } else {
     //req.query muestra los datos que hay anadidos despues de ? y separados por &
@@ -113,7 +118,7 @@ exports.getCommentsByPage = (req, res, next) => {
 exports.getComment = (req, res, next) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
-      message: "Not authorized to see the comments",
+      message: "Not authorized to see the comment",
     });
   } else {
     Comment.findById(req.params.id)
@@ -135,7 +140,7 @@ exports.getComment = (req, res, next) => {
 exports.deleteComment = (req, res, next) => {
   if (req.userData.rol !== RESPONSIBLE) {
     res.status(401).json({
-      message: "Not authorized to see the comments",
+      message: "Not authorized to delete the comments",
     });
   } else {
     Comment.deleteOne({ _id: req.params.id, creator: req.userData.userId })

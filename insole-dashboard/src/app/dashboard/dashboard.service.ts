@@ -22,6 +22,7 @@ const PATIENTS_BACKEND_URL = environment.apiURL + "/profile/"
 export class DashboardService {
   //Variables usadas en modo single
   private userId = new Subject<string>();
+  private requestedId= "";
   private allDatesArray = new Subject<string[]>();
   private allDatesArray2 = new Subject<string[]>();
   private allCompareDatesArray = new Subject<string[]>();
@@ -94,9 +95,10 @@ export class DashboardService {
   getInsoleData(id: string, days: number, customDay: number) {
     /// `` sirve añadir valores a un string dinamicamente
     const queryParams = `?id=${id}&range=${days}&customday=${customDay}`
+    this.requestedId=id;
     // En este no hace falta unscribe ya que se desuscribe solo
     console.log(BACKEND_URL + "single" + queryParams);
-
+    console.log(id);
     this.http.get<{
       name: string, surname: string,
       mms?: number,
@@ -139,9 +141,10 @@ export class DashboardService {
     let date = new Date(day);
     date.setDate(date.getDate() - 1);
     day = date.getTime();
+    console.log(this.requestedId);
     //esto se lanza si elige un dia
     /// `` sirve añadir valores a un string dinamicamente
-    const queryParams = `?leftInsoleId=${leftInsoleId}&rightInsoleId=${rightInsoleId}&day=${day}`
+    const queryParams = `?leftInsoleId=${leftInsoleId}&rightInsoleId=${rightInsoleId}&day=${day}&id=${this.requestedId}`
     // En este no hace falta unscribe ya que se desuscribe solo
     console.log(BACKEND_URL + "hourdata" + queryParams);
     console.log(day);

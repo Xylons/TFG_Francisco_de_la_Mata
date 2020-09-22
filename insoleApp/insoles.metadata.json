@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"insoleApp.insoles"},{"v":{"$numberInt":"2"},"key":{"insoleId":{"$numberInt":"1"}},"name":"insoleId_1","ns":"insoleApp.insoles","background":true}],"uuid":"96d4bde422fc4a36900b6b5c8e3b7127"}

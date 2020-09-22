@@ -57,30 +57,29 @@ exports.userLogin = (req, res, next) => {
       }
       //Hago llamada para recoger los datos del perfil
       //let profileInfo=ProfileController.getBasicInfo(fechedUser._id);
-      ProfileController.getBasicInfo(fechedUser._id).then((profileInfo)=> {
+      ProfileController.getBasicInfo(fechedUser._id).then((profileInfo) => {
         //Creo un nuevo token usando jsonwebtoken para verificar el usuario en las peticiones y se lo mando
-     
-      const token = jwt.sign(
-        {
-          email: fechedUser.email,
+
+        const token = jwt.sign(
+          {
+            email: fechedUser.email,
+            userId: fechedUser._id,
+            rol: profileInfo.__t,
+          },
+          process.env.JWT_KEY,
+          { expiresIn: "1h" }
+        );
+
+        res.status(200).json({
+          token: token,
+          expiresIn: 3600,
           userId: fechedUser._id,
+          name: profileInfo.name,
+          surname: profileInfo.surname,
+          image: profileInfo.userImagePath,
           rol: profileInfo.__t,
-        },
-        process.env.JWT_KEY,
-        { expiresIn: "1h" }
-      );
-      
-      res.status(200).json({
-        token: token,
-        expiresIn: 3600,
-        userId: fechedUser._id,
-        name: profileInfo.name,
-        surname: profileInfo.surname,
-        image: profileInfo.userImagePath,
-        rol: profileInfo.__t,
+        });
       });
-      });
-      
     })
     .catch((err) => {
       return res.status(401).json({
@@ -141,54 +140,59 @@ exports.resetPassword = (req, res, next) => {
           message: "Email not valid",
         });
       }
-      bcrypt.hash(req.body.password, 10).then((hash) => {
-        const userWithNewPassword = new User({
-          _id: fechedUser.id,
-          email: fechedUser.email,
-          password: hash,
-        });
-
-        User.updateOne({ _id: fechedUser.id }, userWithNewPassword)
-          .then((result) => {
-            console.log(result);
-            // Si modifica algun usuario
-            if (result.n > 0) {
-              //Hago llamada para recoger los datos del perfil
-              let profileInfo = ProfileController.getBasicInfo(fechedUser._id);
-
-              //Creo un nuevo token usando jsonwebtoken para verificar el usuario en las peticiones y se lo mando
-              const token = jwt.sign(
-                {
-                  email: fechedUser.email,
-                  userId: fechedUser._id,
-                  rol: profileInfo.__t,
-                },
-                process.env.JWT_KEY,
-                { expiresIn: "1h" }
-              );
-
-              res.status(200).json({
-                token: token,
-                expiresIn: 3600,
-                userId: fechedUser._id,
-                name: profileInfo.name,
-                surname: profileInfo.userImagePath,
-                image: profileInfo.surname,
-                rol: profileInfo.__t,
-                message: "User Updated Sucessfully",
-              });
-            } else {
-              res.status(401).json({
-                message: "Problem updating the user",
-              });
-            }
-          })
-          .catch((error) => {
-            res.status(500).json({
-              message: "Problem updating the user",
-            });
+      bcrypt
+        .hash(req.body.password, 10)
+        .then((hash) => {
+          const userWithNewPassword = new User({
+            _id: fechedUser.id,
+            email: fechedUser.email,
+            password: hash,
           });
-      });
+
+          User.updateOne({ _id: fechedUser.id }, userWithNewPassword).then(
+            (result) => {
+              console.log(result);
+              // Si modifica algun usuario
+              if (result.n > 0) {
+                //Hago llamada para recoger los datos del perfil
+                let profileInfo = ProfileController.getBasicInfo(
+                  fechedUser._id
+                ).then((profileInfo) => {
+                  //Creo un nuevo token usando jsonwebtoken para verificar el usuario en las peticiones y se lo mando
+                  const token = jwt.sign(
+                    {
+                      email: fechedUser.email,
+                      userId: fechedUser._id,
+                      rol: profileInfo.__t,
+                    },
+                    process.env.JWT_KEY,
+                    { expiresIn: "1h" }
+                  );
+
+                  res.status(200).json({
+                    token: token,
+                    expiresIn: 3600,
+                    userId: fechedUser._id,
+                    name: profileInfo.name,
+                    surname: profileInfo.userImagePath,
+                    image: profileInfo.surname,
+                    rol: profileInfo.__t,
+                    message: "User Updated Sucessfully",
+                  });
+                });
+              } else {
+                res.status(401).json({
+                  message: "Problem updating the user",
+                });
+              }
+            }
+          );
+        })
+        .catch((error) => {
+          res.status(500).json({
+            message: "Problem updating the user",
+          });
+        });
     })
     .catch((err) => {
       return res.status(401).json({
@@ -234,16 +238,16 @@ function decodeResetToken(token) {
 }
 
 exports.deleteProfile = (id) => {
-    User.deleteOne({ _id: id })
-      .then((result) => {
-        // Si elimina algun profile
-        if (result.n > 0) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .catch((error) => {
+  User.deleteOne({ _id: id })
+    .then((result) => {
+      // Si elimina algun profile
+      if (result.n > 0) {
+        return true;
+      } else {
         return false;
-      });
+      }
+    })
+    .catch((error) => {
+      return false;
+    });
 };

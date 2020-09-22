@@ -96,13 +96,14 @@
           [(value)]="profile.rol"
           (selectionChange)="onChangeUserRol(profile.userId, $event.value)"
         >
-          <mat-option value="undefined">Undefined</mat-option>
+          <mat-option value="undefined">Default</mat-option>
           <mat-option value="patient">Patient</mat-option>
           <mat-option value="responsible">Responsible</mat-option>
           <mat-option value="admin">Admin</mat-option>
         </mat-select>
       </mat-form-field>
-      <button
+      <button *ngIf="
+       profile.rol === 'patient' "
         mat-raised-button
         color="primary"
         [routerLink]="['/dashboard/', profile.userId]"
